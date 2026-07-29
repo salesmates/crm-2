@@ -127,6 +127,7 @@
     .brand-logo span { color: #f3f4f6; font-weight: 300; }
 
     .workspace-selector { margin-bottom: 20px; padding: 0 8px; }
+    /* ATUALIZAÇÃO FONTE SELECTOR */
     .workspace-selector select { 
       background: var(--surface); 
       color: white; 
@@ -267,11 +268,6 @@
     /* DEAL CARD & MASS ACTIONS */
     .deal-card { position: relative; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-card); box-shadow: var(--shadow); cursor: grab; transition: all 0.15s ease; display: flex; flex-direction: column; gap: 4px; }
     .deal-card:hover { border-color: var(--primary); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
-    
-    /* MODIFICAÇÃO: Cores tristes para Lost e Churn */
-    .deal-card.status-lost { opacity: 0.5; border-left: 3px solid var(--danger); background: rgba(239, 68, 68, 0.05); }
-    .deal-card.status-churn { opacity: 0.5; border-left: 3px solid var(--warning); background: rgba(245, 158, 11, 0.05); }
-    
     .deal-card h3 { margin: 0; font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; max-width: 85%; }
     .deal-card p { margin: 0; color: var(--muted); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .deal-value { font-size: 11px; font-weight: 700; color: var(--text); margin-top: 2px; }
@@ -284,6 +280,7 @@
     .deal-card:hover .deal-checkbox, .deal-checkbox:checked { display: block; }
     .list-checkbox { width: 14px; height: 14px; cursor: pointer; }
 
+    /* BOTAO ATIVIDADE DOT */
     .activity-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.1s; }
     .activity-dot:hover { transform: scale(1.3); }
     .activity-dot.green { background-color: var(--success); }
@@ -293,6 +290,7 @@
 
     .pipeline-list { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
 
+    /* BARRA ACOES EM MASSA */
     .mass-action-bar {
       display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
       background: var(--surface-card); padding: 12px 24px; border-radius: 30px;
@@ -301,6 +299,7 @@
     }
     .mass-action-bar.visible { display: flex; }
 
+    /* CHEVRON */
     .chevron-bar { display: flex; overflow-x: auto; gap: 2px; margin: 16px 0; padding: 4px 0; }
     .chevron-step { position: relative; flex: 1; min-width: 110px; text-align: center; background: rgba(156,163,175,0.1); color: var(--muted); padding: 8px 12px 8px 20px; font-size: 10px; font-weight: 600; clip-path: polygon(0% 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 0% 100%, 10px 50%); cursor: pointer; transition: all 0.2s; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
     .chevron-step:first-child { clip-path: polygon(0% 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 0% 100%); padding-left: 12px; border-radius: 4px 0 0 4px; }
@@ -309,6 +308,7 @@
     .chevron-step.completed { background: rgba(16, 185, 129, 0.2); color: #10b981; }
     .chevron-step.active { background: var(--primary); color: white; }
 
+    /* TABLES */
     .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
     table { width: 100%; border-collapse: collapse; }
     th, td { padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; font-size: 12px; }
@@ -318,6 +318,7 @@
     .link-button { padding: 0; color: var(--primary); background: transparent; font-weight: 600; text-align: left; }
     .empty { padding: 32px; color: var(--muted); text-align: center; font-size: 13px; }
 
+    /* CALENDAR */
     .agenda-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
     .calendar-mini { padding: 16px; }
     .calendar-navigation { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -342,11 +343,13 @@
     .chart-card span { color: var(--muted); font-size: 10px; font-weight: 600; }
     .chart-card strong { display: block; margin: 4px 0 6px; font-size: 18px; color: var(--text); }
 
+    /* TEAM */
     .team-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
     .team-row { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
     .team-row:last-child { border-bottom: 0; }
     .team-person { display: flex; align-items: center; gap: 8px; font-weight: 600; }
 
+    /* MODALS */
     .modal-backdrop { display: none; position: fixed; z-index: 100; inset: 0; padding: 24px; overflow: auto; background: rgba(0,0,0,.75); }
     .modal-backdrop.open { display: block; }
     
@@ -373,6 +376,7 @@
     .field textarea { min-height: 80px; }
     .modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 18px; }
     
+    /* PIPEDRIVE STYLE MODAL */
     .modal-content { display: grid; grid-template-columns: 320px 1fr; min-height: 480px; }
     .deal-details { padding: 16px 20px; border-right: 1px solid var(--border); background: var(--sidebar); overflow-y: auto; max-height: 70vh;}
     .detail-title { margin: 16px 0 6px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
@@ -380,6 +384,7 @@
     .detail-value strong { font-size: 11px; color: var(--text); }
     .detail-actions { display: grid; gap: 6px; }
     
+    /* MODAL TABS */
     .deal-main-area { background: var(--surface); display: flex; flex-direction: column; max-height: 70vh; }
     .deal-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); padding: 0 16px; background: var(--surface-card); }
     .tab-btn { padding: 14px 16px; background: transparent; color: var(--muted); font-weight: 600; font-size: 12px; border-bottom: 2px solid transparent; }
@@ -388,7 +393,7 @@
     .tab-content { padding: 20px; overflow-y: auto; flex: 1; display: none; }
     .tab-content.active { display: block; }
     
-    /* MODIFICAÇÃO: Caixa da nota fixada para ficar agradável no topo */
+    /* PINNED NOTE */
     .pinned-note-box { background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; position: relative; }
     .pinned-note-box h4 { margin: 0 0 6px 0; color: var(--warning); font-size: 11px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
     .pinned-note-box p { margin: 0; font-size: 12px; color: var(--text); line-height: 1.5; white-space: pre-wrap; }
@@ -403,6 +408,7 @@
     .whatsapp-box strong { display: block; margin-bottom: 4px; color: #34d399; font-size: 11px; }
     .whatsapp-box p { margin: 0 0 8px; color: #10b981; font-size: 10px; line-height: 1.4; }
 
+    /* API PANEL & SETTINGS */
     .api-code { background: #000; color: #a5b4fc; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 11px; white-space: pre-wrap; overflow-x: auto; margin-top: 8px; border: 1px solid #1e1e1e;}
     .color-picker-wrap { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
     .color-circle { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
@@ -486,6 +492,7 @@
     </aside>
 
     <main class="main">
+      <!-- DASHBOARD -->
       <section class="view active" id="dashboard">
         <div class="topbar">
           <div class="page-title">
@@ -493,6 +500,7 @@
             <p data-i18n="dash_subtitle">Uma visão rápida da sua operação comercial.</p>
           </div>
           <div class="actions">
+            <!-- FILTROS DE DATA COMPLETOS CUSTOMIZADOS -->
             <div class="filters">
               <label style="font-size:12px; font-weight:600; color:var(--muted);">De:</label>
               <input type="date" class="filter" id="dashboardStartDate" onchange="renderDashboard()" />
@@ -552,6 +560,7 @@
         </div>
       </section>
 
+      <!-- PIPELINE -->
       <section class="view" id="pipeline">
         <div class="topbar">
           <div class="page-title">
@@ -602,6 +611,7 @@
         <div id="pipelineList" class="pipeline-list" style="display:none"></div>
       </section>
 
+      <!-- ACTIVITIES -->
       <section class="view" id="activities">
         <div class="topbar">
           <div class="page-title">
@@ -707,7 +717,7 @@
         </div>
       </section>
 
-      <!-- FORECAST MODIFICADO: Meta, Realizado, Gap -->
+      <!-- FORECAST -->
       <section class="view" id="forecast">
         <div class="topbar">
           <div class="page-title">
@@ -721,24 +731,24 @@
 
         <div class="dashboard-grid">
           <article class="metric-card">
-            <div class="metric-label" data-i18n="fore_meta">Meta da Operação</div>
+            <div class="metric-label">Meta da Operação</div>
             <div class="metric-value" id="forecastGoal">R$ 80.000</div>
-            <div class="metric-note">Meta global estabelecida</div>
+            <div class="metric-note">Meta global simulada</div>
           </article>
           <article class="metric-card">
-            <div class="metric-label" data-i18n="fore_realizado">Realizado (Fechamentos)</div>
-            <div class="metric-value" id="forecastAchieved" style="color:var(--success)">R$ 0</div>
-            <div class="metric-note success">Total ganho no período</div>
-          </article>
-          <article class="metric-card">
-            <div class="metric-label" data-i18n="fore_gap">Gap para a meta</div>
-            <div class="metric-value" id="goalGap" style="color:var(--danger)">R$ 0</div>
-            <div class="metric-note" id="goalGapNote">Falta faturar</div>
-          </article>
-          <article class="metric-card">
-            <div class="metric-label" data-i18n="fore_pipeline">Pipeline Total (Bruto)</div>
+            <div class="metric-label">Pipeline total</div>
             <div class="metric-value" id="grossForecast">R$ 0</div>
             <div class="metric-note">Todos os negócios ativos</div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-label">Forecast Avançado (Bruto)</div>
+            <div class="metric-value" id="weightedForecast">R$ 0</div>
+            <div class="metric-note success">Soma 100% de Prob >= 50%</div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-label">Gap para a meta</div>
+            <div class="metric-value" id="goalGap">R$ 0</div>
+            <div class="metric-note" id="goalGapNote">Receita a conquistar</div>
           </article>
         </div>
 
@@ -754,7 +764,7 @@
         </div>
       </section>
 
-      <!-- VISÃO DE EQUIPE MODIFICADA -->
+      <!-- TEAM -->
       <section class="view" id="team">
         <div class="topbar">
           <div class="page-title">
@@ -762,6 +772,7 @@
             <p>Pipeline, produtividade, metas individuais e atrasos.</p>
           </div>
           <div class="actions">
+            <!-- FILTROS DE DATA COMPLETOS CUSTOMIZADOS -->
             <div class="filters">
               <label style="font-size:12px; font-weight:600; color:var(--muted);">De:</label>
               <input type="date" class="filter" id="teamStartDate" onchange="renderTeam()" />
@@ -783,19 +794,18 @@
         </div>
       </section>
 
-      <!-- REPORTS MODIFICADO: Botão Exportar CSV -->
+      <!-- REPORTS -->
       <section class="view" id="reports">
         <div class="topbar">
           <div class="page-title"><h1 data-i18n="nav_reports">Relatórios</h1><p>Indicadores de produtividade, conversão, funil e receita.</p></div>
           <div class="actions">
+            <!-- FILTROS DE DATA COMPLETOS CUSTOMIZADOS -->
             <div class="filters">
               <label style="font-size:12px; font-weight:600; color:var(--muted);">De:</label>
               <input type="date" class="filter" id="reportsStartDate" onchange="renderReports()" />
               <label style="font-size:12px; font-weight:600; color:var(--muted);">Até:</label>
               <input type="date" class="filter" id="reportsEndDate" onchange="renderReports()" />
             </div>
-            <!-- Botão Adicionado -->
-            <button class="button button-primary" onclick="exportReportsCSV()">⬇ Exportar CSV</button>
           </div>
         </div>
         <div class="content-grid">
@@ -810,6 +820,7 @@
         </div>
       </section>
 
+      <!-- SETTINGS -->
       <section class="view" id="settings">
         <div class="topbar">
           <div class="page-title"><h1 data-i18n="nav_settings">Configurações</h1><p>Aparência, Idioma, Metas e Integrações.</p></div>
@@ -819,19 +830,19 @@
           <!-- APARÊNCIA E IDIOMA -->
           <section class="panel">
             <div class="panel-header">
-              <div><h2 data-i18n="set_appearance">Aparência e Idioma</h2><p class="panel-subtitle" data-i18n="set_appearance_sub">Personalize a cara do seu CRM.</p></div>
+              <div><h2>Aparência e Idioma</h2><p class="panel-subtitle">Personalize a cara do seu CRM.</p></div>
             </div>
             
             <div class="field" style="margin-bottom: 16px;">
-              <label data-i18n="set_theme">Tema</label>
+              <label>Tema</label>
               <select id="themeSelect" onchange="changeThemeMode(this.value)">
-                <option value="dark" data-i18n="set_theme_dark">Escuro (Padrão)</option>
-                <option value="light" data-i18n="set_theme_light">Claro</option>
+                <option value="dark">Escuro (Padrão)</option>
+                <option value="light">Claro</option>
               </select>
             </div>
 
             <div class="field" style="margin-bottom: 16px;">
-              <label data-i18n="set_color">Cor Principal</label>
+              <label>Cor Principal</label>
               <div class="color-picker-wrap">
                 <div class="color-circle" style="background:#3b82f6" onclick="changeThemeColor('#3b82f6')"></div>
                 <div class="color-circle" style="background:#ef4444" onclick="changeThemeColor('#ef4444')"></div>
@@ -844,7 +855,7 @@
             </div>
 
             <div class="field">
-              <label data-i18n="set_lang">Idioma do CRM</label>
+              <label>Idioma do CRM</label>
               <div class="lang-flags">
                 <button class="lang-flag active" onclick="setLanguage('pt-BR')" title="Português">🇧🇷</button>
                 <button class="lang-flag" onclick="setLanguage('en-US')" title="English">🇺🇸</button>
@@ -856,11 +867,11 @@
           <!-- GERENCIAR EQUIPE E METAS -->
           <section class="panel">
             <div class="panel-header">
-              <div><h2 data-i18n="set_team">Gerenciar Equipe e Metas</h2><p class="panel-subtitle" data-i18n="set_team_sub">Defina os membros e a meta do módulo atual.</p></div>
+              <div><h2>Gerenciar Equipe e Metas</h2><p class="panel-subtitle">Defina os membros e a meta do módulo atual.</p></div>
             </div>
             <div style="margin-bottom: 20px;">
               <div class="field">
-                <label data-i18n="set_new_owner">Nome do Novo Vendedor</label>
+                <label>Nome do Novo Vendedor</label>
                 <div style="display: flex; gap: 8px;">
                   <input id="newOwnerName" placeholder="Ex.: Lucas Oliveira" />
                   <button class="button button-primary" onclick="addOwner()">＋ Add</button>
@@ -869,20 +880,21 @@
             </div>
             <div class="table-wrap">
               <table>
-                <thead><tr><th data-i18n="table_seller">Vendedor</th><th data-i18n="table_goal">Meta Indiv. (R$)</th><th style="width: 80px; text-align: right;" data-i18n="table_actions">Ações</th></tr></thead>
+                <thead><tr><th>Vendedor</th><th>Meta Indiv. (R$)</th><th style="width: 80px; text-align: right;">Ações</th></tr></thead>
                 <tbody id="ownersTableBody"></tbody>
               </table>
             </div>
             <div class="modal-actions">
-              <button class="button button-primary" onclick="saveAllGoals()" data-i18n="btn_save_goals">Salvar Metas</button>
+              <button class="button button-primary" onclick="saveAllGoals()">Salvar Metas</button>
             </div>
           </section>
         </div>
 
+        <!-- INTEGRAÇÃO E BACKUP -->
         <div class="content-grid">
           <section class="panel">
             <div class="panel-header">
-              <div><h2 data-i18n="set_integ">Integração Externa (Webhooks)</h2><p class="panel-subtitle" data-i18n="set_integ_sub">Envie leads do VL HUNT direto pro Supabase.</p></div>
+              <div><h2>Integração Externa (Webhooks)</h2><p class="panel-subtitle">Envie leads do VL HUNT direto pro Supabase.</p></div>
             </div>
             <div style="font-size: 12px; line-height: 1.6; color: var(--text);">
               <strong>URL do POST (REST API Supabase):</strong>
@@ -899,7 +911,7 @@
 
           <section class="panel">
             <div class="panel-header">
-              <div><h2 data-i18n="set_backup">Backup dos Dados</h2><p class="panel-subtitle" data-i18n="set_backup_sub">Exporte ou importe .json.</p></div>
+              <div><h2>Backup dos Dados</h2><p class="panel-subtitle">Exporte ou importe .json.</p></div>
             </div>
             <div class="modal-actions" style="justify-content: flex-start; margin-top: 10px;">
               <button class="button button-secondary" onclick="exportBackup()">⬇ Exportar Dados</button>
@@ -912,6 +924,7 @@
     </main>
   </div>
 
+  <!-- BARRA FLUTUANTE AÇÕES EM MASSA -->
   <div id="massActionBar" class="mass-action-bar">
     <span id="massActionCount" style="font-weight:700; color:white; font-size: 13px;">0 selecionados</span>
     <select id="massActionOwner" class="filter" style="width: auto; padding:6px 12px; background:var(--surface);"><option value="">Selecione vendedor</option></select>
@@ -923,6 +936,7 @@
     <button class="icon-button" onclick="clearMassSelection()">×</button>
   </div>
 
+  <!-- MODAL: CREATE / EDIT DEAL -->
   <div class="modal-backdrop" id="dealModal">
     <div class="modal">
       <div class="modal-header">
@@ -935,6 +949,7 @@
           <div class="form-grid">
             <div class="field full"><label>Nome do negócio / Oportunidade *</label><input id="dealCompany" required placeholder="Ex.: Projeto ABC" /></div>
             
+            <!-- SEPARADO RAZAO SOCIAL E CNPJ -->
             <div class="field"><label>Razão Social</label><input id="dealLegalName" placeholder="Ex.: Empresa ABC LTDA" /></div>
             <div class="field"><label>CNPJ</label><input id="dealCnpj" placeholder="Ex.: 00.000.000/0001-00" /></div>
             
@@ -943,12 +958,15 @@
             <div class="field"><label>E-mail</label><input id="dealEmail" type="email" placeholder="contato@empresa.com" /></div>
             <div class="field"><label>Endereço Completo</label><input id="dealAddress" placeholder="Ex.: Rua das Flores, 123" /></div>
             
+            <!-- VALOR E PROBABILIDADE ATUALIZADOS -->
             <div class="field">
               <label>Valor estimado</label>
+              <!-- Input de texto para formatar a máscara de moeda -->
               <input id="dealValue" type="text" placeholder="R$ 0,00" oninput="maskCurrency(this)" />
             </div>
             <div class="field">
               <label>Probabilidade (%)</label>
+              <!-- Number livre, aceita em branco -->
               <input id="dealProbability" type="number" min="0" max="100" placeholder="Ex: 50" />
             </div>
 
@@ -973,33 +991,34 @@
     </div>
   </div>
 
+  <!-- MODAL: DEAL DETAIL (PIPEDRIVE STYLE) -->
   <div class="modal-backdrop" id="detailModal">
     <div class="modal">
       <div class="modal-header" id="detailHeader"></div>
       <div class="modal-content">
+        <!-- BARRA LATERAL ESQUERDA -->
         <aside class="deal-details" id="dealDetails"></aside>
         
+        <!-- ÁREA PRINCIPAL DIREITA (ABAS) -->
         <section class="deal-main-area">
-          
-          <!-- ANOTAÇÃO FIXADA MOVIDA PARA CIMA -->
-          <div style="padding: 16px 16px 0 16px;">
-            <div class="pinned-note-box" style="margin-bottom: 0;">
-              <h4>Nota Fixada / Resumo</h4>
-              <textarea id="pinnedNoteArea" style="width:100%; min-height:60px; background:transparent; border:none; color:var(--text); padding:5px 0; font-size:12px; outline:none;" placeholder="Deixe um resumo ou informação vital antes de transferir o lead..."></textarea>
-              <div style="text-align: right;">
-                <button class="button button-primary button-small" onclick="savePinnedNote()">Salvar Nota</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="deal-tabs" style="margin-top: 16px;">
+          <div class="deal-tabs">
             <button class="tab-btn active" id="btnTabTimeline" onclick="switchDealTab('timeline')">Histórico e Atividades</button>
+            <button class="tab-btn" id="btnTabNotes" onclick="switchDealTab('notes')">Anotações Fixadas</button>
             <button class="tab-btn" id="btnTabFiles" onclick="switchDealTab('files')">Arquivos</button>
           </div>
           
           <div class="tab-content active" id="tabTimeline">
-            <!-- TIMELINE DIVIDIDA ENTRA AQUI PELO JS -->
             <div id="dealTimeline" class="timeline"></div>
+          </div>
+          
+          <div class="tab-content" id="tabNotes">
+            <div class="pinned-note-box">
+              <h4>Nota Fixada / Resumo</h4>
+              <textarea id="pinnedNoteArea" style="width:100%; min-height:120px; background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px; border-radius:8px;" placeholder="Use este espaço para deixar um resumo ou informação vital antes de transferir o lead..."></textarea>
+              <div style="text-align: right; margin-top: 8px;">
+                <button class="button button-primary button-small" onclick="savePinnedNote()">Salvar Nota</button>
+              </div>
+            </div>
           </div>
           
           <div class="tab-content" id="tabFiles">
@@ -1010,6 +1029,7 @@
     </div>
   </div>
 
+  <!-- MODAL: QUICK COMPLETE ACTIVITY -->
   <div class="modal-backdrop" id="quickCompleteModal">
     <div class="modal small-modal">
       <div class="modal-header">
@@ -1030,6 +1050,7 @@
     </div>
   </div>
 
+  <!-- MODAL: ACTIVITY (CRIAR/EDITAR) -->
   <div class="modal-backdrop" id="activityModal">
     <div class="modal" style="max-width:700px">
       <div class="modal-header">
@@ -1048,14 +1069,7 @@
                 <option>Proposta</option><option>Follow-up</option><option>Tarefa</option>
               </select>
             </div>
-            
-            <!-- INPUT COM DATALIST ADICIONADO -->
-            <div class="field">
-              <label>Negócio relacionado * (Busque pelo nome)</label>
-              <input id="activityDealInput" list="activityDealList" required autocomplete="off" placeholder="Digite para buscar..." />
-              <datalist id="activityDealList"></datalist>
-            </div>
-
+            <div class="field"><label>Negócio relacionado *</label><select id="activityDeal" required></select></div>
             <div class="field"><label>Data e hora *</label><input id="activityDate" required type="datetime-local" /></div>
             <div class="field">
               <label>Prioridade</label>
@@ -1073,6 +1087,7 @@
     </div>
   </div>
 
+  <!-- OUTROS MODAIS INALTERADOS -->
   <div class="modal-backdrop" id="transferModal">
     <div class="modal small-modal">
       <div class="modal-header">
@@ -1205,7 +1220,7 @@
     let pipelineView = "kanban";
     let currentDetailDealId = null;
 
-    // DICIONARIO i18n
+    // --- I18N DICTIONARY ---
     const i18n = {
       "pt-BR": {
         "module_com": "Módulo Comercial", "module_cs": "Módulo CS", "module_fin": "Módulo Financeiro", "module_mkt": "Módulo Marketing",
@@ -1219,14 +1234,7 @@
         "pipe_sub": "Gerencie oportunidades, responsáveis, etapas e evolução da negociação.",
         "agenda_sub": "Organize atividades por data, período, responsável e prioridade.",
         "fore_sub": "Atualizado automaticamente para negócios com probabilidade maior ou igual a 50%.",
-        "fore_meta": "Meta da Operação", "fore_realizado": "Realizado (Fechamentos)", "fore_gap": "Gap para a meta", "fore_pipeline": "Pipeline Total (Bruto)",
-        "set_appearance": "Aparência e Idioma", "set_appearance_sub": "Personalize a cara do seu CRM.",
-        "set_theme": "Tema", "set_theme_dark": "Escuro (Padrão)", "set_theme_light": "Claro",
-        "set_color": "Cor Principal", "set_lang": "Idioma do CRM",
-        "set_team": "Gerenciar Equipe e Metas", "set_team_sub": "Defina os membros e a meta do módulo atual.",
-        "set_new_owner": "Nome do Novo Vendedor", "table_seller": "Vendedor", "table_goal": "Meta Indiv. (R$)", "table_actions": "Ações", "btn_save_goals": "Salvar Metas",
-        "set_integ": "Integração Externa (Webhooks)", "set_integ_sub": "Envie leads do VL HUNT direto pro Supabase.",
-        "set_backup": "Backup dos Dados", "set_backup_sub": "Exporte ou importe .json."
+        "f_today": "Hoje", "f_week": "Esta Semana", "f_15d": "Esta Quinzena", "f_month": "Este Mês", "f_2m": "Este Bimestre", "f_3m": "Este Trimestre", "f_6m": "Este Semestre", "f_year": "Este Ano", "f_all": "Histórico Completo"
       },
       "en-US": {
         "module_com": "Commercial Module", "module_cs": "CS Module", "module_fin": "Finance Module", "module_mkt": "Marketing Module",
@@ -1240,14 +1248,7 @@
         "pipe_sub": "Manage opportunities, owners, stages, and deal evolution.",
         "agenda_sub": "Organize activities by date, period, owner, and priority.",
         "fore_sub": "Automatically updated for deals with probability >= 50%.",
-        "fore_meta": "Operation Goal", "fore_realizado": "Achieved (Closed Won)", "fore_gap": "Target Gap", "fore_pipeline": "Total Pipeline (Gross)",
-        "set_appearance": "Appearance and Language", "set_appearance_sub": "Customize the look of your CRM.",
-        "set_theme": "Theme", "set_theme_dark": "Dark (Default)", "set_theme_light": "Light",
-        "set_color": "Main Color", "set_lang": "CRM Language",
-        "set_team": "Manage Team & Targets", "set_team_sub": "Set the members and goals for the current module.",
-        "set_new_owner": "New Rep Name", "table_seller": "Seller", "table_goal": "Indiv. Goal ($)", "table_actions": "Actions", "btn_save_goals": "Save Targets",
-        "set_integ": "External Integration (Webhooks)", "set_integ_sub": "Send leads directly to Supabase.",
-        "set_backup": "Data Backup", "set_backup_sub": "Export or import .json files."
+        "f_today": "Today", "f_week": "This Week", "f_15d": "This Fortnight", "f_month": "This Month", "f_2m": "This Bimonth", "f_3m": "This Quarter", "f_6m": "This Semester", "f_year": "This Year", "f_all": "All Time"
       },
       "es-ES": {
         "module_com": "Módulo Comercial", "module_cs": "Módulo CS", "module_fin": "Módulo Financiero", "module_mkt": "Módulo Marketing",
@@ -1261,18 +1262,12 @@
         "pipe_sub": "Gestiona oportunidades, responsables, etapas y evolución.",
         "agenda_sub": "Organiza actividades por fecha, período, responsable y prioridad.",
         "fore_sub": "Actualizado automáticamente para negocios con prob >= 50%.",
-        "fore_meta": "Meta de la Operación", "fore_realizado": "Logrado (Ganados)", "fore_gap": "Brecha para la meta", "fore_pipeline": "Embudo Total (Bruto)",
-        "set_appearance": "Apariencia e Idioma", "set_appearance_sub": "Personaliza el aspecto de tu CRM.",
-        "set_theme": "Tema", "set_theme_dark": "Oscuro (Predeterminado)", "set_theme_light": "Claro",
-        "set_color": "Color Principal", "set_lang": "Idioma del CRM",
-        "set_team": "Gestionar Equipo y Metas", "set_team_sub": "Define los miembros y la meta del módulo actual.",
-        "set_new_owner": "Nombre del Nuevo Vendedor", "table_seller": "Vendedor", "table_goal": "Meta Indiv. ($)", "table_actions": "Acciones", "btn_save_goals": "Guardar Metas",
-        "set_integ": "Integración Externa (Webhooks)", "set_integ_sub": "Envía leads directo a Supabase.",
-        "set_backup": "Copia de Seguridad", "set_backup_sub": "Exporta o importa archivos .json."
+        "f_today": "Hoy", "f_week": "Esta Semana", "f_15d": "Esta Quincena", "f_month": "Este Mes", "f_2m": "Este Bimestre", "f_3m": "Este Trimestre", "f_6m": "Este Semestre", "f_year": "Este Año", "f_all": "Histórico Completo"
       }
     };
     let currentLang = localStorage.getItem("crm_lang") || "pt-BR";
 
+    // CARREGAMENTO DO LOCAL STORAGE
     try {
       const storedWorkspaces = localStorage.getItem("salesmates_workspaces_v5");
       if (storedWorkspaces) workspaces = JSON.parse(storedWorkspaces);
@@ -1299,6 +1294,7 @@
 
       const storedActivities = localStorage.getItem("salesmates_activities_v5");
       if (storedActivities) activities = JSON.parse(storedActivities).filter(Boolean);
+
     } catch (e) { console.error(e); }
 
     let currentOwners = workspaceOwners[currentWorkspace] || ["Victor"];
@@ -1349,6 +1345,7 @@
       });
     }
 
+    // HELPERS
     function stageNames() { return stages.map((s) => s ? s.name : "").filter(Boolean); }
     function getStageData(name) { return stages.find((s) => s && s.name === name) || stages[0] || {name:"Padrão", probability:10}; }
 
@@ -1385,34 +1382,6 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
-    
-    // EXPORTAR CSV RELATÓRIOS
-    function exportReportsCSV() {
-      const reportDeals = deals.filter(d => d && (isDealWonInWorkspace(d, currentWorkspace) || d.workspace === currentWorkspace));
-      if(reportDeals.length === 0) return alert("Nenhum dado para exportar.");
-      
-      let csvContent = "data:text/csv;charset=utf-8,";
-      csvContent += "Negocio,Status,Valor,Data Fechamento,Responsavel\n";
-      
-      reportDeals.forEach(d => {
-          if(!d) return;
-          let statusTag = d.status;
-          if(d.closedInWorkspace === currentWorkspace) statusTag = "Fechado (Movido para outro Módulo)";
-          let dateClosed = d.closedAt ? formatDate(d.closedAt.split("T")[0]) : '';
-          
-          let row = `"${escapeHTML(d.company)}","${statusTag}","${d.value || 0}","${dateClosed}","${d.owner}"`;
-          csvContent += row + "\r\n";
-      });
-
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `relatorio_crm_${dateKey(new Date())}.csv`);
-      document.body.appendChild(link); 
-      link.click();
-      document.body.removeChild(link);
-    }
-
     function triggerImportBackup() { document.getElementById("backupFileInput").click(); }
     function importBackup(event) {
       const file = event.target.files[0];
@@ -1437,6 +1406,7 @@
 
     function escapeHTML(value) { return String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
     
+    // FORMATAÇÃO DE MOEDA (Input)
     function maskCurrency(input) {
       let value = input.value.replace(/\D/g, '');
       if (value === "") { input.value = ""; return; }
@@ -1490,18 +1460,13 @@
     }
     function activityIcon(type) { const icons = { "Ligação": "☎", "WhatsApp": "◉", "Reunião": "◌", "Visita": "⌖", "Proposta": "▤", "Follow-up": "↻", "Tarefa": "✓" }; return icons[type] || "✓"; }
     function badgeForStatus(status) {
-      const classes = { "Concluída": "badge-green", "Atrasada": "badge-red", "Agendada": "badge-blue", "Cancelada": "badge-gray", "Ganho": "badge-green", "Perdido": "badge-red", "Churn": "badge-yellow", "Ativo": "badge-blue", "Arquivado": "badge-gray" };
+      const classes = { "Concluída": "badge-green", "Atrasada": "badge-red", "Agendada": "badge-blue", "Cancelada": "badge-gray", "Ganho": "badge-green", "Perdido": "badge-red", "Churn": "badge-yellow", "Ativo": "badge-blue" };
       return `<span class="badge ${classes[status] || "badge-gray"}">${escapeHTML(status)}</span>`;
     }
     function dealStatusLabel(status) { const labels = { open: "Ativo", won: "Ganho", lost: "Perdido", churn: "Churn", archived: "Arquivado" }; return labels[status] || status; }
     function dealValueHTML(deal) { return (deal && Number(deal.value) > 0) ? `<div class="deal-value">${currencyNumber(deal.value)}</div>` : `<div class="deal-value" style="color:var(--muted);font-weight:500;">R$ a definir</div>`; }
 
-    // FUNCAO DE CHECAGEM DE FECHAMENTO SEGURA
-    function isDealWonInWorkspace(deal, ws) {
-        if(!deal) return false;
-        return deal.closedInWorkspace === ws || (deal.workspace === ws && deal.status === "won");
-    }
-
+    // METAS E DONOS POR MÓDULO
     function fillOwnerOptions() {
       const options = currentOwners.map((o) => `<option value="${escapeHTML(o)}">${escapeHTML(o)}</option>`).join("");
       ["pipelineOwner", "activityOwnerFilter", "forecastOwnerFilter"].forEach((id) => {
@@ -1594,6 +1559,7 @@
       b.addEventListener("click", () => showView(b.dataset.view));
     });
 
+    // SISTEMA UNIFICADO DE FILTROS DE DATA
     function isDateInPeriod(dateStr, startId, endId) {
       if (!dateStr) return true;
       const startEl = document.getElementById(startId);
@@ -1615,6 +1581,7 @@
       return d >= start && d <= end;
     }
 
+    // PREENCHER DATAS COM MÊS ATUAL AO INICIAR
     function setDefaultDates() {
       const today = new Date();
       const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -1633,6 +1600,7 @@
       });
     }
 
+    // DASHBOARD
     function renderDashboard() {
       const activeDeals = deals.filter((d) => d && d.workspace === currentWorkspace);
       const activeActivities = activities.filter(a => {
@@ -1644,6 +1612,7 @@
       const pending = activeActivities.filter((a) => getActivityStatus(a) === "Agendada").length;
       const overdue = activeActivities.filter((a) => getActivityStatus(a) === "Atrasada").length;
 
+      // Forecast Bruto Avançado: Soma o VALOR BRUTO sem ponderar (apenas de prob >= 50%)
       const advancedDeals = activeDeals.filter(d => d.status === "open" && Number(d.probability) >= 50);
       const rawAdvancedForecast = advancedDeals.reduce((total, d) => total + Number(d.value || 0), 0);
 
@@ -1652,6 +1621,7 @@
       document.getElementById("overdueActivities").textContent = overdue;
       document.getElementById("weeklyForecast").textContent = currencyNumber(rawAdvancedForecast);
 
+      // Ritmo Comercial
       const typeCounts = {};
       completedInPeriod.forEach(a => { typeCounts[a.type] = (typeCounts[a.type] || 0) + 1; });
       const typesList = ["Ligação", "WhatsApp", "Reunião", "Proposta", "Follow-up", "Visita", "Tarefa"];
@@ -1697,6 +1667,7 @@
       }
     }
 
+    // AÇÕES EM MASSA
     function toggleDealSelection(dealId) {
       if(selectedDealsForMassAction.has(dealId)) selectedDealsForMassAction.delete(dealId);
       else selectedDealsForMassAction.add(dealId);
@@ -1845,11 +1816,9 @@
               }
               const tagsArray = deal.tags ? deal.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
               const isChecked = selectedDealsForMassAction.has(deal.id) ? "checked" : "";
-              
-              const extraClass = deal.status === 'lost' ? 'status-lost' : deal.status === 'churn' ? 'status-churn' : '';
 
               return `
-                <article class="deal-card ${extraClass}" draggable="${activeStatus === "open" ? "true" : "false"}" ondragstart="dragDeal(event, ${deal.id})" onclick="openDealDetail(${deal.id})">
+                <article class="deal-card" draggable="${activeStatus === "open" ? "true" : "false"}" ondragstart="dragDeal(event, ${deal.id})" onclick="openDealDetail(${deal.id})">
                   <input type="checkbox" class="deal-checkbox" value="${deal.id}" ${isChecked} onclick="event.stopPropagation(); toggleDealSelection(${deal.id})">
                   <div><h3>${escapeHTML(deal.company)}</h3><p style="margin-top: 2px;">${escapeHTML(deal.contact || "Sem contato")}</p></div>
                   ${dealValueHTML(deal)}
@@ -1953,6 +1922,7 @@
       stages.splice(index, 1); saveData(); refreshAll();
     }
 
+    // CALENDAR / AGENDA
     function renderCalendar() {
       const title = document.getElementById("calendarTitle");
       const container = document.getElementById("calendarDays");
@@ -2062,12 +2032,7 @@
             <td>${escapeHTML(a.type)}</td>
             <td><button class="link-button" onclick="openDealDetail(${a.dealId})">${escapeHTML(d?.company || "Sem vínculo")}</button></td>
             <td>${escapeHTML(a.owner)}</td><td>${formatDateTime(a.date)}</td><td>${badgeForStatus(a.calculatedStatus)}</td>
-            <td>
-              <div style="display:flex; gap:6px;">
-                ${a.calculatedStatus !== "Concluída" && a.calculatedStatus !== "Cancelada" ? `<button class="button button-primary button-small" onclick="completeActivity(${a.id})">Concluir</button>` : "—"}
-                <button class="button button-secondary button-small" title="Editar atividade" onclick="editActivity(${a.id})">✏️</button>
-              </div>
-            </td>
+            <td>${a.calculatedStatus !== "Concluída" && a.calculatedStatus !== "Cancelada" ? `<button class="button button-primary button-small" onclick="completeActivity(${a.id})">Concluir</button>` : "—"}</td>
           </tr>
         `;
       }).join("") : `<tr><td colspan="7"><div class="empty">Nenhuma atividade.</div></td></tr>`;
@@ -2098,38 +2063,35 @@
       closeModal("quickCompleteModal");
     }
 
-    // FORECAST MODIFICADO COM GAP
+    // FORECAST
     function renderForecast() {
       const owner = document.getElementById("forecastOwnerFilter")?.value || "";
       const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && (!owner || d.owner === owner));
       
       const gross = openDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
+      
       const advancedDeals = openDeals.filter(d => Number(d.probability) >= 50);
       const rawAdvanced = advancedDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
 
-      // Calculando Realizado no Período
-      const wonDeals = deals.filter(d => d && (!owner || d.owner === owner) && isDealWonInWorkspace(d, currentWorkspace));
-      const achieved = wonDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
-
       const globalGoal = owner ? (ownerGoals[owner] || 0) : Object.values(ownerGoals).reduce((a,b)=>a+b, 0);
-      const gap = Math.max(globalGoal - achieved, 0);
-      const goalProgress = globalGoal > 0 ? Math.min((achieved / globalGoal) * 100, 100) : 100;
+      const gap = Math.max(globalGoal - rawAdvanced, 0);
+      const goalProgress = globalGoal > 0 ? Math.min((rawAdvanced / globalGoal) * 100, 100) : 100;
 
       document.getElementById("forecastGoal").textContent = currencyNumber(globalGoal);
       document.getElementById("grossForecast").textContent = currencyNumber(gross);
-      document.getElementById("forecastAchieved").textContent = currencyNumber(achieved);
-      document.getElementById("goalGap").textContent = achieved >= globalGoal ? "Meta batida!" : currencyNumber(gap);
-      document.getElementById("goalGapNote").textContent = achieved >= globalGoal ? "Operação acima da meta" : "Falta faturar";
+      document.getElementById("weightedForecast").textContent = currencyNumber(rawAdvanced);
+      document.getElementById("goalGap").textContent = rawAdvanced >= globalGoal ? "Meta batida!" : currencyNumber(gap);
+      document.getElementById("goalGapNote").textContent = rawAdvanced >= globalGoal ? "Forecast acima da meta" : "Falta faturar";
 
       const summaryEl = document.getElementById("forecastSummary");
       if (summaryEl) {
         summaryEl.innerHTML = `
           <div class="progress-row">
-            <div class="progress-top"><span>Progresso contra a meta global (Realizado)</span><strong>${Math.round(goalProgress)}%</strong></div>
-            <div class="progress-track"><div class="progress-bar" style="width:${goalProgress}%;background:${achieved >= globalGoal ? "var(--success)" : "var(--primary)"}"></div></div>
+            <div class="progress-top"><span>Progresso contra a meta global</span><strong>${Math.round(goalProgress)}%</strong></div>
+            <div class="progress-track"><div class="progress-bar" style="width:${goalProgress}%;background:${rawAdvanced >= globalGoal ? "var(--success)" : "var(--primary)"}"></div></div>
           </div>
           <div class="progress-row">
-            <div class="progress-top"><span>Ticket médio (Avançados no Funil)</span><strong>${currencyNumber(advancedDeals.length ? rawAdvanced / advancedDeals.length : 0)}</strong></div>
+            <div class="progress-top"><span>Ticket médio (Avançados)</span><strong>${currencyNumber(advancedDeals.length ? rawAdvanced / advancedDeals.length : 0)}</strong></div>
             <div class="conversion-meta">${advancedDeals.length} oportunidade(s) em reta final</div>
           </div>
         `;
@@ -2153,8 +2115,9 @@
       }
     }
 
-    // VISÃO DE EQUIPE MODIFICADA
+    // TEAM
     function renderTeam() {
+      const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
       const activeActs = activities.filter(a => getDeal(a.dealId)?.workspace === currentWorkspace);
       const periodActs = activeActs.filter(a => isDateInPeriod(a.date, 'teamStartDate', 'teamEndDate'));
       
@@ -2162,24 +2125,22 @@
       if (tRank) {
         tRank.innerHTML = `
           <div class="team-row" style="color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase">
-            <div>Comercial</div><div>Meta</div><div>Realizado</div><div>Qtd. Fechado</div><div>Vencidas</div>
+            <div>Comercial</div><div>Meta</div><div>Forecast (Avançado)</div><div>Progresso</div><div>Vencidas</div>
           </div>
           ${currentOwners.map((owner) => {
+            const oDeals = openDeals.filter((d) => d && d.owner === owner);
             const oActs = periodActs.filter((a) => a && a.owner === owner);
             const oOver = oActs.filter((a) => getActivityStatus(a) === "Atrasada").length;
-            
-            const wonDeals = deals.filter(d => d && d.owner === owner && isDealWonInWorkspace(d, currentWorkspace));
-            const oRealizado = wonDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
-            
+            const oForecast = oDeals.filter(d=>d.probability>=50).reduce((sum, d) => sum + Number(d.value || 0), 0);
             const goal = ownerGoals[owner] || 1; 
-            const prog = Math.min((oRealizado / goal)*100, 100);
+            const prog = Math.min((oForecast / goal)*100, 100);
 
             return `
               <div class="team-row">
                 <div class="team-person"><span class="small-avatar">${owner ? owner.charAt(0) : "V"}</span>${escapeHTML(owner)}</div>
                 <div>${currencyNumber(goal)}</div>
-                <div><strong style="color:var(--success)">${currencyNumber(oRealizado)}</strong><div style="width:100%;margin-top:4px"><div class="progress-track"><div class="progress-bar" style="width:${prog}%;background:${prog>=100?"var(--success)":"var(--primary)"}"></div></div></div></div>
-                <div><span class="badge badge-green">${wonDeals.length}</span></div>
+                <div><strong>${currencyNumber(oForecast)}</strong></div>
+                <div style="width:100%;"><div class="progress-track"><div class="progress-bar" style="width:${prog}%;background:${prog>=100?"var(--success)":"var(--primary)"}"></div></div></div>
                 <div>${oOver ? `<span style="color:var(--danger);font-weight:700">${oOver}</span>` : "0"}</div>
               </div>
             `;
@@ -2203,9 +2164,10 @@
       }
     }
 
+    // REPORTS
     function renderReports() {
       const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && isDateInPeriod(d.createdAt, 'reportsStartDate', 'reportsEndDate'));
-      const wonDeals = deals.filter((d) => d && isDealWonInWorkspace(d, currentWorkspace) && isDateInPeriod(d.createdAt, 'reportsStartDate', 'reportsEndDate'));
+      const wonDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "won" && isDateInPeriod(d.createdAt, 'reportsStartDate', 'reportsEndDate'));
       
       const container = document.getElementById("reportsKPI");
       if(container) {
@@ -2245,6 +2207,7 @@
       }
     }
 
+    // CREATE / EDIT DEAL
     function openDealModal(dealId = null) {
       const form = document.getElementById("dealForm"); if (!form) return;
       form.reset();
@@ -2264,6 +2227,7 @@
         document.getElementById("dealAddress").value = deal.address || "";
         document.getElementById("dealPhone").value = deal.phone || "";
         document.getElementById("dealEmail").value = deal.email || "";
+        // Formatar valor salvo no input mask
         const vInput = document.getElementById("dealValue");
         vInput.value = deal.value ? deal.value.toString() : "";
         if(vInput.value) maskCurrency(vInput);
@@ -2330,14 +2294,11 @@
       document.getElementById("editingActivityId").value = "";
       document.getElementById("activityModalTitle").textContent = "Nova atividade";
       
-      const list = document.getElementById("activityDealList");
+      const select = document.getElementById("activityDeal");
       const activeDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
-      list.innerHTML = activeDeals.map(d => `<option value="${escapeHTML(d.company)}"></option>`).join("");
+      select.innerHTML = activeDeals.length ? activeDeals.map((d) => `<option value="${d.id}" ${Number(d.id) === Number(dealId) ? "selected" : ""}>${escapeHTML(d.company)}</option>`).join("") : `<option value="">Nenhum ativo</option>`;
       
       const selectedDeal = getDeal(dealId);
-      if(selectedDeal) document.getElementById("activityDealInput").value = selectedDeal.company;
-      else document.getElementById("activityDealInput").value = "";
-
       document.getElementById("activityOwner").value = selectedDeal?.owner || currentOwners[0];
       const df = new Date(CURRENT_DATE); df.setHours(df.getHours() + 1);
       document.getElementById("activityDate").value = `${dateKey(df)}T${String(df.getHours()).padStart(2,"0")}:${String(df.getMinutes()).padStart(2,"0")}`;
@@ -2345,4 +2306,237 @@
     }
 
     function editActivity(actId) {
-      const a = activities.find(x =>
+      const a = activities.find(x => x.id === actId);
+      if(!a) return;
+      openActivityModal(a.dealId);
+      document.getElementById("editingActivityId").value = a.id;
+      document.getElementById("activityModalTitle").textContent = "Editar Atividade";
+      document.getElementById("activityTitle").value = a.title;
+      document.getElementById("activityType").value = a.type;
+      document.getElementById("activityDate").value = a.date;
+      document.getElementById("activityPriority").value = a.priority;
+      document.getElementById("activityOwner").value = a.owner;
+      document.getElementById("activityDescription").value = a.description || "";
+    }
+
+    function saveActivity(event) {
+      event.preventDefault();
+      const dealId = Number(document.getElementById("activityDeal").value); if (!dealId) return;
+      const editId = document.getElementById("editingActivityId").value;
+      
+      if(editId) {
+        const a = activities.find(x => x.id === Number(editId));
+        if(a) {
+          a.dealId = dealId;
+          a.title = document.getElementById("activityTitle").value.trim();
+          a.type = document.getElementById("activityType").value;
+          a.date = document.getElementById("activityDate").value;
+          a.priority = document.getElementById("activityPriority").value;
+          a.owner = document.getElementById("activityOwner").value;
+          a.description = document.getElementById("activityDescription").value.trim();
+          const deal = getDeal(dealId);
+          if(deal) addTimelineEvent(deal, `Ação editada: ${a.title}`, `Data ajustada para ${formatDateTime(a.date)}.`);
+        }
+      } else {
+        const newActivity = {
+          id: Date.now(), dealId, status: "Agendada",
+          title: document.getElementById("activityTitle").value.trim(),
+          type: document.getElementById("activityType").value,
+          date: document.getElementById("activityDate").value,
+          priority: document.getElementById("activityPriority").value,
+          owner: document.getElementById("activityOwner").value,
+          description: document.getElementById("activityDescription").value.trim()
+        };
+        activities.push(newActivity);
+        const deal = getDeal(dealId); if (deal) addTimelineEvent(deal, `Ação criada: ${newActivity.title}`, `${newActivity.type} para ${formatDateTime(newActivity.date)}.`);
+      }
+      
+      saveData(); closeModal("activityModal"); refreshAll();
+      if (currentDetailDealId === dealId && document.getElementById("detailModal").classList.contains("open")) openDealDetail(dealId);
+    }
+
+    // MODAL PIPEDRIVE STYLE & PASSAGEM DE BASTÃO
+    function openDealDetail(dealId) {
+      const deal = getDeal(dealId); if (!deal) return;
+      currentDetailDealId = deal.id; const nextActivity = getNextActivity(deal.id);
+      
+      document.getElementById("detailHeader").innerHTML = `
+        <div>
+          ${badgeForStatus(dealStatusLabel(deal.status))} <span class="badge badge-gray">${escapeHTML(deal.stage)}</span>
+          <h2 style="margin-top:10px">${escapeHTML(deal.company)}</h2>
+          <p>${escapeHTML(deal.contact || "Sem contato")} · ${escapeHTML(deal.owner)} · ${currency(deal.value)}</p>
+          <div class="chevron-bar">
+            ${stages.map((stage) => {
+              const isCurrent = stage.name === deal.stage;
+              const isCompleted = stageNames().indexOf(stage.name) < stageNames().indexOf(deal.stage);
+              return `<div class="chevron-step ${isCurrent?"active":isCompleted?"completed":""}" onclick="updateDealStageDirectly(${deal.id}, '${escapeHTML(stage.name)}')">${escapeHTML(stage.name)}</div>`;
+            }).join("")}
+          </div>
+        </div>
+        <div class="inline-actions">
+          ${deal.status === "open" ? `<button class="button button-primary button-small" onclick="openActivityModal(${deal.id})">＋ Nova atividade</button>` : ""}
+          <button class="close-button" onclick="closeModal('detailModal')">×</button>
+        </div>
+      `;
+
+      // Monta as opções de Handoff (Transf. para outro módulo)
+      const otherWks = Object.keys(workspaces).filter(w => w !== currentWorkspace);
+      const handoffSelect = otherWks.map(w => `<option value="${w}">${w}</option>`).join("");
+
+      document.getElementById("dealDetails").innerHTML = `
+        <div class="detail-title">Informações Comerciais</div>
+        <div class="detail-value"><strong>Razão Social</strong><br>${escapeHTML(deal.legalName || "Não informado")}</div>
+        <div class="detail-value"><strong>CNPJ</strong><br>${escapeHTML(deal.cnpj || "Não informado")}</div>
+        <div class="detail-value"><strong>Endereço</strong><br>${escapeHTML(deal.address || "Não informado")}</div>
+        <div class="detail-value"><strong>Contato</strong><br>${escapeHTML(deal.contact || "Não informado")}</div>
+        <div class="detail-value"><strong>Telefone</strong><br>${escapeHTML(deal.phone || "Não informado")}</div>
+        <div class="detail-value"><strong>E-mail</strong><br>${escapeHTML(deal.email || "Não informado")}</div>
+        <div class="detail-value"><strong>Valor</strong><br>${currency(deal.value)}</div>
+        <div class="detail-value"><strong>Probabilidade</strong><br>${deal.probability}%</div>
+        <div class="detail-value"><strong>Origem</strong><br>${escapeHTML(deal.source || "Não cadastrada")}</div>
+        <div class="detail-value"><strong>Tags</strong><br>${escapeHTML(deal.tags || "Sem tags")}</div>
+        ${deal.lossReason ? `<div class="detail-value"><strong>Motivo perda</strong><br>${escapeHTML(deal.lossReason)}</div>` : ""}
+        ${deal.phone ? `<div class="whatsapp-box"><strong>WhatsApp Business</strong><button class="button button-success button-small" onclick="openWhatsApp('${escapeHTML(deal.phone)}', '${escapeHTML(deal.company)}')">◉ Abrir WhatsApp</button></div>` : ""}
+        
+        <div class="detail-title">Ações</div>
+        <div class="detail-actions">
+          ${deal.status === "open" ? `
+            <button class="button button-secondary" onclick="openDealModal(${deal.id})">Editar informações</button>
+            <button class="button button-secondary" onclick="openTransferModal(${deal.id})">Transferir responsável</button>
+            <button class="button button-success" onclick="markDealWon(${deal.id})">Ganho ✓</button>
+            <button class="button button-danger" onclick="openLossModal(${deal.id})">Perdido / Churn ✗</button>
+          ` : `<button class="button button-secondary" onclick="reopenDeal(${deal.id})">Reabrir oportunidade</button>`}
+          <button class="button button-secondary" style="color:var(--danger);" onclick="archiveDeal(${deal.id})">Deletar / Arquivar</button>
+        </div>
+
+        <div class="field" style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px;">
+          <label>Mover p/ Módulo (Passagem de Bastão)</label>
+          <div style="display: flex; gap: 8px;">
+            <select id="handoffSelect">${handoffSelect}</select>
+            <button class="button button-primary" onclick="handoffDeal(${deal.id})">Mover</button>
+          </div>
+        </div>
+      `;
+
+      // Atualiza Pinned Note e Timeline
+      document.getElementById("pinnedNoteArea").value = deal.pinnedNote || "";
+
+      const tEvents = [...(deal.timeline || []), ...getDealActivities(deal.id).map(a => ({isAct:true, id: a.id, title: `Atividade: ${a.title}`, description: `${a.type} · ${getActivityStatus(a)}${a.description?' · '+a.description:""}`, date: a.date}))].sort((a, b) => new Date(b.date) - new Date(a.date));
+      document.getElementById("dealTimeline").innerHTML = `
+        <div class="panel-header"><div><h2>Histórico Completo</h2></div><span class="badge badge-gray">${tEvents.length} registros</span></div>
+        ${tEvents.length ? tEvents.map(e => `
+          <div class="timeline-event">
+            <div style="display:flex; justify-content:space-between;">
+              <strong>${escapeHTML(e.title)}</strong>
+              ${e.isAct ? `<small style="cursor:pointer; color:var(--primary); font-weight:700;" onclick="editActivity(${e.id})">Editar</small>` : ''}
+            </div>
+            <small>${escapeHTML(e.description)}</small>
+            <small style="color:var(--muted);">${formatDateTime(e.date)}</small>
+          </div>
+        `).join("") : `<div class="empty">Sem registros.</div>`}
+      `;
+      
+      switchDealTab('timeline');
+      document.getElementById("detailModal").classList.add("open");
+    }
+
+    function switchDealTab(tabName) {
+      ['timeline', 'notes', 'files'].forEach(t => {
+        document.getElementById(`btnTab${t.charAt(0).toUpperCase()+t.slice(1)}`).classList.remove('active');
+        document.getElementById(`tab${t.charAt(0).toUpperCase()+t.slice(1)}`).classList.remove('active');
+      });
+      document.getElementById(`btnTab${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`).classList.add('active');
+      document.getElementById(`tab${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`).classList.add('active');
+    }
+
+    function savePinnedNote() {
+      const deal = getDeal(currentDetailDealId);
+      if(deal) {
+        deal.pinnedNote = document.getElementById("pinnedNoteArea").value;
+        saveData();
+        const btn = document.querySelector("#tabNotes .button-primary");
+        if(btn) {
+          const originalText = btn.innerHTML;
+          btn.innerHTML = `<span style="color:white">Nota salva com sucesso! ✓</span>`;
+          btn.style.backgroundColor = "var(--success)";
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.backgroundColor = "";
+          }, 2000);
+        }
+      }
+    }
+
+    function handoffDeal(dealId) {
+      const deal = getDeal(dealId);
+      const targetW = document.getElementById("handoffSelect").value;
+      if(deal && targetW && confirm(`Mover o negócio para o módulo "${targetW}"? Ele sairá deste funil.`)) {
+          const oldW = deal.workspace;
+          deal.workspace = targetW;
+          deal.stage = workspaces[targetW][0].name;
+          deal.probability = workspaces[targetW][0].probability;
+          addTimelineEvent(deal, "Passagem de Bastão", `Movido do módulo ${oldW} para ${targetW}.`);
+          saveData();
+          closeModal('detailModal');
+          refreshAll();
+      }
+    }
+
+    // FINALIZANDO MODAIS RESTANTES
+    function openTransferModal(dealId) {
+      document.getElementById("transferDealId").value = dealId;
+      document.getElementById("transferOwner").value = getDeal(dealId)?.owner || "";
+      document.getElementById("transferModal").classList.add("open");
+    }
+    function transferDeal() {
+      const d = getDeal(document.getElementById("transferDealId").value); const nO = document.getElementById("transferOwner").value;
+      if (d && nO && d.owner !== nO) { addTimelineEvent(d, "Transferência", `${d.owner} → ${nO}.`); d.owner = nO; saveData(); refreshAll(); openDealDetail(d.id); }
+      closeModal("transferModal");
+    }
+
+    function markDealWon(dealId) {
+      const d = getDeal(dealId); if (!d || !confirm("Marcar como GANHO?")) return;
+      d.status = "won"; d.probability = 100; addTimelineEvent(d, "Ganho", "Fechamento realizado!");
+      saveData(); closeModal("detailModal"); refreshAll(); showView("forecast");
+    }
+
+    function openLossModal(dealId) { document.getElementById("lossDealId").value = dealId; document.getElementById("lossModal").classList.add("open"); }
+    function markDealLost() {
+      const d = getDeal(document.getElementById("lossDealId").value); if (!d) return;
+      d.status = document.getElementById("lossStatus").value;
+      d.lossReason = document.getElementById("lossReason").value;
+      addTimelineEvent(d, d.status==="churn"?"Churn":"Perdido", `Motivo: ${d.lossReason}.`);
+      
+      const followUp = document.getElementById("lossFollowup").value;
+      if(followUp) {
+        const months = Number(followUp);
+        const fDate = new Date(CURRENT_DATE); fDate.setMonth(fDate.getMonth() + months);
+        activities.push({
+          id: Date.now(), dealId: d.id, status: "Agendada", title: "Follow-up de Resgate (Lost/Churn)",
+          type: "Follow-up", date: fDate.toISOString().slice(0,16), priority: "Alta",
+          owner: d.owner, description: "Tentativa de resgate após " + months + " meses."
+        });
+        addTimelineEvent(d, "Follow-up Agendado", `Retorno programado para daqui a ${months} mês(es).`);
+      }
+
+      saveData(); closeModal("lossModal"); closeModal("detailModal"); refreshAll();
+    }
+    
+    function reopenDeal(dealId) { const d = getDeal(dealId); if(d){ d.status = "open"; d.lossReason = ""; addTimelineEvent(d, "Reaberto", "Voltou ao funil."); saveData(); refreshAll(); openDealDetail(dealId); } }
+    function archiveDeal(dealId) { const d = getDeal(dealId); if(d && confirm("Deletar/Arquivar?")){ d.status = "archived"; addTimelineEvent(d, "Arquivado", "Removido do funil."); saveData(); closeModal("detailModal"); refreshAll(); } }
+    function openWhatsApp(phone, company) { window.open(`https://wa.me/55${String(phone).replace(/\D/g, "")}?text=${encodeURIComponent(`Olá! Referente a oportunidade da empresa ${company}.`)}`, "_blank"); }
+
+    function closeModal(id) { document.getElementById(id)?.classList.remove("open"); }
+    document.querySelectorAll(".modal-backdrop").forEach(b => b.addEventListener("click", e => { if (e.target === b) b.classList.remove("open"); }));
+
+    // STARTUP
+    try {
+      setDefaultDates();
+      applyThemeSettings();
+      setLanguage(currentLang);
+      saveData(); fillOwnerOptions(); renderCalendar(); refreshAll();
+    } catch (e) { console.error("Erro crítico na inicialização:", e); }
+  </script>
+</body>
+</html>
+
