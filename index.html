@@ -500,18 +500,13 @@
             <p data-i18n="dash_subtitle">Uma visão rápida da sua operação comercial.</p>
           </div>
           <div class="actions">
-            <!-- FILTROS DE DATA COMPLETOS -->
-            <select class="filter date-filter-select" id="dashboardPeriod" onchange="renderDashboard()">
-              <option value="today" data-i18n="f_today">Hoje</option>
-              <option value="week" data-i18n="f_week">Esta Semana</option>
-              <option value="fortnight" data-i18n="f_15d">Esta Quinzena</option>
-              <option value="month" data-i18n="f_month">Este Mês</option>
-              <option value="bimonth" data-i18n="f_2m">Este Bimestre</option>
-              <option value="quarter" data-i18n="f_3m">Este Trimestre</option>
-              <option value="semester" data-i18n="f_6m">Este Semestre</option>
-              <option value="year" data-i18n="f_year">Este Ano</option>
-              <option value="all" data-i18n="f_all">Histórico Completo</option>
-            </select>
+            <!-- FILTROS DE DATA COMPLETOS CUSTOMIZADOS -->
+            <div class="filters">
+              <label style="font-size:12px; font-weight:600; color:var(--muted);">De:</label>
+              <input type="date" class="filter" id="dashboardStartDate" onchange="renderDashboard()" />
+              <label style="font-size:12px; font-weight:600; color:var(--muted);">Até:</label>
+              <input type="date" class="filter" id="dashboardEndDate" onchange="renderDashboard()" />
+            </div>
             <button class="button button-secondary" onclick="showView('activities')" data-i18n="btn_agenda">Agenda</button>
             <button class="button button-primary" onclick="openActivityModal()" data-i18n="btn_new_act">＋ Nova atividade</button>
           </div>
@@ -777,18 +772,13 @@
             <p>Pipeline, produtividade, metas individuais e atrasos.</p>
           </div>
           <div class="actions">
-            <!-- COPIA DOS FILTROS COMPLETOS -->
-            <select class="filter date-filter-select" id="teamPeriod" onchange="renderTeam()">
-              <option value="month">Este Mês</option>
-              <option value="today">Hoje</option>
-              <option value="week">Esta Semana</option>
-              <option value="fortnight">Esta Quinzena</option>
-              <option value="bimonth">Este Bimestre</option>
-              <option value="quarter">Este Trimestre</option>
-              <option value="semester">Este Semestre</option>
-              <option value="year">Este Ano</option>
-              <option value="all">Histórico Completo</option>
-            </select>
+            <!-- FILTROS DE DATA COMPLETOS CUSTOMIZADOS -->
+            <div class="filters">
+              <label style="font-size:12px; font-weight:600; color:var(--muted);">De:</label>
+              <input type="date" class="filter" id="teamStartDate" onchange="renderTeam()" />
+              <label style="font-size:12px; font-weight:600; color:var(--muted);">Até:</label>
+              <input type="date" class="filter" id="teamEndDate" onchange="renderTeam()" />
+            </div>
           </div>
         </div>
 
@@ -809,24 +799,19 @@
         <div class="topbar">
           <div class="page-title"><h1 data-i18n="nav_reports">Relatórios</h1><p>Indicadores de produtividade, conversão, funil e receita.</p></div>
           <div class="actions">
-            <!-- COPIA DOS FILTROS COMPLETOS -->
-            <select class="filter date-filter-select" id="reportsPeriod" onchange="renderReports()">
-              <option value="all">Histórico Completo</option>
-              <option value="today">Hoje</option>
-              <option value="week">Esta Semana</option>
-              <option value="fortnight">Esta Quinzena</option>
-              <option value="month">Este Mês</option>
-              <option value="bimonth">Este Bimestre</option>
-              <option value="quarter">Este Trimestre</option>
-              <option value="semester">Este Semestre</option>
-              <option value="year">Este Ano</option>
-            </select>
+            <!-- FILTROS DE DATA COMPLETOS CUSTOMIZADOS -->
+            <div class="filters">
+              <label style="font-size:12px; font-weight:600; color:var(--muted);">De:</label>
+              <input type="date" class="filter" id="reportsStartDate" onchange="renderReports()" />
+              <label style="font-size:12px; font-weight:600; color:var(--muted);">Até:</label>
+              <input type="date" class="filter" id="reportsEndDate" onchange="renderReports()" />
+            </div>
           </div>
         </div>
         <div class="content-grid">
           <section class="panel">
-            <div class="panel-header"><div><h2>Conversão por etapa</h2><p class="panel-subtitle">Avanço das oportunidades ativas no período.</p></div></div>
-            <div id="reportsConversion" class="conversion-list"></div>
+            <div class="panel-header"><div><h2>Relatório de KPI</h2><p class="panel-subtitle">Negócios ativos por etapa e ganhos por vendedor.</p></div></div>
+            <div class="table-wrap" id="reportsKPI"></div>
           </section>
           <section class="panel">
             <div class="panel-header"><div><h2>Motivos de perda</h2><p class="panel-subtitle">Visibilidade sobre os motivos recorrentes.</p></div></div>
@@ -842,7 +827,7 @@
         </div>
 
         <div class="content-grid" style="margin-bottom: 24px;">
-          <!-- APARÊNCIA E IDIOMA (ANTI-CLUBISMO) -->
+          <!-- APARÊNCIA E IDIOMA -->
           <section class="panel">
             <div class="panel-header">
               <div><h2>Aparência e Idioma</h2><p class="panel-subtitle">Personalize a cara do seu CRM.</p></div>
@@ -857,7 +842,7 @@
             </div>
 
             <div class="field" style="margin-bottom: 16px;">
-              <label>Cor Principal (Anti-clubismo)</label>
+              <label>Cor Principal</label>
               <div class="color-picker-wrap">
                 <div class="color-circle" style="background:#3b82f6" onclick="changeThemeColor('#3b82f6')"></div>
                 <div class="color-circle" style="background:#ef4444" onclick="changeThemeColor('#ef4444')"></div>
@@ -882,7 +867,7 @@
           <!-- GERENCIAR EQUIPE E METAS -->
           <section class="panel">
             <div class="panel-header">
-              <div><h2>Gerenciar Equipe e Metas</h2><p class="panel-subtitle">Defina os membros e a meta de cada um.</p></div>
+              <div><h2>Gerenciar Equipe e Metas</h2><p class="panel-subtitle">Defina os membros e a meta do módulo atual.</p></div>
             </div>
             <div style="margin-bottom: 20px;">
               <div class="field">
@@ -1217,7 +1202,12 @@
     let currentWorkspace = "Comercial";
     let stages = workspaces[currentWorkspace];
 
-    let owners = ["Victor", "Gustavo", "Ana"];
+    let workspaceOwners = {
+      "Comercial": ["Victor", "Gustavo", "Ana"],
+      "Financeiro": ["Victor"],
+      "CS": ["Victor"],
+      "MKT": ["Victor"]
+    };
     let ownerGoals = { "Victor": 80000, "Gustavo": 50000, "Ana": 50000 };
 
     let deals = [];
@@ -1282,14 +1272,18 @@
       const storedWorkspaces = localStorage.getItem("salesmates_workspaces_v5");
       if (storedWorkspaces) workspaces = JSON.parse(storedWorkspaces);
       if (!workspaces[currentWorkspace]) workspaces[currentWorkspace] = DEFAULT_WORKSPACES["Comercial"];
-      // Garante que financeiro exista caso base seja antiga
       if (!workspaces["Financeiro"]) workspaces["Financeiro"] = DEFAULT_WORKSPACES["Financeiro"];
       stages = workspaces[currentWorkspace];
 
-      const storedOwners = localStorage.getItem("salesmates_owners");
-      if (storedOwners) {
-        const parsed = JSON.parse(storedOwners);
-        if (Array.isArray(parsed) && parsed.length > 0) owners = parsed.filter(Boolean);
+      const storedWorkspaceOwners = localStorage.getItem("salesmates_workspace_owners_v5");
+      if (storedWorkspaceOwners) {
+        workspaceOwners = JSON.parse(storedWorkspaceOwners);
+      } else {
+        const storedOwners = localStorage.getItem("salesmates_owners");
+        if (storedOwners) {
+          const parsed = JSON.parse(storedOwners);
+          if (Array.isArray(parsed) && parsed.length > 0) workspaceOwners["Comercial"] = parsed.filter(Boolean);
+        }
       }
 
       const storedGoals = localStorage.getItem("salesmates_owner_goals");
@@ -1302,6 +1296,8 @@
       if (storedActivities) activities = JSON.parse(storedActivities).filter(Boolean);
 
     } catch (e) { console.error(e); }
+
+    let currentOwners = workspaceOwners[currentWorkspace] || ["Victor"];
 
     function applyThemeSettings() {
       const color = localStorage.getItem('crm_color') || '#3b82f6';
@@ -1359,20 +1355,23 @@
       currentWorkspace = el.value;
       if(!workspaces[currentWorkspace]) workspaces[currentWorkspace] = DEFAULT_WORKSPACES[currentWorkspace] || [];
       stages = workspaces[currentWorkspace];
+      if(!workspaceOwners[currentWorkspace]) workspaceOwners[currentWorkspace] = ["Victor"];
+      currentOwners = workspaceOwners[currentWorkspace];
       refreshAll();
     }
 
     function saveData() {
       workspaces[currentWorkspace] = stages;
+      workspaceOwners[currentWorkspace] = currentOwners;
       localStorage.setItem("salesmates_workspaces_v5", JSON.stringify(workspaces));
+      localStorage.setItem("salesmates_workspace_owners_v5", JSON.stringify(workspaceOwners));
       localStorage.setItem("salesmates_deals_v5", JSON.stringify(deals));
       localStorage.setItem("salesmates_activities_v5", JSON.stringify(activities));
-      localStorage.setItem("salesmates_owners", JSON.stringify(owners));
       localStorage.setItem("salesmates_owner_goals", JSON.stringify(ownerGoals));
     }
 
     function exportBackup() {
-      const backupData = { workspaces, deals, activities, owners, ownerGoals };
+      const backupData = { workspaces, workspaceOwners, deals, activities, ownerGoals };
       const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -1392,9 +1391,10 @@
         try {
           const imp = JSON.parse(e.target.result);
           if (imp.workspaces) workspaces = imp.workspaces;
+          if (imp.workspaceOwners) workspaceOwners = imp.workspaceOwners;
+          else if (imp.owners) workspaceOwners = {"Comercial": imp.owners, "Financeiro": ["Victor"], "CS": ["Victor"], "MKT": ["Victor"]};
           if (imp.deals) deals = imp.deals;
           if (imp.activities) activities = imp.activities;
-          if (imp.owners) owners = imp.owners;
           if (imp.ownerGoals) ownerGoals = imp.ownerGoals;
           saveData();
           alert("Backup restaurado com sucesso!");
@@ -1466,9 +1466,9 @@
     function dealStatusLabel(status) { const labels = { open: "Ativo", won: "Ganho", lost: "Perdido", churn: "Churn", archived: "Arquivado" }; return labels[status] || status; }
     function dealValueHTML(deal) { return (deal && Number(deal.value) > 0) ? `<div class="deal-value">${currencyNumber(deal.value)}</div>` : `<div class="deal-value" style="color:var(--muted);font-weight:500;">R$ a definir</div>`; }
 
-    // METAS E DONOS
+    // METAS E DONOS POR MÓDULO
     function fillOwnerOptions() {
-      const options = owners.map((o) => `<option value="${escapeHTML(o)}">${escapeHTML(o)}</option>`).join("");
+      const options = currentOwners.map((o) => `<option value="${escapeHTML(o)}">${escapeHTML(o)}</option>`).join("");
       ["pipelineOwner", "activityOwnerFilter", "forecastOwnerFilter"].forEach((id) => {
         const select = document.getElementById(id);
         if (!select) return;
@@ -1488,7 +1488,7 @@
     function renderOwnersList() {
       const tbody = document.getElementById("ownersTableBody");
       if (!tbody) return;
-      tbody.innerHTML = owners.map((o) => `
+      tbody.innerHTML = currentOwners.map((o) => `
         <tr>
           <td>
             <div style="display:flex; align-items:center; gap:8px;">
@@ -1506,14 +1506,18 @@
       const input = document.getElementById("newOwnerName");
       const name = input?.value.trim();
       if (!name) return;
-      if (owners.includes(name)) { alert("Este vendedor já existe."); return; }
-      owners.push(name);
-      ownerGoals[name] = 50000; // default meta
+      if (currentOwners.includes(name)) { alert("Este vendedor já existe neste módulo."); return; }
+      currentOwners.push(name);
+      if(!ownerGoals[name]) ownerGoals[name] = 50000;
       saveData(); input.value = ""; refreshAll(); renderOwnersList();
     }
     function removeOwner(name) {
-      if (owners.length <= 1) { alert("Mantenha ao menos um vendedor."); return; }
-      if (confirm(`Remover "${name}"?`)) { owners = owners.filter((o) => o !== name); delete ownerGoals[name]; saveData(); refreshAll(); renderOwnersList(); }
+      if (currentOwners.length <= 1) { alert("Mantenha ao menos um vendedor."); return; }
+      if (confirm(`Remover "${name}" deste módulo?`)) { 
+        currentOwners = currentOwners.filter((o) => o !== name); 
+        workspaceOwners[currentWorkspace] = currentOwners;
+        saveData(); refreshAll(); renderOwnersList(); 
+      }
     }
     function saveAllGoals() {
       document.querySelectorAll(".goal-input").forEach(inp => {
@@ -1556,27 +1560,44 @@
     });
 
     // SISTEMA UNIFICADO DE FILTROS DE DATA
-    function isDateInPeriod(dateStr, periodStr) {
-      if(!dateStr || periodStr === 'all') return true;
-      const d = new Date(dateStr);
-      const today = new Date(CURRENT_DATE);
-      if(periodStr === 'today') return dateKey(d) === dateKey(today);
-      if(periodStr === 'week') {
-        const start = new Date(today); start.setDate(today.getDate() - today.getDay()); start.setHours(0,0,0,0);
-        const end = new Date(start); end.setDate(start.getDate() + 7);
-        return d >= start && d < end;
-      }
-      if(periodStr === 'fortnight') {
-        const f = new Date(today); f.setHours(0,0,0,0);
-        const l = new Date(f); l.setDate(f.getDate() - 15); // Últimos 15 dias no relatorio
-        return d >= l && d <= today;
-      }
-      if(periodStr === 'month') return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
-      if(periodStr === 'bimonth') return Math.floor(d.getMonth() / 2) === Math.floor(today.getMonth() / 2) && d.getFullYear() === today.getFullYear();
-      if(periodStr === 'quarter') return Math.floor(d.getMonth() / 3) === Math.floor(today.getMonth() / 3) && d.getFullYear() === today.getFullYear();
-      if(periodStr === 'semester') return Math.floor(d.getMonth() / 6) === Math.floor(today.getMonth() / 6) && d.getFullYear() === today.getFullYear();
-      if(periodStr === 'year') return d.getFullYear() === today.getFullYear();
-      return true;
+    function isDateInPeriod(dateStr, startId, endId) {
+      if (!dateStr) return true;
+      const startEl = document.getElementById(startId);
+      const endEl = document.getElementById(endId);
+      
+      if (!startEl || !endEl) return true;
+      
+      const startDate = startEl.value;
+      const endDate = endEl.value;
+      
+      if (!startDate && !endDate) return true;
+      
+      const d = new Date(dateStr.split("T")[0]);
+      d.setHours(0,0,0,0);
+
+      let start = startDate ? new Date(startDate + "T00:00:00") : new Date("1970-01-01T00:00:00");
+      let end = endDate ? new Date(endDate + "T23:59:59") : new Date("2099-12-31T23:59:59");
+      
+      return d >= start && d <= end;
+    }
+
+    // PREENCHER DATAS COM MÊS ATUAL AO INICIAR
+    function setDefaultDates() {
+      const today = new Date();
+      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+      const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+      const startStr = firstDay.toISOString().split("T")[0];
+      const endStr = lastDay.toISOString().split("T")[0];
+
+      ["dashboardStartDate", "teamStartDate", "reportsStartDate"].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.value = startStr;
+      });
+      ["dashboardEndDate", "teamEndDate", "reportsEndDate"].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.value = endStr;
+      });
     }
 
     // DASHBOARD
@@ -1587,9 +1608,7 @@
         return d && d.workspace === currentWorkspace;
       });
 
-      const period = document.getElementById("dashboardPeriod")?.value || "today";
-      
-      const completedInPeriod = activeActivities.filter(a => getActivityStatus(a) === "Concluída" && isDateInPeriod(a.date, period));
+      const completedInPeriod = activeActivities.filter(a => getActivityStatus(a) === "Concluída" && isDateInPeriod(a.date, 'dashboardStartDate', 'dashboardEndDate'));
       const pending = activeActivities.filter((a) => getActivityStatus(a) === "Agendada").length;
       const overdue = activeActivities.filter((a) => getActivityStatus(a) === "Atrasada").length;
 
@@ -1783,10 +1802,18 @@
             ${stageDeals.map((deal) => {
               if (!deal) return "";
               const next = getNextActivity(deal.id);
-              const nextStatus = next ? getActivityStatus(next) : null;
               let dotClass = "gray";
-              if (nextStatus === "Atrasada") dotClass = "red";
-              else if (next) { const isToday = dateKey(next.date) === dateKey(CURRENT_DATE); dotClass = isToday ? "yellow" : "green"; }
+              if (!next) {
+                dotClass = "yellow";
+              } else {
+                const nextStatus = getActivityStatus(next);
+                if (nextStatus === "Atrasada") {
+                  dotClass = "red";
+                } else {
+                  const isToday = dateKey(next.date) === dateKey(CURRENT_DATE);
+                  dotClass = isToday ? "green" : "gray";
+                }
+              }
               const tagsArray = deal.tags ? deal.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
               const isChecked = selectedDealsForMassAction.has(deal.id) ? "checked" : "";
 
@@ -2036,14 +2063,13 @@
       closeModal("quickCompleteModal");
     }
 
-    // FORECAST (MUDANÇA DE CÁLCULO - VALOR BRUTO PROB >= 50)
+    // FORECAST
     function renderForecast() {
       const owner = document.getElementById("forecastOwnerFilter")?.value || "";
       const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && (!owner || d.owner === owner));
       
       const gross = openDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
       
-      // SOMA BRUTA: Apenas probabilidade >= 50, mas 100% do valor
       const advancedDeals = openDeals.filter(d => Number(d.probability) >= 50);
       const rawAdvanced = advancedDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
 
@@ -2091,10 +2117,9 @@
 
     // TEAM
     function renderTeam() {
-      const period = document.getElementById("teamPeriod")?.value || "month";
       const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
       const activeActs = activities.filter(a => getDeal(a.dealId)?.workspace === currentWorkspace);
-      const periodActs = activeActs.filter(a => isDateInPeriod(a.date, period));
+      const periodActs = activeActs.filter(a => isDateInPeriod(a.date, 'teamStartDate', 'teamEndDate'));
       
       const tRank = document.getElementById("teamRanking");
       if (tRank) {
@@ -2102,7 +2127,7 @@
           <div class="team-row" style="color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase">
             <div>Comercial</div><div>Meta</div><div>Forecast (Avançado)</div><div>Progresso</div><div>Vencidas</div>
           </div>
-          ${owners.map((owner) => {
+          ${currentOwners.map((owner) => {
             const oDeals = openDeals.filter((d) => d && d.owner === owner);
             const oActs = periodActs.filter((a) => a && a.owner === owner);
             const oOver = oActs.filter((a) => getActivityStatus(a) === "Atrasada").length;
@@ -2141,27 +2166,33 @@
 
     // REPORTS
     function renderReports() {
-      const period = document.getElementById("reportsPeriod")?.value || "all";
-      const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && isDateInPeriod(d.createdAt, period));
+      const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && isDateInPeriod(d.createdAt, 'reportsStartDate', 'reportsEndDate'));
+      const wonDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "won" && isDateInPeriod(d.createdAt, 'reportsStartDate', 'reportsEndDate'));
       
-      const container = document.getElementById("reportsConversion");
+      const container = document.getElementById("reportsKPI");
       if(container) {
-        container.innerHTML = stages.map((stage, index) => {
-          const currentCount = openDeals.filter((d) => d && d.stage === stage.name).length;
-          const previousCount = index === 0 ? currentCount : openDeals.filter((d) => stageNames().indexOf(d.stage) >= 0 && stageNames().indexOf(d.stage) <= index - 1).length;
-          const reachedCount = openDeals.filter((d) => stageNames().indexOf(d.stage) >= index).length;
-          const conversion = index === 0 ? 100 : (previousCount > 0 ? Math.round((reachedCount / previousCount) * 100) : 0);
-          return `
-            <div class="conversion-row">
-              <div class="conversion-top"><span>${escapeHTML(stage.name)}</span><strong>${conversion}%</strong></div>
-              <div class="progress-track"><div class="progress-bar" style="width:${conversion}%;background:${index % 2 ? "var(--primary)" : "#10b981"}"></div></div>
-              <div class="conversion-meta">${currentCount} ativos atualmente</div>
-            </div>
-          `;
-        }).join("");
+        let tableHtml = `<table><thead><tr><th>Vendedor</th>`;
+        stages.forEach(s => {
+            if(s) tableHtml += `<th>${escapeHTML(s.name)}</th>`;
+        });
+        tableHtml += `<th>Ganhos</th></tr></thead><tbody>`;
+        
+        currentOwners.forEach(owner => {
+          tableHtml += `<tr><td><strong>${escapeHTML(owner)}</strong></td>`;
+          stages.forEach(s => {
+            if(s) {
+                const count = openDeals.filter(d => d.owner === owner && d.stage === s.name).length;
+                tableHtml += `<td>${count}</td>`;
+            }
+          });
+          const wonCount = wonDeals.filter(d => d.owner === owner).length;
+          tableHtml += `<td><span class="badge badge-green">${wonCount}</span></td></tr>`;
+        });
+        tableHtml += `</tbody></table>`;
+        container.innerHTML = tableHtml;
       }
 
-      const losses = deals.filter((d) => d && d.workspace === currentWorkspace && (d.status === "lost" || d.status === "churn") && isDateInPeriod(d.createdAt, period));
+      const losses = deals.filter((d) => d && d.workspace === currentWorkspace && (d.status === "lost" || d.status === "churn") && isDateInPeriod(d.createdAt, 'reportsStartDate', 'reportsEndDate'));
       const reasons = {}; losses.forEach((d) => { const r = d.lossReason || "Não informado"; reasons[r] = (reasons[r] || 0) + 1; });
       const entries = Object.entries(reasons).sort((a,b)=>b[1]-a[1]);
       const max = Math.max(...entries.map(([, val]) => val), 1);
@@ -2172,7 +2203,7 @@
             <div class="progress-top"><span>${escapeHTML(reason)}</span><strong>${count}</strong></div>
             <div class="progress-track"><div class="progress-bar" style="width:${(count / max) * 100}%;background:var(--danger)"></div></div>
           </div>
-        `).join("") : `<div class="empty">Sem perdas registradas no período.</div>`;
+        `).join("") : `<div class="empty">Sem perdas registradas no período selecionado.</div>`;
       }
     }
 
@@ -2202,13 +2233,13 @@
         if(vInput.value) maskCurrency(vInput);
         
         document.getElementById("dealProbability").value = deal.probability !== undefined ? deal.probability : 60;
-        document.getElementById("dealOwner").value = deal.owner || owners[0];
+        document.getElementById("dealOwner").value = deal.owner || currentOwners[0];
         document.getElementById("dealCloseDate").value = deal.closeDate || "";
         document.getElementById("dealSource").value = deal.source || "";
         document.getElementById("dealTags").value = deal.tags || "";
       } else {
         document.getElementById("dealProbability").value = stages[0] ? stages[0].probability : 10;
-        document.getElementById("dealOwner").value = owners[0] || "Victor";
+        document.getElementById("dealOwner").value = currentOwners[0] || "Victor";
         document.getElementById("dealValue").value = "";
       }
 
@@ -2268,7 +2299,7 @@
       select.innerHTML = activeDeals.length ? activeDeals.map((d) => `<option value="${d.id}" ${Number(d.id) === Number(dealId) ? "selected" : ""}>${escapeHTML(d.company)}</option>`).join("") : `<option value="">Nenhum ativo</option>`;
       
       const selectedDeal = getDeal(dealId);
-      document.getElementById("activityOwner").value = selectedDeal?.owner || owners[0];
+      document.getElementById("activityOwner").value = selectedDeal?.owner || currentOwners[0];
       const df = new Date(CURRENT_DATE); df.setHours(df.getHours() + 1);
       document.getElementById("activityDate").value = `${dateKey(df)}T${String(df.getHours()).padStart(2,"0")}:${String(df.getMinutes()).padStart(2,"0")}`;
       document.getElementById("activityModal").classList.add("open");
@@ -2343,7 +2374,7 @@
           </div>
         </div>
         <div class="inline-actions">
-          ${deal.status === "open" ? `<button class="button button-primary button-small" onclick="openActivityModal(${deal.id})">＋ Atividade</button>` : ""}
+          ${deal.status === "open" ? `<button class="button button-primary button-small" onclick="openActivityModal(${deal.id})">＋ Nova atividade</button>` : ""}
           <button class="close-button" onclick="closeModal('detailModal')">×</button>
         </div>
       `;
@@ -2423,7 +2454,16 @@
       if(deal) {
         deal.pinnedNote = document.getElementById("pinnedNoteArea").value;
         saveData();
-        alert("Nota fixada salva com sucesso!");
+        const btn = document.querySelector("#tabNotes .button-primary");
+        if(btn) {
+          const originalText = btn.innerHTML;
+          btn.innerHTML = `<span style="color:white">Nota salva com sucesso! ✓</span>`;
+          btn.style.backgroundColor = "var(--success)";
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.backgroundColor = "";
+          }, 2000);
+        }
       }
     }
 
@@ -2491,6 +2531,7 @@
 
     // STARTUP
     try {
+      setDefaultDates();
       applyThemeSettings();
       setLanguage(currentLang);
       saveData(); fillOwnerOptions(); renderCalendar(); refreshAll();
