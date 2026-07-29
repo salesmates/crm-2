@@ -127,7 +127,6 @@
     .brand-logo span { color: #f3f4f6; font-weight: 300; }
 
     .workspace-selector { margin-bottom: 20px; padding: 0 8px; }
-    /* ATUALIZAÇÃO FONTE SELECTOR */
     .workspace-selector select { 
       background: var(--surface); 
       color: white; 
@@ -269,9 +268,9 @@
     .deal-card { position: relative; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-card); box-shadow: var(--shadow); cursor: grab; transition: all 0.15s ease; display: flex; flex-direction: column; gap: 4px; }
     .deal-card:hover { border-color: var(--primary); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
     
-    /* ADICIONADO: Cores tristes para Lost e Churn no Kanban */
-    .deal-card.status-lost { opacity: 0.55; border-left: 4px solid var(--danger); background: rgba(239, 68, 68, 0.05); }
-    .deal-card.status-churn { opacity: 0.55; border-left: 4px solid var(--warning); background: rgba(245, 158, 11, 0.05); }
+    /* MODIFICAÇÃO: Cores tristes para Lost e Churn */
+    .deal-card.status-lost { opacity: 0.5; border-left: 3px solid var(--danger); background: rgba(239, 68, 68, 0.05); }
+    .deal-card.status-churn { opacity: 0.5; border-left: 3px solid var(--warning); background: rgba(245, 158, 11, 0.05); }
     
     .deal-card h3 { margin: 0; font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; max-width: 85%; }
     .deal-card p { margin: 0; color: var(--muted); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -285,7 +284,6 @@
     .deal-card:hover .deal-checkbox, .deal-checkbox:checked { display: block; }
     .list-checkbox { width: 14px; height: 14px; cursor: pointer; }
 
-    /* BOTAO ATIVIDADE DOT */
     .activity-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.1s; }
     .activity-dot:hover { transform: scale(1.3); }
     .activity-dot.green { background-color: var(--success); }
@@ -295,7 +293,6 @@
 
     .pipeline-list { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
 
-    /* BARRA ACOES EM MASSA */
     .mass-action-bar {
       display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
       background: var(--surface-card); padding: 12px 24px; border-radius: 30px;
@@ -304,7 +301,6 @@
     }
     .mass-action-bar.visible { display: flex; }
 
-    /* CHEVRON */
     .chevron-bar { display: flex; overflow-x: auto; gap: 2px; margin: 16px 0; padding: 4px 0; }
     .chevron-step { position: relative; flex: 1; min-width: 110px; text-align: center; background: rgba(156,163,175,0.1); color: var(--muted); padding: 8px 12px 8px 20px; font-size: 10px; font-weight: 600; clip-path: polygon(0% 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 0% 100%, 10px 50%); cursor: pointer; transition: all 0.2s; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
     .chevron-step:first-child { clip-path: polygon(0% 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 0% 100%); padding-left: 12px; border-radius: 4px 0 0 4px; }
@@ -313,7 +309,6 @@
     .chevron-step.completed { background: rgba(16, 185, 129, 0.2); color: #10b981; }
     .chevron-step.active { background: var(--primary); color: white; }
 
-    /* TABLES */
     .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
     table { width: 100%; border-collapse: collapse; }
     th, td { padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; font-size: 12px; }
@@ -323,7 +318,6 @@
     .link-button { padding: 0; color: var(--primary); background: transparent; font-weight: 600; text-align: left; }
     .empty { padding: 32px; color: var(--muted); text-align: center; font-size: 13px; }
 
-    /* CALENDAR */
     .agenda-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
     .calendar-mini { padding: 16px; }
     .calendar-navigation { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -348,13 +342,11 @@
     .chart-card span { color: var(--muted); font-size: 10px; font-weight: 600; }
     .chart-card strong { display: block; margin: 4px 0 6px; font-size: 18px; color: var(--text); }
 
-    /* TEAM */
     .team-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
     .team-row { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
     .team-row:last-child { border-bottom: 0; }
     .team-person { display: flex; align-items: center; gap: 8px; font-weight: 600; }
 
-    /* MODALS */
     .modal-backdrop { display: none; position: fixed; z-index: 100; inset: 0; padding: 24px; overflow: auto; background: rgba(0,0,0,.75); }
     .modal-backdrop.open { display: block; }
     
@@ -381,7 +373,6 @@
     .field textarea { min-height: 80px; }
     .modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 18px; }
     
-    /* PIPEDRIVE STYLE MODAL */
     .modal-content { display: grid; grid-template-columns: 320px 1fr; min-height: 480px; }
     .deal-details { padding: 16px 20px; border-right: 1px solid var(--border); background: var(--sidebar); overflow-y: auto; max-height: 70vh;}
     .detail-title { margin: 16px 0 6px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
@@ -389,7 +380,6 @@
     .detail-value strong { font-size: 11px; color: var(--text); }
     .detail-actions { display: grid; gap: 6px; }
     
-    /* MODAL TABS */
     .deal-main-area { background: var(--surface); display: flex; flex-direction: column; max-height: 70vh; }
     .deal-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); padding: 0 16px; background: var(--surface-card); }
     .tab-btn { padding: 14px 16px; background: transparent; color: var(--muted); font-weight: 600; font-size: 12px; border-bottom: 2px solid transparent; }
@@ -398,7 +388,7 @@
     .tab-content { padding: 20px; overflow-y: auto; flex: 1; display: none; }
     .tab-content.active { display: block; }
     
-    /* PINNED NOTE */
+    /* MODIFICAÇÃO: Caixa da nota fixada para ficar agradável no topo */
     .pinned-note-box { background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; position: relative; }
     .pinned-note-box h4 { margin: 0 0 6px 0; color: var(--warning); font-size: 11px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
     .pinned-note-box p { margin: 0; font-size: 12px; color: var(--text); line-height: 1.5; white-space: pre-wrap; }
@@ -413,7 +403,6 @@
     .whatsapp-box strong { display: block; margin-bottom: 4px; color: #34d399; font-size: 11px; }
     .whatsapp-box p { margin: 0 0 8px; color: #10b981; font-size: 10px; line-height: 1.4; }
 
-    /* API PANEL & SETTINGS */
     .api-code { background: #000; color: #a5b4fc; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 11px; white-space: pre-wrap; overflow-x: auto; margin-top: 8px; border: 1px solid #1e1e1e;}
     .color-picker-wrap { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
     .color-circle { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
@@ -497,7 +486,6 @@
     </aside>
 
     <main class="main">
-      <!-- DASHBOARD -->
       <section class="view active" id="dashboard">
         <div class="topbar">
           <div class="page-title">
@@ -564,7 +552,6 @@
         </div>
       </section>
 
-      <!-- PIPELINE -->
       <section class="view" id="pipeline">
         <div class="topbar">
           <div class="page-title">
@@ -615,7 +602,6 @@
         <div id="pipelineList" class="pipeline-list" style="display:none"></div>
       </section>
 
-      <!-- ACTIVITIES -->
       <section class="view" id="activities">
         <div class="topbar">
           <div class="page-title">
@@ -721,7 +707,7 @@
         </div>
       </section>
 
-      <!-- FORECAST -->
+      <!-- FORECAST MODIFICADO: Meta, Realizado, Gap -->
       <section class="view" id="forecast">
         <div class="topbar">
           <div class="page-title">
@@ -750,7 +736,7 @@
             <div class="metric-note" id="goalGapNote">Falta faturar</div>
           </article>
           <article class="metric-card">
-            <div class="metric-label" data-i18n="fore_pipeline">Pipeline total (Bruto)</div>
+            <div class="metric-label" data-i18n="fore_pipeline">Pipeline Total (Bruto)</div>
             <div class="metric-value" id="grossForecast">R$ 0</div>
             <div class="metric-note">Todos os negócios ativos</div>
           </article>
@@ -768,7 +754,7 @@
         </div>
       </section>
 
-      <!-- TEAM -->
+      <!-- VISÃO DE EQUIPE MODIFICADA -->
       <section class="view" id="team">
         <div class="topbar">
           <div class="page-title">
@@ -797,7 +783,7 @@
         </div>
       </section>
 
-      <!-- REPORTS -->
+      <!-- REPORTS MODIFICADO: Botão Exportar CSV -->
       <section class="view" id="reports">
         <div class="topbar">
           <div class="page-title"><h1 data-i18n="nav_reports">Relatórios</h1><p>Indicadores de produtividade, conversão, funil e receita.</p></div>
@@ -808,7 +794,7 @@
               <label style="font-size:12px; font-weight:600; color:var(--muted);">Até:</label>
               <input type="date" class="filter" id="reportsEndDate" onchange="renderReports()" />
             </div>
-            <!-- BOTÃO EXPORTAR AQUI -->
+            <!-- Botão Adicionado -->
             <button class="button button-primary" onclick="exportReportsCSV()">⬇ Exportar CSV</button>
           </div>
         </div>
@@ -824,7 +810,6 @@
         </div>
       </section>
 
-      <!-- SETTINGS -->
       <section class="view" id="settings">
         <div class="topbar">
           <div class="page-title"><h1 data-i18n="nav_settings">Configurações</h1><p>Aparência, Idioma, Metas e Integrações.</p></div>
@@ -894,7 +879,6 @@
           </section>
         </div>
 
-        <!-- INTEGRAÇÃO E BACKUP -->
         <div class="content-grid">
           <section class="panel">
             <div class="panel-header">
@@ -928,7 +912,6 @@
     </main>
   </div>
 
-  <!-- BARRA FLUTUANTE AÇÕES EM MASSA -->
   <div id="massActionBar" class="mass-action-bar">
     <span id="massActionCount" style="font-weight:700; color:white; font-size: 13px;">0 selecionados</span>
     <select id="massActionOwner" class="filter" style="width: auto; padding:6px 12px; background:var(--surface);"><option value="">Selecione vendedor</option></select>
@@ -940,7 +923,6 @@
     <button class="icon-button" onclick="clearMassSelection()">×</button>
   </div>
 
-  <!-- MODAL: CREATE / EDIT DEAL -->
   <div class="modal-backdrop" id="dealModal">
     <div class="modal">
       <div class="modal-header">
@@ -991,22 +973,19 @@
     </div>
   </div>
 
-  <!-- MODAL: DEAL DETAIL (PIPEDRIVE STYLE) -->
   <div class="modal-backdrop" id="detailModal">
     <div class="modal">
       <div class="modal-header" id="detailHeader"></div>
       <div class="modal-content">
-        <!-- BARRA LATERAL ESQUERDA -->
         <aside class="deal-details" id="dealDetails"></aside>
         
-        <!-- ÁREA PRINCIPAL DIREITA (ABAS) -->
         <section class="deal-main-area">
           
-          <!-- ANOTAÇÃO FIXADA SEMPRE NO TOPO -->
+          <!-- ANOTAÇÃO FIXADA MOVIDA PARA CIMA -->
           <div style="padding: 16px 16px 0 16px;">
             <div class="pinned-note-box" style="margin-bottom: 0;">
-              <h4><i class="fas fa-thumbtack"></i> Nota Fixada / Resumo</h4>
-              <textarea id="pinnedNoteArea" style="width:100%; min-height:80px; background:transparent; border:none; color:var(--text); padding:5px 0; font-size:12px; outline:none;" placeholder="Use este espaço para deixar um resumo ou informação vital antes de transferir o lead..."></textarea>
+              <h4>Nota Fixada / Resumo</h4>
+              <textarea id="pinnedNoteArea" style="width:100%; min-height:60px; background:transparent; border:none; color:var(--text); padding:5px 0; font-size:12px; outline:none;" placeholder="Deixe um resumo ou informação vital antes de transferir o lead..."></textarea>
               <div style="text-align: right;">
                 <button class="button button-primary button-small" onclick="savePinnedNote()">Salvar Nota</button>
               </div>
@@ -1019,6 +998,7 @@
           </div>
           
           <div class="tab-content active" id="tabTimeline">
+            <!-- TIMELINE DIVIDIDA ENTRA AQUI PELO JS -->
             <div id="dealTimeline" class="timeline"></div>
           </div>
           
@@ -1030,7 +1010,6 @@
     </div>
   </div>
 
-  <!-- MODAL: QUICK COMPLETE ACTIVITY -->
   <div class="modal-backdrop" id="quickCompleteModal">
     <div class="modal small-modal">
       <div class="modal-header">
@@ -1051,7 +1030,6 @@
     </div>
   </div>
 
-  <!-- MODAL: ACTIVITY (CRIAR/EDITAR) -->
   <div class="modal-backdrop" id="activityModal">
     <div class="modal" style="max-width:700px">
       <div class="modal-header">
@@ -1071,10 +1049,10 @@
               </select>
             </div>
             
-            <!-- TROCADO PARA INPUT COM DATALIST -->
+            <!-- INPUT COM DATALIST ADICIONADO -->
             <div class="field">
               <label>Negócio relacionado * (Busque pelo nome)</label>
-              <input id="activityDealInput" list="activityDealList" required placeholder="Digite para buscar o lead..." />
+              <input id="activityDealInput" list="activityDealList" required autocomplete="off" placeholder="Digite para buscar..." />
               <datalist id="activityDealList"></datalist>
             </div>
 
@@ -1095,7 +1073,6 @@
     </div>
   </div>
 
-  <!-- OUTROS MODAIS INALTERADOS -->
   <div class="modal-backdrop" id="transferModal">
     <div class="modal small-modal">
       <div class="modal-header">
@@ -1228,7 +1205,7 @@
     let pipelineView = "kanban";
     let currentDetailDealId = null;
 
-    // --- I18N DICTIONARY ATUALIZADO COM CONFIGURACOES ---
+    // DICIONARIO i18n
     const i18n = {
       "pt-BR": {
         "module_com": "Módulo Comercial", "module_cs": "Módulo CS", "module_fin": "Módulo Financeiro", "module_mkt": "Módulo Marketing",
@@ -1240,7 +1217,7 @@
         "dash_card4": "Forecast Avançado (Bruto)", "dash_note4": "Soma bruta de negócios avançados (>= 50%)",
         "dash_panel1": "Produtividade", "dash_sub1": "Auditoria de esforço do time.", "dash_panel2": "Próximas atividades", "dash_sub2": "Priorize o que move o funil.",
         "pipe_sub": "Gerencie oportunidades, responsáveis, etapas e evolução da negociação.",
-        "agenda_sub": "Organize atividades por data, período, responsable e prioridade.",
+        "agenda_sub": "Organize atividades por data, período, responsável e prioridade.",
         "fore_sub": "Atualizado automaticamente para negócios com probabilidade maior ou igual a 50%.",
         "fore_meta": "Meta da Operação", "fore_realizado": "Realizado (Fechamentos)", "fore_gap": "Gap para a meta", "fore_pipeline": "Pipeline Total (Bruto)",
         "set_appearance": "Aparência e Idioma", "set_appearance_sub": "Personalize a cara do seu CRM.",
@@ -1296,7 +1273,6 @@
     };
     let currentLang = localStorage.getItem("crm_lang") || "pt-BR";
 
-    // CARREGAMENTO DO LOCAL STORAGE
     try {
       const storedWorkspaces = localStorage.getItem("salesmates_workspaces_v5");
       if (storedWorkspaces) workspaces = JSON.parse(storedWorkspaces);
@@ -1323,7 +1299,6 @@
 
       const storedActivities = localStorage.getItem("salesmates_activities_v5");
       if (storedActivities) activities = JSON.parse(storedActivities).filter(Boolean);
-
     } catch (e) { console.error(e); }
 
     let currentOwners = workspaceOwners[currentWorkspace] || ["Victor"];
@@ -1374,7 +1349,6 @@
       });
     }
 
-    // HELPERS
     function stageNames() { return stages.map((s) => s ? s.name : "").filter(Boolean); }
     function getStageData(name) { return stages.find((s) => s && s.name === name) || stages[0] || {name:"Padrão", probability:10}; }
 
@@ -1412,17 +1386,18 @@
       URL.revokeObjectURL(url);
     }
     
-    // EXPORTAÇÃO CSV
+    // EXPORTAR CSV RELATÓRIOS
     function exportReportsCSV() {
-      const reportDeals = deals.filter(d => isDealWonInWorkspace(d, currentWorkspace) || d.workspace === currentWorkspace);
+      const reportDeals = deals.filter(d => d && (isDealWonInWorkspace(d, currentWorkspace) || d.workspace === currentWorkspace));
       if(reportDeals.length === 0) return alert("Nenhum dado para exportar.");
       
       let csvContent = "data:text/csv;charset=utf-8,";
       csvContent += "Negocio,Status,Valor,Data Fechamento,Responsavel\n";
       
       reportDeals.forEach(d => {
+          if(!d) return;
           let statusTag = d.status;
-          if(d.closedInWorkspace === currentWorkspace) statusTag = "Fechado (Movido)";
+          if(d.closedInWorkspace === currentWorkspace) statusTag = "Fechado (Movido para outro Módulo)";
           let dateClosed = d.closedAt ? formatDate(d.closedAt.split("T")[0]) : '';
           
           let row = `"${escapeHTML(d.company)}","${statusTag}","${d.value || 0}","${dateClosed}","${d.owner}"`;
@@ -1521,12 +1496,12 @@
     function dealStatusLabel(status) { const labels = { open: "Ativo", won: "Ganho", lost: "Perdido", churn: "Churn", archived: "Arquivado" }; return labels[status] || status; }
     function dealValueHTML(deal) { return (deal && Number(deal.value) > 0) ? `<div class="deal-value">${currencyNumber(deal.value)}</div>` : `<div class="deal-value" style="color:var(--muted);font-weight:500;">R$ a definir</div>`; }
 
-    // VERIFICAR FECHAMENTOS (GANHO OU MOVIDO)
+    // FUNCAO DE CHECAGEM DE FECHAMENTO SEGURA
     function isDealWonInWorkspace(deal, ws) {
+        if(!deal) return false;
         return deal.closedInWorkspace === ws || (deal.workspace === ws && deal.status === "won");
     }
 
-    // METAS E DONOS POR MÓDULO
     function fillOwnerOptions() {
       const options = currentOwners.map((o) => `<option value="${escapeHTML(o)}">${escapeHTML(o)}</option>`).join("");
       ["pipelineOwner", "activityOwnerFilter", "forecastOwnerFilter"].forEach((id) => {
@@ -1619,7 +1594,6 @@
       b.addEventListener("click", () => showView(b.dataset.view));
     });
 
-    // SISTEMA UNIFICADO DE FILTROS DE DATA
     function isDateInPeriod(dateStr, startId, endId) {
       if (!dateStr) return true;
       const startEl = document.getElementById(startId);
@@ -1659,7 +1633,6 @@
       });
     }
 
-    // DASHBOARD
     function renderDashboard() {
       const activeDeals = deals.filter((d) => d && d.workspace === currentWorkspace);
       const activeActivities = activities.filter(a => {
@@ -1724,7 +1697,6 @@
       }
     }
 
-    // AÇÕES EM MASSA
     function toggleDealSelection(dealId) {
       if(selectedDealsForMassAction.has(dealId)) selectedDealsForMassAction.delete(dealId);
       else selectedDealsForMassAction.add(dealId);
@@ -1981,7 +1953,6 @@
       stages.splice(index, 1); saveData(); refreshAll();
     }
 
-    // CALENDAR / AGENDA
     function renderCalendar() {
       const title = document.getElementById("calendarTitle");
       const container = document.getElementById("calendarDays");
@@ -2127,7 +2098,7 @@
       closeModal("quickCompleteModal");
     }
 
-    // FORECAST
+    // FORECAST MODIFICADO COM GAP
     function renderForecast() {
       const owner = document.getElementById("forecastOwnerFilter")?.value || "";
       const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && (!owner || d.owner === owner));
@@ -2136,8 +2107,8 @@
       const advancedDeals = openDeals.filter(d => Number(d.probability) >= 50);
       const rawAdvanced = advancedDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
 
-      // Calculando Realizado no Período (Fechados/Movidos)
-      const wonDeals = deals.filter(d => (!owner || d.owner === owner) && isDealWonInWorkspace(d, currentWorkspace));
+      // Calculando Realizado no Período
+      const wonDeals = deals.filter(d => d && (!owner || d.owner === owner) && isDealWonInWorkspace(d, currentWorkspace));
       const achieved = wonDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
 
       const globalGoal = owner ? (ownerGoals[owner] || 0) : Object.values(ownerGoals).reduce((a,b)=>a+b, 0);
@@ -2182,11 +2153,196 @@
       }
     }
 
-    // TEAM
+    // VISÃO DE EQUIPE MODIFICADA
     function renderTeam() {
-      const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
       const activeActs = activities.filter(a => getDeal(a.dealId)?.workspace === currentWorkspace);
       const periodActs = activeActs.filter(a => isDateInPeriod(a.date, 'teamStartDate', 'teamEndDate'));
       
       const tRank = document.getElementById("teamRanking");
+      if (tRank) {
+        tRank.innerHTML = `
+          <div class="team-row" style="color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase">
+            <div>Comercial</div><div>Meta</div><div>Realizado</div><div>Qtd. Fechado</div><div>Vencidas</div>
+          </div>
+          ${currentOwners.map((owner) => {
+            const oActs = periodActs.filter((a) => a && a.owner === owner);
+            const oOver = oActs.filter((a) => getActivityStatus(a) === "Atrasada").length;
+            
+            const wonDeals = deals.filter(d => d && d.owner === owner && isDealWonInWorkspace(d, currentWorkspace));
+            const oRealizado = wonDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
+            
+            const goal = ownerGoals[owner] || 1; 
+            const prog = Math.min((oRealizado / goal)*100, 100);
+
+            return `
+              <div class="team-row">
+                <div class="team-person"><span class="small-avatar">${owner ? owner.charAt(0) : "V"}</span>${escapeHTML(owner)}</div>
+                <div>${currencyNumber(goal)}</div>
+                <div><strong style="color:var(--success)">${currencyNumber(oRealizado)}</strong><div style="width:100%;margin-top:4px"><div class="progress-track"><div class="progress-bar" style="width:${prog}%;background:${prog>=100?"var(--success)":"var(--primary)"}"></div></div></div></div>
+                <div><span class="badge badge-green">${wonDeals.length}</span></div>
+                <div>${oOver ? `<span style="color:var(--danger);font-weight:700">${oOver}</span>` : "0"}</div>
+              </div>
+            `;
+          }).join("")}
+        `;
+      }
+
+      const alerts = periodActs.filter((a) => getActivityStatus(a) === "Atrasada").sort((a,b) => new Date(a.date) - new Date(b.date));
+      const tAlerts = document.getElementById("teamAlerts");
+      if (tAlerts) {
+        tAlerts.innerHTML = alerts.length ? alerts.map((a) => {
+          const d = getDeal(a.dealId);
+          return `
+            <div class="activity-item">
+              <div class="activity-icon">!</div>
+              <div class="activity-info"><strong>${escapeHTML(a.title)}</strong><small>${escapeHTML(a.owner)} · ${escapeHTML(d?.company || "Sem negócio")}</small></div>
+              ${badgeForStatus("Atrasada")}
+            </div>
+          `;
+        }).join("") : `<div class="empty">Tudo em dia na equipe!</div>`;
+      }
+    }
+
+    function renderReports() {
+      const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && isDateInPeriod(d.createdAt, 'reportsStartDate', 'reportsEndDate'));
+      const wonDeals = deals.filter((d) => d && isDealWonInWorkspace(d, currentWorkspace) && isDateInPeriod(d.createdAt, 'reportsStartDate', 'reportsEndDate'));
       
+      const container = document.getElementById("reportsKPI");
+      if(container) {
+        let tableHtml = `<table><thead><tr><th>Vendedor</th>`;
+        stages.forEach(s => {
+            if(s) tableHtml += `<th>${escapeHTML(s.name)}</th>`;
+        });
+        tableHtml += `<th>Ganhos</th></tr></thead><tbody>`;
+        
+        currentOwners.forEach(owner => {
+          tableHtml += `<tr><td><strong>${escapeHTML(owner)}</strong></td>`;
+          stages.forEach(s => {
+            if(s) {
+                const count = openDeals.filter(d => d.owner === owner && d.stage === s.name).length;
+                tableHtml += `<td>${count}</td>`;
+            }
+          });
+          const wonCount = wonDeals.filter(d => d.owner === owner).length;
+          tableHtml += `<td><span class="badge badge-green">${wonCount}</span></td></tr>`;
+        });
+        tableHtml += `</tbody></table>`;
+        container.innerHTML = tableHtml;
+      }
+
+      const losses = deals.filter((d) => d && d.workspace === currentWorkspace && (d.status === "lost" || d.status === "churn") && isDateInPeriod(d.createdAt, 'reportsStartDate', 'reportsEndDate'));
+      const reasons = {}; losses.forEach((d) => { const r = d.lossReason || "Não informado"; reasons[r] = (reasons[r] || 0) + 1; });
+      const entries = Object.entries(reasons).sort((a,b)=>b[1]-a[1]);
+      const max = Math.max(...entries.map(([, val]) => val), 1);
+      const lRep = document.getElementById("lossReports");
+      if (lRep) {
+        lRep.innerHTML = entries.length ? entries.map(([reason, count]) => `
+          <div class="progress-row">
+            <div class="progress-top"><span>${escapeHTML(reason)}</span><strong>${count}</strong></div>
+            <div class="progress-track"><div class="progress-bar" style="width:${(count / max) * 100}%;background:var(--danger)"></div></div>
+          </div>
+        `).join("") : `<div class="empty">Sem perdas registradas no período selecionado.</div>`;
+      }
+    }
+
+    function openDealModal(dealId = null) {
+      const form = document.getElementById("dealForm"); if (!form) return;
+      form.reset();
+      const isEditing = Boolean(dealId); const deal = isEditing ? getDeal(dealId) : null;
+      document.getElementById("editingDealId").value = deal?.id || "";
+      document.getElementById("dealModalTitle").textContent = isEditing ? "Editar negócio" : "Novo negócio";
+
+      fillOwnerOptions();
+      const stageSelect = document.getElementById("dealStage");
+      stageSelect.innerHTML = stages.map(s => `<option value="${escapeHTML(s.name)}" ${s.name===(deal?.stage||stages[0].name)?"selected":""}>${escapeHTML(s.name)}</option>`).join("");
+
+      if (deal) {
+        document.getElementById("dealCompany").value = deal.company || "";
+        document.getElementById("dealLegalName").value = deal.legalName || "";
+        document.getElementById("dealCnpj").value = deal.cnpj || "";
+        document.getElementById("dealContact").value = deal.contact || "";
+        document.getElementById("dealAddress").value = deal.address || "";
+        document.getElementById("dealPhone").value = deal.phone || "";
+        document.getElementById("dealEmail").value = deal.email || "";
+        const vInput = document.getElementById("dealValue");
+        vInput.value = deal.value ? deal.value.toString() : "";
+        if(vInput.value) maskCurrency(vInput);
+        
+        document.getElementById("dealProbability").value = deal.probability !== undefined ? deal.probability : 60;
+        document.getElementById("dealOwner").value = deal.owner || currentOwners[0];
+        document.getElementById("dealCloseDate").value = deal.closeDate || "";
+        document.getElementById("dealSource").value = deal.source || "";
+        document.getElementById("dealTags").value = deal.tags || "";
+      } else {
+        document.getElementById("dealProbability").value = stages[0] ? stages[0].probability : 10;
+        document.getElementById("dealOwner").value = currentOwners[0] || "Victor";
+        document.getElementById("dealValue").value = "";
+      }
+
+      stageSelect.onchange = (e) => { document.getElementById("dealProbability").value = getStageData(e.target.value).probability; };
+      document.getElementById("dealModal").classList.add("open");
+    }
+
+    function saveDeal(event) {
+      event.preventDefault();
+      const editingId = document.getElementById("editingDealId")?.value;
+      const rawProb = document.getElementById("dealProbability").value;
+      
+      const payload = {
+        company: document.getElementById("dealCompany").value.trim(),
+        legalName: document.getElementById("dealLegalName").value.trim(),
+        cnpj: document.getElementById("dealCnpj").value.trim(),
+        contact: document.getElementById("dealContact").value.trim(),
+        address: document.getElementById("dealAddress").value.trim(),
+        phone: document.getElementById("dealPhone").value.trim(),
+        email: document.getElementById("dealEmail").value.trim(),
+        value: parseCurrency(document.getElementById("dealValue").value),
+        probability: rawProb === "" ? 0 : Number(rawProb),
+        stage: document.getElementById("dealStage").value,
+        owner: document.getElementById("dealOwner").value,
+        closeDate: document.getElementById("dealCloseDate").value,
+        source: document.getElementById("dealSource").value,
+        tags: document.getElementById("dealTags").value.trim(),
+        workspace: currentWorkspace
+      };
+
+      if (editingId) {
+        const deal = getDeal(editingId); if (!deal) return;
+        const old = { stage: deal.stage, owner: deal.owner, value: deal.value, prob: deal.probability };
+        Object.assign(deal, payload);
+        addTimelineEvent(deal, "Negócio atualizado", "Alterações salvas.");
+        if (old.stage !== payload.stage) addTimelineEvent(deal, "Etapa alterada", `${old.stage} → ${payload.stage}.`);
+      } else {
+        deals.push({
+          id: Date.now(), ...payload, status: "open", createdAt: new Date().toISOString(), pinnedNote: "",
+          timeline: [
+            { title: "Negócio criado", description: `Responsável: ${payload.owner}.`, date: new Date().toISOString() }
+          ]
+        });
+      }
+      saveData(); closeModal("dealModal"); refreshAll();
+      if (editingId && document.getElementById("detailModal").classList.contains("open")) openDealDetail(editingId);
+      else if (!editingId) showView("pipeline");
+    }
+
+    function openActivityModal(dealId = null) {
+      const form = document.querySelector("#activityModal form"); if (form) form.reset(); fillOwnerOptions();
+      document.getElementById("editingActivityId").value = "";
+      document.getElementById("activityModalTitle").textContent = "Nova atividade";
+      
+      const list = document.getElementById("activityDealList");
+      const activeDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
+      list.innerHTML = activeDeals.map(d => `<option value="${escapeHTML(d.company)}"></option>`).join("");
+      
+      const selectedDeal = getDeal(dealId);
+      if(selectedDeal) document.getElementById("activityDealInput").value = selectedDeal.company;
+      else document.getElementById("activityDealInput").value = "";
+
+      document.getElementById("activityOwner").value = selectedDeal?.owner || currentOwners[0];
+      const df = new Date(CURRENT_DATE); df.setHours(df.getHours() + 1);
+      document.getElementById("activityDate").value = `${dateKey(df)}T${String(df.getHours()).padStart(2,"0")}:${String(df.getMinutes()).padStart(2,"0")}`;
+      document.getElementById("activityModal").classList.add("open");
+    }
+
+    function editActivity(actId) {
+      const a = activities.find(x =>
