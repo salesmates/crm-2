@@ -1,2113 +1,916 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SalesMates CRM</title>
-
-  <style>
-    :root {
-      --bg: #090d16;
-      --surface: #111827;
-      --surface-card: #1f2937;
-      --sidebar: #070a13;
-      --text: #f3f4f6;
-      --muted: #9ca3af;
-      --border: #374151;
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --info: #60a5fa;
-      --radius: 12px;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-width: 320px;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 99px; }
-    ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
-
-    button, input, select, textarea { font: inherit; }
-    button { border: 0; cursor: pointer; }
-    input, select, textarea {
-      width: 100%;
-      outline: none;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface-card);
-      color: var(--text);
-      transition: border .2s, box-shadow .2s;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-    }
-
-    textarea { resize: vertical; }
-
-    .app { min-height: 100vh; }
-
-    /* SIDEBAR */
-    .sidebar {
-      position: fixed;
-      z-index: 10;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 240px;
-      display: flex;
-      flex-direction: column;
-      padding: 24px 16px;
-      background: var(--sidebar);
-      border-right: 1px solid var(--border);
-      color: white;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      margin-bottom: 16px;
-      padding: 0 8px;
-    }
-
-    .brand-logo { color: white; letter-spacing: -.05em; font-size: 22px; line-height: 1; }
-    .brand-logo strong { font-weight: 800; color: var(--primary); }
-    .brand-logo span { color: #f3f4f6; font-weight: 300; }
-
-    .workspace-selector { margin-bottom: 20px; padding: 0 8px; }
-    .workspace-selector select { background: var(--surface); color: white; font-weight: 600; border-color: var(--border); }
-
-    .menu-label {
-      padding: 12px 8px 6px;
-      color: #4b5563;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-
-    .nav-button {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 12px;
-      margin: 2px 0;
-      border-radius: 8px;
-      color: #9ca3af;
-      background: transparent;
-      text-align: left;
-      font-size: 13px;
-      font-weight: 600;
-      transition: .15s ease;
-    }
-
-    .nav-button:hover { color: white; background: rgba(255,255,255,.05); }
-    .nav-button.active { color: white; background: var(--primary); }
-    .nav-icon { width: 16px; text-align: center; font-size: 15px; font-style: normal; }
-
-    .sidebar-footer { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); }
-    .user-box { display: flex; align-items: center; gap: 10px; padding: 8px; color: #d1d5db; font-size: 12px; }
-    .avatar, .small-avatar { display: grid; place-items: center; border-radius: 50%; background: var(--primary); color: white; font-weight: 700; }
-    .avatar { width: 32px; height: 32px; flex: 0 0 auto; }
-    .user-box strong { color: white; font-size: 13px; }
-    .user-box small { color: #6b7280; }
-
-    /* MAIN */
-    .main { min-height: 100vh; margin-left: 240px; padding: 24px 32px; }
-    .view { display: none; }
-    .view.active { display: block; }
-
-    .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
-    .page-title h1 { margin: 0; font-size: 24px; letter-spacing: -.03em; }
-    .page-title p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
-
-    .actions, .filters, .inline-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-
-    .button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; transition: .15s ease; }
-    .button-primary { color: white; background: var(--primary); }
-    .button-primary:hover { background: var(--primary-hover); }
-    .button-secondary { border: 1px solid var(--border); background: var(--surface-card); color: var(--text); }
-    .button-secondary:hover { background: #374151; }
-    .button-danger { color: white; background: var(--danger); }
-    .button-success { color: white; background: var(--success); }
-    .button-small { padding: 6px 10px; font-size: 12px; }
-
-    .icon-button { width: 34px; height: 34px; display: inline-grid; place-items: center; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-card); color: var(--text); font-size: 14px; }
-    .icon-button:hover { background: #374151; }
-    .icon-button.danger { color: var(--danger); }
-    .icon-button.danger:hover { background: rgba(239, 68, 68, 0.2); }
-
-    .panel, .metric-card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
-    .panel { padding: 20px; }
-
-    .panel-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
-    .panel-header h2 { margin: 0; font-size: 15px; letter-spacing: -.02em; color: white; }
-    .panel-subtitle { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
-
-    .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-    .metric-card { padding: 16px; background: var(--surface); }
-    .metric-label { color: var(--muted); font-size: 12px; font-weight: 600; }
-    .metric-value { margin: 8px 0 4px; font-size: 22px; font-weight: 700; letter-spacing: -.03em; color: white; }
-    .metric-note { color: var(--muted); font-size: 11px; }
-    .metric-note.danger { color: var(--danger); }
-    .metric-note.success { color: var(--success); }
-
-    .content-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
-    .progress-row { margin: 16px 0; }
-    .progress-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; font-size: 12px; }
-    .progress-track { height: 6px; overflow: hidden; border-radius: 99px; background: #1f2937; }
-    .progress-bar { height: 100%; border-radius: inherit; background: var(--primary); }
-
-    .badge { display: inline-flex; align-items: center; width: fit-content; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-    .badge-green { color: #34d399; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-red { color: #f87171; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); }
-    .badge-blue { color: #60a5fa; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); }
-    .badge-yellow { color: #fbbf24; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); }
-    .badge-gray { color: #d1d5db; background: rgba(75, 85, 99, 0.15); border: 1px solid rgba(75, 85, 99, 0.3); }
-
-    .activity-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); }
-    .activity-item:last-child { border-bottom: 0; }
-    .activity-icon { width: 28px; height: 28px; display: grid; flex: 0 0 auto; place-items: center; border-radius: 6px; background: var(--surface-card); font-size: 13px; }
-    .activity-info { min-width: 0; flex: 1; }
-    .activity-info strong, .activity-info small { display: block; }
-    .activity-info strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; color: white; }
-    .activity-info small { margin-top: 2px; color: var(--muted); font-size: 11px; }
-
-    /* FILTERS */
-    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
-    .search-input { min-width: 240px; padding: 8px 12px; font-size: 13px; }
-    .filter, .view-toggle { width: auto; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); background: var(--surface-card); font-size: 12px; font-weight: 500; }
-    .filter.active, .view-toggle.active { border-color: var(--primary); color: white; background: var(--primary); }
-
-    /* SALES RHYTHM */
-    .conversion-list { display: grid; gap: 10px; }
-    .conversion-row { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-card); }
-    .conversion-top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 6px; font-size: 12px; }
-    .conversion-top strong { font-size: 12px; color: white; }
-    .conversion-meta { margin-top: 6px; color: var(--muted); font-size: 10px; }
-
-    /* PIPELINE MANAGER */
-    .pipeline-manager { display: none; margin-bottom: 16px; padding: 16px; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--surface); }
-    .pipeline-manager.open { display: block; }
-    .stage-editor { display: flex; align-items: stretch; gap: 8px; overflow-x: auto; padding: 6px 0; }
-    .stage-editor-card { min-width: 200px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-card); }
-    .stage-editor-card strong { display: block; margin-bottom: 6px; overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; color: white; }
-    .stage-editor-actions { display: flex; align-items: center; gap: 4px; }
-    .stage-add-between { width: 32px; min-width: 32px; height: 32px; align-self: center; display: grid; place-items: center; border: 1px dashed var(--muted); border-radius: 50%; background: var(--surface-card); color: var(--text); font-size: 16px; }
-    .stage-add-between:hover { color: white; background: var(--primary); border-color: var(--primary); }
-
-    /* KANBAN HORIZONTAL COMPACTO */
-    .kanban-board { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 16px; align-items: flex-start; flex-wrap: nowrap; }
-    .kanban-column { width: 240px; min-width: 240px; flex-shrink: 0; min-height: calc(100vh - 240px); padding: 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); display: flex; flex-direction: column; gap: 8px; }
-    .column-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 6px; border-bottom: 2px solid var(--border); font-size: 11px; font-weight: 700; }
-    .column-title { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: uppercase; font-size: 11px; color: white; }
-    .column-total { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; font-weight: 500; }
-    .column-count { padding: 1px 5px; border-radius: 4px; color: var(--text); background: var(--surface-card); font-size: 10px; }
-
-    /* DEAL CARD & MASS ACTIONS */
-    .deal-card { position: relative; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-card); box-shadow: var(--shadow); cursor: grab; transition: all 0.15s ease; display: flex; flex-direction: column; gap: 4px; }
-    .deal-card:hover { border-color: var(--primary); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
-    .deal-card h3 { margin: 0; font-size: 12px; font-weight: 700; color: white; line-height: 1.3; max-width: 85%; }
-    .deal-card p { margin: 0; color: var(--muted); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .deal-value { font-size: 11px; font-weight: 700; color: white; margin-top: 2px; }
-    .deal-card-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; }
-    .deal-card-tag { font-size: 8px; padding: 1px 4px; background: rgba(255,255,255,0.06); border-radius: 4px; color: #d1d5db; font-weight: 600; }
-    .deal-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
-    .deal-card-owner { font-size: 9px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SalesMates CRM</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    .deal-checkbox { position: absolute; top: 8px; right: 8px; width: 14px; height: 14px; cursor: pointer; display: none; }
-    .deal-card:hover .deal-checkbox, .deal-checkbox:checked { display: block; }
-    .list-checkbox { width: 14px; height: 14px; cursor: pointer; }
+    <style>
+        /* ================= Variaveis de Tema (Anti-Clubismo) ================= */
+        :root {
+            /* Tema Escuro Padrão */
+            --bg-main: #0b1120;
+            --bg-sidebar: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            
+            /* Cor Primária Editável */
+            --primary: #3b82f6; /* Azul padrão */
+            --primary-hover: #2563eb;
+            
+            /* Status */
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
 
-    /* BOTAO ATIVIDADE DOT */
-    .activity-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.1s; }
-    .activity-dot:hover { transform: scale(1.3); }
-    .activity-dot.green { background-color: var(--success); }
-    .activity-dot.red { background-color: var(--danger); }
-    .activity-dot.yellow { background-color: var(--warning); }
-    .activity-dot.gray { background-color: #4b5563; }
+        /* Tema Claro */
+        [data-theme="light"] {
+            --bg-main: #f8fafc;
+            --bg-sidebar: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
 
-    .pipeline-list { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-    /* BARRA ACOES EM MASSA */
-    .mass-action-bar {
-      display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: var(--surface-card); padding: 12px 24px; border-radius: 30px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6); z-index: 100; border: 1px solid var(--primary);
-      gap: 12px; align-items: center;
-    }
-    .mass-action-bar.visible { display: flex; }
+        /* ================= Sidebar ================= */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            transition: background-color 0.3s;
+        }
 
-    /* CHEVRON */
-    .chevron-bar { display: flex; overflow-x: auto; gap: 2px; margin: 16px 0; padding: 4px 0; }
-    .chevron-step { position: relative; flex: 1; min-width: 110px; text-align: center; background: #1f2937; color: #9ca3af; padding: 8px 12px 8px 20px; font-size: 10px; font-weight: 600; clip-path: polygon(0% 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 0% 100%, 10px 50%); cursor: pointer; transition: all 0.2s; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-    .chevron-step:first-child { clip-path: polygon(0% 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 0% 100%); padding-left: 12px; border-radius: 4px 0 0 4px; }
-    .chevron-step:last-child { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10px 50%); border-radius: 0 4px 4px 0; }
-    .chevron-step:hover { background: #374151; color: white; }
-    .chevron-step.completed { background: #065f46; color: #34d399; }
-    .chevron-step.active { background: var(--primary); color: white; }
+        .logo-area { padding: 0 20px 20px; }
+        .logo-area h1 {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+        }
 
-    /* TABLES */
-    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; font-size: 12px; }
-    th { color: var(--muted); background: var(--surface-card); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; font-weight: 600; }
-    tr:last-child td { border-bottom: 0; }
-    tbody tr:hover { background: var(--surface-card); }
-    .link-button { padding: 0; color: var(--primary); background: transparent; font-weight: 600; text-align: left; }
-    .empty { padding: 32px; color: var(--muted); text-align: center; font-size: 13px; }
+        .module-selector {
+            margin: 0 20px 20px;
+            width: calc(100% - 40px);
+            padding: 10px;
+            background-color: var(--bg-input);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-family: inherit; /* Puxando fonte da marca */
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
 
-    /* CALENDAR */
-    .agenda-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
-    .calendar-mini { padding: 16px; }
-    .calendar-navigation { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .calendar-title { font-size: 13px; font-weight: 700; text-transform: capitalize; }
-    .weekdays, .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-    .weekdays span { padding-bottom: 4px; color: var(--muted); text-align: center; font-size: 10px; font-weight: 700; }
-    .calendar-day { aspect-ratio: 1; position: relative; display: grid; place-items: center; border-radius: 6px; background: transparent; color: var(--text); font-size: 11px; }
-    .calendar-day:hover { background: var(--surface-card); }
-    .calendar-day.empty-day { pointer-events: none; }
-    .calendar-day.today { border: 1px solid white; font-weight: 700; }
-    .calendar-day.selected { color: white; background: var(--primary); }
-    .calendar-day.has-activity::after { content: ""; position: absolute; bottom: 3px; width: 4px; height: 4px; border-radius: 50%; background: var(--info); }
-    .calendar-day.selected.has-activity::after { background: white; }
-    .agenda-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 16px; }
-    .agenda-summary div { padding: 8px; border-radius: 8px; background: var(--surface-card); font-size: 10px; }
-    .agenda-summary strong { display: block; margin-top: 2px; font-size: 14px; color: white; }
-    .agenda-main { min-width: 0; }
-    .agenda-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-    .agenda-date-label { font-size: 14px; font-weight: 700; text-transform: capitalize; }
-    .activity-chart { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-    .chart-card { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
-    .chart-card span { color: var(--muted); font-size: 10px; font-weight: 600; }
-    .chart-card strong { display: block; margin: 4px 0 6px; font-size: 18px; color: white; }
+        .nav-menu { flex: 1; overflow-y: auto; }
+        .nav-group { margin-bottom: 20px; }
+        .nav-title {
+            padding: 0 20px;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            border-right: 3px solid var(--primary);
+        }
 
-    /* TEAM */
-    .team-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
-    .team-row { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
-    .team-row:last-child { border-bottom: 0; }
-    .team-person { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .user-profile {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .avatar {
+            width: 35px; height: 35px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+        }
 
-    /* MODALS */
-    .modal-backdrop { display: none; position: fixed; z-index: 100; inset: 0; padding: 24px; overflow: auto; background: rgba(0,0,0,.75); }
-    .modal-backdrop.open { display: block; }
-    
-    /* OVERLAPS FIX: Z-INDEXES ESPECÍFICOS */
-    #detailModal { z-index: 110; }
-    #dealModal { z-index: 150; } 
-    #activityModal { z-index: 160; }
-    #quickCompleteModal { z-index: 170; }
-    #lossModal { z-index: 160; }
-    #transferModal { z-index: 160; }
+        /* ================= Main Content ================= */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .header {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header h2 { font-size: 20px; font-weight: 600; }
+        .header-actions { display: flex; gap: 15px; align-items: center; }
 
-    .modal { width: min(950px, 100%); margin: 20px auto; overflow: hidden; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow); }
-    .modal.small-modal { width: min(500px, 100%); }
-    .modal-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--border); }
-    .modal-header h2 { margin: 0; font-size: 18px; letter-spacing: -.02em; color: white; }
-    .modal-header p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
-    .modal-body { padding: 20px 24px; }
-    .close-button { width: 32px; height: 32px; display: grid; flex: 0 0 auto; place-items: center; border-radius: 6px; background: var(--surface-card); color: var(--text); font-size: 18px; }
-    .close-button:hover { background: #374151; }
-    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .field { display: flex; flex-direction: column; gap: 4px; }
-    .field.full { grid-column: 1 / -1; }
-    .field label { font-size: 11px; font-weight: 700; color: #9ca3af; }
-    .field input, .field select, .field textarea { padding: 8px 10px; font-size: 13px; }
-    .field textarea { min-height: 80px; }
-    .modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 18px; }
-    .modal-content { display: grid; grid-template-columns: 300px 1fr; min-height: 480px; }
-    .deal-details { padding: 16px 20px; border-right: 1px solid var(--border); background: var(--sidebar); overflow-y: auto; max-height: 70vh;}
-    .detail-title { margin: 16px 0 6px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
-    .detail-value { margin-bottom: 10px; font-size: 12px; line-height: 1.4; }
-    .detail-value strong { font-size: 11px; color: white; }
-    .detail-actions { display: grid; gap: 6px; }
-    .timeline { padding: 20px; background: var(--surface); overflow-y: auto; max-height: 70vh; }
-    .timeline-event { position: relative; padding: 0 0 16px 20px; border-left: 1px solid var(--border); }
-    .timeline-event::before { content: ""; position: absolute; top: 1px; left: -4px; width: 7px; height: 7px; border: 1px solid white; border-radius: 50%; background: var(--primary); }
-    .timeline-event strong, .timeline-event small { display: block; }
-    .timeline-event strong { font-size: 12px; color: white; }
-    .timeline-event small { margin-top: 2px; color: var(--muted); font-size: 11px; }
-    .whatsapp-box { padding: 10px; margin-top: 12px; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; background: rgba(16, 185, 129, 0.08); }
-    .whatsapp-box strong { display: block; margin-bottom: 4px; color: #34d399; font-size: 11px; }
-    .whatsapp-box p { margin: 0 0 8px; color: #a7f3d0; font-size: 10px; line-height: 1.4; }
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+        .btn-outline { background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main); }
+        .btn-outline:hover { background-color: var(--bg-input); }
 
-    /* API PANEL */
-    .api-code { background: #000; color: #a5b4fc; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 11px; white-space: pre-wrap; overflow-x: auto; margin-top: 8px; border: 1px solid #1e1e1e;}
+        .content-area { padding: 30px; display: none; }
+        .content-area.active { display: block; }
 
-    @media (max-width: 1000px) {
-      .sidebar { width: 64px; padding: 16px 8px; }
-      .brand { justify-content: center; padding: 0; }
-      .brand-logo { display: none; }
-      .workspace-selector { display: none; }
-      .menu-label, .nav-button span:not(.nav-icon), .user-box > div:last-child { display: none; }
-      .nav-button { justify-content: center; padding: 10px; }
-      .sidebar-footer { display: flex; justify-content: center; }
-      .user-box { padding: 4px; }
-      .main { margin-left: 64px; }
-      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
-      .content-grid, .team-grid { grid-template-columns: 1fr; }
-    }
+        /* ================= Dashboard / KPIs ================= */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .kpi-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .kpi-title { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+        .kpi-value { font-size: 24px; font-weight: 700; color: var(--text-main); }
 
-    @media (max-width: 768px) {
-      .main { margin-left: 0; padding: 16px; }
-      .sidebar { position: static; width: 100%; min-height: auto; flex-direction: row; align-items: center; padding: 8px; overflow-x: auto; }
-      .brand { margin: 0 12px 0 0; }
-      .menu-label, .sidebar-footer { display: none; }
-      .nav-button { width: auto; flex: 0 0 auto; margin: 0; padding: 8px; }
-      .nav-button span:not(.nav-icon) { display: none; }
-      .topbar, .toolbar, .agenda-heading { align-items: flex-start; flex-direction: column; }
-      .topbar .actions { width: 100%; }
-      .topbar .actions .button { flex: 1; }
-      .dashboard-grid, .activity-chart { grid-template-columns: 1fr; }
-      .agenda-layout, .modal-content { grid-template-columns: 1fr; }
-      .deal-details { border-right: 0; border-bottom: 1px solid var(--border); max-height: unset;}
-      .timeline { max-height: unset; }
-      .form-grid { grid-template-columns: 1fr; }
-      .field.full { grid-column: auto; }
-      .modal-backdrop { padding: 8px; }
-      .modal { margin: 4px auto; }
-      .search-input { min-width: 100%; }
-    }
-  </style>
+        /* ================= Kanban / Funil ================= */
+        .kanban-board {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            height: calc(100vh - 200px);
+        }
+        .kanban-column {
+            min-width: 280px;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+        .column-title { font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .column-stats { font-size: 11px; color: var(--text-muted); }
+        
+        .kanban-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            position: relative;
+        }
+        .kanban-card:hover { border-color: var(--primary); }
+        .card-checkbox {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+        }
+        .card-title { font-weight: 600; font-size: 14px; margin-bottom: 5px; padding-right: 20px; }
+        .card-value { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        /* ================= Modais ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-overlay.active { display: flex; }
+        
+        .modal-content {
+            background-color: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        /* Modal estilo Pipedrive (Maior) */
+        .modal-large { max-width: 1000px; display: flex; height: 85vh; }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-body { padding: 20px; }
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex; justify-content: flex-end; gap: 10px;
+        }
+        .close-modal { cursor: pointer; color: var(--text-muted); font-size: 20px; }
+
+        /* Formulários */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group.full { grid-column: span 2; }
+        label { font-size: 12px; color: var(--text-muted); }
+        input, select, textarea {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+        
+        /* Ocultar setas do input number */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* ================= Pipedrive Style Deal Details ================= */
+        .deal-sidebar {
+            width: 300px;
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .deal-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-main);
+        }
+        
+        .pd-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-sidebar);
+        }
+        .pd-tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+        }
+        .pd-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .pd-content { padding: 20px; flex: 1; overflow-y: auto; }
+        
+        /* Anotação Fixada */
+        .pinned-note {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .pinned-header {
+            display: flex; justify-content: space-between; margin-bottom: 10px;
+            font-size: 12px; color: var(--warning); font-weight: 600;
+        }
+
+        .timeline-item {
+            display: flex; gap: 15px; margin-bottom: 20px;
+            position: relative;
+        }
+        .timeline-icon {
+            width: 30px; height: 30px; border-radius: 50%;
+            background-color: var(--bg-input);
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--border-color);
+            z-index: 2;
+        }
+        .timeline-content {
+            flex: 1;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 15px; border-radius: 6px;
+        }
+        .timeline-header {
+            display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+        .timeline-actions { cursor: pointer; color: var(--text-muted); }
+        .timeline-actions:hover { color: var(--primary); }
+
+        /* ================= Configurações ================= */
+        .settings-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 20px; border-radius: 8px; margin-bottom: 20px;
+        }
+        .flag-selector { display: flex; gap: 15px; margin-top: 10px; }
+        .flag-btn {
+            font-size: 24px; cursor: pointer; opacity: 0.5; transition: 0.2s;
+        }
+        .flag-btn:hover, .flag-btn.active { opacity: 1; transform: scale(1.1); }
+        
+        .color-picker-wrap { display: flex; align-items: center; gap: 10px; margin-top: 10px;}
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
+
+    </style>
 </head>
-
 <body>
-  <div class="app">
+
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-      <div class="brand" title="SalesMates">
-        <div class="brand-logo"><strong>Sales</strong><span>Mates</span></div>
-      </div>
-
-      <div class="workspace-selector">
-        <select id="globalWorkspace" onchange="changeWorkspace()">
-          <option value="Comercial">Módulo Comercial</option>
-          <option value="CS">Módulo CS</option>
-          <option value="MKT">Módulo Marketing</option>
-        </select>
-      </div>
-
-      <div class="menu-label">Operação</div>
-      <button class="nav-button active" data-view="dashboard"><i class="nav-icon">⌂</i><span>Meu painel</span></button>
-      <button class="nav-button" data-view="pipeline"><i class="nav-icon">▦</i><span>Funil comercial</span></button>
-      <button class="nav-button" data-view="activities"><i class="nav-icon">◷</i><span>Agenda</span></button>
-      <button class="nav-button" data-view="forecast"><i class="nav-icon">↗</i><span>Forecast</span></button>
-
-      <div class="menu-label">Gestão</div>
-      <button class="nav-button" data-view="team"><i class="nav-icon">♙</i><span>Visão de equipe</span></button>
-      <button class="nav-button" data-view="reports"><i class="nav-icon">▤</i><span>Relatórios</span></button>
-      <button class="nav-button" data-view="settings"><i class="nav-icon">⚙</i><span>Configurações</span></button>
-
-      <div class="sidebar-footer">
-        <div class="user-box">
-          <div class="avatar">V</div>
-          <div><strong>Victor</strong><br /><small>Administrador</small></div>
+        <div class="logo-area">
+            <h1>SalesMates</h1>
         </div>
-      </div>
+        
+        <!-- Print 1: Fonte igual da marca, e incluído o módulo Financeiro -->
+        <select class="module-selector" id="globalModuleSelector" onchange="changeModule()">
+            <option value="comercial">Módulo Comercial</option>
+            <option value="cs">Módulo CS (Pós-venda)</option>
+            <option value="mkt">Módulo Marketing</option>
+            <option value="financeiro">Módulo Financeiro</option>
+        </select>
+
+        <div class="nav-menu">
+            <div class="nav-group">
+                <div class="nav-title">Operação</div>
+                <a class="nav-item active" onclick="switchTab('dashboard', this)"><i class="fas fa-home"></i> Meu painel</a>
+                <a class="nav-item" onclick="switchTab('funnel', this)"><i class="fas fa-th-large"></i> Funil de vendas</a>
+                <a class="nav-item"><i class="fas fa-calendar-alt"></i> Agenda</a>
+            </div>
+            
+            <div class="nav-group">
+                <div class="nav-title">Gestão</div>
+                <a class="nav-item" onclick="switchTab('team', this)"><i class="fas fa-users"></i> Visão de equipe</a>
+                <a class="nav-item" onclick="switchTab('reports', this)"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                <a class="nav-item" onclick="switchTab('settings', this)"><i class="fas fa-cog"></i> Configurações</a>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="avatar">V</div>
+            <div>
+                <div style="font-size: 14px; font-weight: 600;">Victor</div>
+                <div style="font-size: 11px; color: var(--text-muted);">Administrador</div>
+            </div>
+        </div>
     </aside>
 
-    <main class="main">
-      <!-- DASHBOARD -->
-      <section class="view active" id="dashboard">
-        <div class="topbar">
-          <div class="page-title">
-            <h1>Olá, Victor.</h1>
-            <p>Uma visão rápida da sua operação comercial.</p>
-          </div>
-          <div class="actions">
-            <select class="filter" id="dashboardPeriod" onchange="renderDashboard()">
-              <option value="today">Hoje</option>
-              <option value="week">Esta Semana</option>
-              <option value="month">Este Mês</option>
-              <option value="semester">Este Semestre</option>
-              <option value="year">Este Ano</option>
-            </select>
-            <button class="button button-secondary" onclick="showView('activities')">Agenda</button>
-            <button class="button button-primary" onclick="openActivityModal()">＋ Nova atividade</button>
-          </div>
-        </div>
-
-        <div class="dashboard-grid">
-          <article class="metric-card">
-            <div class="metric-label">Concluídas (Período)</div>
-            <div class="metric-value" id="todayCompleted">0</div>
-            <div class="metric-note">Atividades finalizadas</div>
-          </article>
-          <article class="metric-card">
-            <div class="metric-label">Pendentes</div>
-            <div class="metric-value" id="pendingActivities">0</div>
-            <div class="metric-note">Próximas ações agendadas</div>
-          </article>
-          <article class="metric-card">
-            <div class="metric-label">Precisam de atenção</div>
-            <div class="metric-value" id="overdueActivities">0</div>
-            <div class="metric-note danger">Atividades vencidas</div>
-          </article>
-          <article class="metric-card">
-            <div class="metric-label">Forecast ponderado</div>
-            <div class="metric-value" id="weeklyForecast">R$ 0</div>
-            <div class="metric-note success">Oportunidades em aberto (>= 50%)</div>
-          </article>
-        </div>
-
-        <div class="content-grid">
-          <section class="panel">
-            <div class="panel-header">
-              <div>
-                <h2>Produtividade (Atividades Concluídas)</h2>
-                <p class="panel-subtitle">Auditoria de esforço do time por tipo de atividade.</p>
-              </div>
-              <button class="button button-secondary button-small" onclick="showView('reports')">Ver relatório</button>
-            </div>
-            <div id="conversionDashboard" class="conversion-list"></div>
-          </section>
-
-          <section class="panel">
-            <div class="panel-header">
-              <div>
-                <h2>Próximas atividades</h2>
-                <p class="panel-subtitle">Priorize o que move o funil.</p>
-              </div>
-              <button class="button button-secondary button-small" onclick="showView('activities')">Ver agenda</button>
-            </div>
-            <div id="dashboardActivities"></div>
-          </section>
-        </div>
-      </section>
-
-      <!-- PIPELINE -->
-      <section class="view" id="pipeline">
-        <div class="topbar">
-          <div class="page-title">
-            <h1>Funil comercial</h1>
-            <p>Gerencie oportunidades, responsáveis, etapas e evolução da negociação.</p>
-          </div>
-          <div class="actions">
-            <button class="button button-secondary" onclick="togglePipelineManager()">⚙ Editar funil</button>
-            <button class="button button-primary" onclick="openDealModal()">＋ Novo negócio</button>
-          </div>
-        </div>
-
-        <section class="pipeline-manager" id="pipelineManager">
-          <div class="panel-header">
-            <div>
-              <h2>Editar etapas do funil</h2>
-              <p class="panel-subtitle">Você pode criar, editar, excluir e alterar a posição de cada etapa.</p>
-            </div>
-            <button class="close-button" onclick="togglePipelineManager()">×</button>
-          </div>
-          <div class="stage-editor" id="stageEditor"></div>
-        </section>
-
-        <div class="toolbar">
-          <div class="filters">
-            <input class="search-input" id="pipelineSearch" placeholder="Empresa, contato, telefone ou e-mail..." oninput="renderKanban()" />
-            <select class="filter" id="pipelineOwner" onchange="renderKanban()"><option value="">Todos os responsáveis</option></select>
-            <select class="filter" id="pipelineActivity" onchange="renderKanban()">
-              <option value="">Todas as atividades</option>
-              <option value="overdue">Com atividade vencida</option>
-              <option value="none">Sem próxima atividade</option>
-            </select>
-            <select class="filter" id="pipelineStatus" onchange="renderKanban()">
-              <option value="open">Ativos</option>
-              <option value="lost">Perdidos</option>
-              <option value="churn">Churn</option>
-              <option value="won">Ganhos</option>
-              <option value="all">Todos os status</option>
-            </select>
-          </div>
-          <div class="filters">
-            <button class="view-toggle active" id="kanbanToggle" onclick="setPipelineView('kanban')">▦ Kanban</button>
-            <button class="view-toggle" id="listToggle" onclick="setPipelineView('list')">☷ Lista</button>
-          </div>
-        </div>
-
-        <div id="kanbanBoard" class="kanban-board"></div>
-        <div id="pipelineList" class="pipeline-list" style="display:none"></div>
-      </section>
-
-      <!-- ACTIVITIES -->
-      <section class="view" id="activities">
-        <div class="topbar">
-          <div class="page-title">
-            <h1>Agenda comercial</h1>
-            <p>Organize atividades por data, período, responsável e prioridade.</p>
-          </div>
-          <div class="actions">
-            <button class="button button-secondary" onclick="goToday()">Hoje</button>
-            <button class="button button-primary" onclick="openActivityModal()">＋ Nova atividade</button>
-          </div>
-        </div>
-
-        <div class="agenda-layout">
-          <aside class="panel calendar-mini">
-            <div class="calendar-navigation">
-              <button class="icon-button" onclick="changeCalendarMonth(-1)">‹</button>
-              <div class="calendar-title" id="calendarTitle"></div>
-              <button class="icon-button" onclick="changeCalendarMonth(1)">›</button>
-            </div>
-            <div class="weekdays"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
-            <div class="days-grid" id="calendarDays"></div>
-            <div class="agenda-summary">
-              <div>Agendadas<strong id="agendaScheduled">0</strong></div>
-              <div>Vencidas<strong id="agendaOverdue">0</strong></div>
-              <div>Concluídas<strong id="agendaCompleted">0</strong></div>
-            </div>
-          </aside>
-
-          <section class="agenda-main">
-            <div class="activity-chart">
-              <div class="chart-card">
-                <span>Pendentes no período</span>
-                <strong id="chartPending">0</strong>
-                <div class="progress-track"><div id="chartPendingBar" class="progress-bar" style="width:0%;background:#3b82f6"></div></div>
-              </div>
-              <div class="chart-card">
-                <span>Vencidas no período</span>
-                <strong id="chartOverdue">0</strong>
-                <div class="progress-track"><div id="chartOverdueBar" class="progress-bar" style="width:0%;background:#ef4444"></div></div>
-              </div>
-              <div class="chart-card">
-                <span>Concluídas no período</span>
-                <strong id="chartCompleted">0</strong>
-                <div class="progress-track"><div id="chartCompletedBar" class="progress-bar" style="width:0%;background:#10b981"></div></div>
-              </div>
-            </div>
-
-            <div class="toolbar">
-              <div class="filters">
-                <select class="filter" id="activityOwnerFilter" onchange="renderActivities()"><option value="">Todos responsáveis</option></select>
-                <select class="filter" id="activityTypeFilter" onchange="renderActivities()">
-                  <option value="">Todos os tipos</option>
-                  <option>Ligação</option>
-                  <option>WhatsApp</option>
-                  <option>Reunião</option>
-                  <option>Visita</option>
-                  <option>Proposta</option>
-                  <option>Follow-up</option>
-                  <option>Tarefa</option>
-                </select>
-                <select class="filter" id="activityStatusFilter" onchange="renderActivities()">
-                  <option value="">Todos os status</option>
-                  <option value="Agendada">Agendadas</option>
-                  <option value="Atrasada">Vencidas</option>
-                  <option value="Concluída">Concluídas</option>
-                </select>
-              </div>
-              <input class="search-input" id="activitySearch" placeholder="Buscar atividade ou negócio..." oninput="renderActivities()" />
-            </div>
-
-            <div class="agenda-heading">
-              <strong class="agenda-date-label" id="agendaDateLabel"></strong>
-              <div class="filters">
-                <button class="view-toggle active" id="agendaDayToggle" onclick="setAgendaView('day')">Dia</button>
-                <button class="view-toggle" id="agendaWeekToggle" onclick="setAgendaView('week')">Semana</button>
-                <button class="view-toggle" id="agendaFortnightToggle" onclick="setAgendaView('fortnight')">Quinzena</button>
-                <button class="view-toggle" id="agendaMonthToggle" onclick="setAgendaView('month')">Mês</button>
-                <button class="view-toggle" id="agendaSemesterToggle" onclick="setAgendaView('semester')">Semestre</button>
-                <button class="view-toggle" id="agendaYearToggle" onclick="setAgendaView('year')">Ano</button>
-                <button class="view-toggle" id="agendaListToggle" onclick="setAgendaView('list')">Lista</button>
-              </div>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Atividade</th>
-                    <th>Tipo</th>
-                    <th>Negócio</th>
-                    <th>Responsável</th>
-                    <th>Data</th>
-                    <th>Status</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody id="activitiesTable"></tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      </section>
-
-      <!-- FORECAST -->
-      <section class="view" id="forecast">
-        <div class="topbar">
-          <div class="page-title">
-            <h1>Forecast comercial</h1>
-            <p>Atualizado automaticamente para negócios com probabilidade maior que 50%.</p>
-          </div>
-          <div class="actions">
-            <select class="filter" id="forecastOwnerFilter" onchange="renderForecast()"><option value="">Toda a equipe</option></select>
-          </div>
-        </div>
-
-        <div class="dashboard-grid">
-          <article class="metric-card">
-            <div class="metric-label">Meta da Operação</div>
-            <div class="metric-value" id="forecastGoal">R$ 80.000</div>
-            <div class="metric-note">Meta global simulada</div>
-          </article>
-          <article class="metric-card">
-            <div class="metric-label">Pipeline total</div>
-            <div class="metric-value" id="grossForecast">R$ 0</div>
-            <div class="metric-note">Todos os negócios ativos</div>
-          </article>
-          <article class="metric-card">
-            <div class="metric-label">Forecast Ponderado</div>
-            <div class="metric-value" id="weightedForecast">R$ 0</div>
-            <div class="metric-note">Apenas prob >= 50%</div>
-          </article>
-          <article class="metric-card">
-            <div class="metric-label">Gap para a meta</div>
-            <div class="metric-value" id="goalGap">R$ 0</div>
-            <div class="metric-note" id="goalGapNote">Receita a conquistar</div>
-          </article>
-        </div>
-
-        <div class="content-grid">
-          <section class="panel">
-            <div class="panel-header"><div><h2>Impacto por etapa</h2><p class="panel-subtitle">Apenas etapas >= 50% de probabilidade</p></div></div>
-            <div id="forecastStages" class="conversion-list"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-header"><div><h2>Resumo do período</h2><p class="panel-subtitle">Indicadores baseados nos negócios avançados.</p></div></div>
-            <div id="forecastSummary"></div>
-          </section>
-        </div>
-      </section>
-
-      <!-- TEAM -->
-      <section class="view" id="team">
-        <div class="topbar">
-          <div class="page-title">
-            <h1>Visão de equipe</h1>
-            <p>Pipeline, produtividade, metas individuais e atrasos.</p>
-          </div>
-          <div class="actions">
-            <select class="filter" id="teamPeriod" onchange="renderTeam()">
-              <option value="month">Mês atual</option>
-              <option value="week">Semana atual</option>
-              <option value="all">Histórico completo</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="team-grid">
-          <section class="panel">
-            <div class="panel-header"><div><h2>Ranking e Metas Individuais</h2><p class="panel-subtitle">Acompanhamento do alvo vs realizado.</p></div></div>
-            <div style="overflow:auto"><div id="teamRanking"></div></div>
-          </section>
-          <section class="panel">
-            <div class="panel-header"><div><h2>Alertas do time</h2><p class="panel-subtitle">Atividades que precisam de acompanhamento.</p></div></div>
-            <div id="teamAlerts"></div>
-          </section>
-        </div>
-      </section>
-
-      <!-- REPORTS -->
-      <section class="view" id="reports">
-        <div class="topbar">
-          <div class="page-title"><h1>Relatórios</h1><p>Indicadores de produtividade, conversão, funil e receita.</p></div>
-        </div>
-        <div class="content-grid">
-          <section class="panel">
-            <div class="panel-header"><div><h2>Conversão por etapa</h2><p class="panel-subtitle">Avanço das oportunidades ativas.</p></div></div>
-            <div id="reportsConversion" class="conversion-list"></div>
-          </section>
-          <section class="panel">
-            <div class="panel-header"><div><h2>Motivos de perda</h2><p class="panel-subtitle">Visibilidade sobre os motivos recorrentes.</p></div></div>
-            <div id="lossReports"></div>
-          </section>
-        </div>
-      </section>
-
-      <!-- SETTINGS -->
-      <section class="view" id="settings">
-        <div class="topbar">
-          <div class="page-title"><h1>Configurações</h1><p>Metas, backup e integrações.</p></div>
-        </div>
-
-        <!-- GERENCIAR EQUIPE E METAS -->
-        <section class="panel">
-          <div class="panel-header">
-            <div><h2>Gerenciar Equipe e Metas</h2><p class="panel-subtitle">Defina os membros e a meta financeira de cada um.</p></div>
-          </div>
-          <div style="max-width: 600px; margin-bottom: 20px;">
-            <div class="field">
-              <label>Nome do Novo Vendedor</label>
-              <div style="display: flex; gap: 8px;">
-                <input id="newOwnerName" placeholder="Ex.: Lucas Oliveira" />
-                <button class="button button-primary" onclick="addOwner()">＋ Adicionar</button>
-              </div>
-            </div>
-          </div>
-          <div class="table-wrap" style="max-width: 600px;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Vendedor</th>
-                  <th>Meta Individual (R$)</th>
-                  <th style="width: 80px; text-align: right;">Ações</th>
-                </tr>
-              </thead>
-              <tbody id="ownersTableBody"></tbody>
-            </table>
-          </div>
-          <div class="modal-actions" style="max-width: 600px;">
-            <button class="button button-primary" onclick="saveAllGoals()">Salvar Metas</button>
-          </div>
-        </section>
-
-        <!-- INTEGRAÇÃO API -->
-        <section class="panel" style="margin-top: 24px;">
-          <div class="panel-header">
-            <div><h2>Integração Externa (VL HUNT / Landing Pages)</h2><p class="panel-subtitle">Como enviar leads de outras plataformas direto pro seu funil.</p></div>
-          </div>
-          <div style="font-size: 13px; line-height: 1.6; color: var(--text);">
-            <p>O seu sistema utiliza banco de dados Supabase. Para que uma plataforma externa (ex: <strong>VL HUNT</strong>) crie um card no funil automaticamente, basta configurar um Webhook ou HTTP POST na sua ferramenta apontando para a sua URL do Supabase.</p>
-            <strong>URL do POST (REST API Supabase):</strong>
-            <div class="api-code">https://[SUA-URL-SUPABASE].supabase.co/rest/v1/deals</div>
-            <strong>Headers (Cabeçalhos):</strong>
-            <div class="api-code">apikey: [SUA-ANON-KEY]
-Authorization: Bearer [SUA-ANON-KEY]
-Content-Type: application/json
-Prefer: return=minimal</div>
-            <strong>Body (Corpo JSON):</strong>
-            <div class="api-code">{
-  "company": "Nome do Lead que veio da VL Hunt",
-  "contact": "Nome da Pessoa",
-  "phone": "41999999999",
-  "email": "email@vendas.com",
-  "source": "VL HUNT",
-  "workspace": "Comercial",
-  "status": "open",
-  "owner": "Victor"
-}</div>
-          </div>
-        </section>
-
-        <!-- BACKUP IMPORT / EXPORT -->
-        <section class="panel" style="margin-top: 24px;">
-          <div class="panel-header">
-            <div><h2>Backup dos Dados</h2><p class="panel-subtitle">Exporte todos os seus dados do CRM ou importe um arquivo .json.</p></div>
-          </div>
-          <div class="modal-actions" style="justify-content: flex-start;">
-            <button class="button button-secondary" onclick="exportBackup()">⬇ Exportar Dados</button>
-            <button class="button button-secondary" onclick="triggerImportBackup()">⬆ Importar Dados</button>
-            <input type="file" id="backupFileInput" style="display: none;" accept=".json" onchange="importBackup(event)" />
-          </div>
-        </section>
-      </section>
-    </main>
-  </div>
-
-  <!-- BARRA FLUTUANTE AÇÕES EM MASSA -->
-  <div id="massActionBar" class="mass-action-bar">
-    <span id="massActionCount" style="font-weight:700; color:white; font-size: 13px;">0 selecionados</span>
-    <select id="massActionOwner" class="filter" style="width: auto; padding:6px 12px; background:var(--surface);">
-      <option value="">Selecione vendedor</option>
-    </select>
-    <button class="button button-primary" onclick="executeMassTransfer()">Transferir</button>
-    <div style="width:1px; height:20px; background:var(--border); margin:0 8px;"></div>
-    <button class="button button-danger" onclick="executeMassStatus('lost')">Marcar Lost</button>
-    <button class="button button-secondary" onclick="executeMassStatus('churn')" style="color:var(--warning)">Marcar Churn</button>
-    <div style="width:1px; height:20px; background:var(--border); margin:0 8px;"></div>
-    <button class="icon-button" onclick="clearMassSelection()">×</button>
-  </div>
-
-  <!-- MODAL: CREATE / EDIT DEAL -->
-  <div class="modal-backdrop" id="dealModal">
-    <div class="modal">
-      <div class="modal-header">
-        <div><h2 id="dealModalTitle">Novo negócio</h2><p id="dealModalSubtitle">Registre uma oportunidade para acompanhar pelo funil.</p></div>
-        <button class="close-button" onclick="closeModal('dealModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <form id="dealForm" onsubmit="saveDeal(event)">
-          <input type="hidden" id="editingDealId" />
-          <div class="form-grid">
-            <div class="field"><label>Nome do negócio / Oportunidade *</label><input id="dealCompany" required placeholder="Ex.: Projeto ABC" /></div>
-            <div class="field"><label>Razão Social / CNPJ</label><input id="dealCnpj" placeholder="Ex.: 00.000.000/0001-00" /></div>
-            <div class="field"><label>Nome do contato principal</label><input id="dealContact" placeholder="Ex.: Maria Silva" /></div>
-            <div class="field"><label>Endereço Completo</label><input id="dealAddress" placeholder="Ex.: Rua das Flores, 123 - Centro" /></div>
-            <div class="field"><label>Telefone / WhatsApp</label><input id="dealPhone" placeholder="Ex.: 41 99999-9999" /></div>
-            <div class="field"><label>E-mail</label><input id="dealEmail" type="email" placeholder="contato@empresa.com" /></div>
-            <div class="field"><label>Valor estimado</label><input id="dealValue" type="number" min="0" step="0.01" placeholder="Deixe em branco se ainda não souber" /></div>
-            <div class="field">
-              <label>Probabilidade</label>
-              <select id="dealProbability">
-                <option value="10">10%</option><option value="25">25%</option><option value="40">40%</option>
-                <option value="60" selected>60%</option><option value="80">80%</option><option value="100">100%</option>
-              </select>
-            </div>
-            <div class="field"><label>Etapa</label><select id="dealStage"></select></div>
-            <div class="field"><label>Responsável</label><select id="dealOwner"></select></div>
-            <div class="field"><label>Previsão de fechamento</label><input id="dealCloseDate" type="date" /></div>
-            <div class="field">
-              <label>Origem do lead</label>
-              <select id="dealSource">
-                <option value="">Não informada</option><option>VL HUNT</option><option>Site</option><option>Indicação</option>
-                <option>WhatsApp</option><option>Prospecção ativa</option><option>Instagram</option><option>Evento</option>
-              </select>
-            </div>
-            <div class="field full"><label>Tags (separadas por vírgula)</label><input id="dealTags" placeholder="Ex.: prioridade, inbound, indústria" /></div>
-            <div class="field full"><label>Observação</label><textarea id="dealNote" placeholder="Contexto importante sobre a oportunidade..."></textarea></div>
-          </div>
-          <div class="modal-actions">
-            <button type="button" class="button button-secondary" onclick="closeModal('dealModal')">Cancelar</button>
-            <button class="button button-primary" type="submit">Salvar negócio</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: QUICK COMPLETE ACTIVITY (CLICK NA BOLINHA) -->
-  <div class="modal-backdrop" id="quickCompleteModal">
-    <div class="modal small-modal">
-      <div class="modal-header">
-        <div><h2>Concluir Atividade</h2><p>Resumo do que aconteceu nesta ação.</p></div>
-        <button class="close-button" onclick="closeModal('quickCompleteModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="quickActivityId" />
-        <div class="field full">
-          <label>Resumo / Anotação (vai para a timeline)</label>
-          <textarea id="quickActivityNote" placeholder="Ex: Cliente atendeu, achou caro mas pediu pra retornar em 10 dias..."></textarea>
-        </div>
-        <div class="modal-actions">
-          <button class="button button-secondary" onclick="closeModal('quickCompleteModal')">Cancelar</button>
-          <button class="button button-success" onclick="confirmQuickComplete()">✓ Marcar como Concluída</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: ACTIVITY -->
-  <div class="modal-backdrop" id="activityModal">
-    <div class="modal" style="max-width:700px">
-      <div class="modal-header">
-        <div><h2>Nova atividade</h2><p>A atividade será registrada na timeline e atualizada em todo o CRM.</p></div>
-        <button class="close-button" onclick="closeModal('activityModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <form onsubmit="createActivity(event)">
-          <div class="form-grid">
-            <div class="field"><label>Título *</label><input id="activityTitle" required placeholder="Ex.: Ligar para o decisor" /></div>
-            <div class="field">
-              <label>Tipo *</label>
-              <select id="activityType">
-                <option>Ligação</option><option>WhatsApp</option><option>Reunião</option><option>Visita</option>
-                <option>Proposta</option><option>Follow-up</option><option>Tarefa</option>
-              </select>
-            </div>
-            <div class="field"><label>Negócio relacionado *</label><select id="activityDeal" required></select></div>
-            <div class="field"><label>Data e hora *</label><input id="activityDate" required type="datetime-local" /></div>
-            <div class="field">
-              <label>Prioridade</label>
-              <select id="activityPriority"><option>Baixa</option><option selected>Média</option><option>Alta</option></select>
-            </div>
-            <div class="field"><label>Responsável</label><select id="activityOwner"></select></div>
-            <div class="field full"><label>Descrição</label><textarea id="activityDescription" placeholder="Descreva o próximo passo..."></textarea></div>
-          </div>
-          <div class="modal-actions">
-            <button type="button" class="button button-secondary" onclick="closeModal('activityModal')">Cancelar</button>
-            <button class="button button-primary" type="submit">Criar atividade</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: DEAL DETAIL -->
-  <div class="modal-backdrop" id="detailModal">
-    <div class="modal">
-      <div class="modal-header" id="detailHeader"></div>
-      <div class="modal-content">
-        <aside class="deal-details" id="dealDetails"></aside>
-        <section class="timeline" id="dealTimeline"></section>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: TRANSFER -->
-  <div class="modal-backdrop" id="transferModal">
-    <div class="modal small-modal">
-      <div class="modal-header">
-        <div><h2>Transferir negócio</h2><p>O novo responsável será registrado na timeline.</p></div>
-        <button class="close-button" onclick="closeModal('transferModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="transferDealId" />
-        <div class="field"><label>Novo responsável</label><select id="transferOwner"></select></div>
-        <div class="modal-actions">
-          <button class="button button-secondary" onclick="closeModal('transferModal')">Cancelar</button>
-          <button class="button button-primary" onclick="transferDeal()">Transferir</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: LOSS REASON -->
-  <div class="modal-backdrop" id="lossModal">
-    <div class="modal small-modal">
-      <div class="modal-header">
-        <div><h2>Marcar negócio</h2><p>Informe se a oportunidade foi perdida ou representa churn.</p></div>
-        <button class="close-button" onclick="closeModal('lossModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="lossDealId" />
-        <div class="field">
-          <label>Status</label>
-          <select id="lossStatus"><option value="lost">Perdido</option><option value="churn">Churn</option></select>
-        </div>
-        <div class="field" style="margin-top:14px">
-          <label>Motivo</label>
-          <select id="lossReason">
-            <option>Preço</option><option>Sem retorno do cliente</option><option>Concorrência</option>
-            <option>Sem fit</option><option>Timing inadequado</option><option>Outro</option>
-          </select>
-        </div>
-        <div class="field" style="margin-top:14px">
-          <label>Ação Futura (Follow-up de Resgate)</label>
-          <select id="lossFollowup">
-            <option value="">Não agendar retorno</option>
-            <option value="1">Lembrar em 1 Mês</option>
-            <option value="3">Lembrar em 3 Meses</option>
-            <option value="6">Lembrar em 6 Meses</option>
-          </select>
-        </div>
-        <div class="modal-actions">
-          <button class="button button-secondary" onclick="closeModal('lossModal')">Cancelar</button>
-          <button class="button button-danger" onclick="markDealLost()">Confirmar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: STAGE -->
-  <div class="modal-backdrop" id="stageModal">
-    <div class="modal small-modal">
-      <div class="modal-header">
-        <div><h2 id="stageModalTitle">Nova etapa</h2><p>Defina o nome da etapa no funil comercial.</p></div>
-        <button class="close-button" onclick="closeModal('stageModal')">×</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="stageEditIndex" />
-        <div class="field"><label>Nome da etapa *</label><input id="stageName" placeholder="Ex.: Diagnóstico técnico" /></div>
-        <div class="field" style="margin-top:14px">
-          <label>Probabilidade sugerida</label>
-          <select id="stageProbability">
-            <option value="10">10%</option><option value="20">20%</option><option value="30">30%</option>
-            <option value="40">40%</option><option value="50">50%</option><option value="60">60%</option>
-            <option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100">100%</option>
-          </select>
-        </div>
-        <div class="modal-actions">
-          <button class="button button-secondary" onclick="closeModal('stageModal')">Cancelar</button>
-          <button class="button button-primary" onclick="saveStage()">Salvar etapa</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Agora sempre vai pegar a data REAL do dispositivo para não defasar
-    const CURRENT_DATE = new Date();
-
-    const DEFAULT_WORKSPACES = {
-      "Comercial": [
-        { name: "Novos leads para tentativa de contato", probability: 10 },
-        { name: "Contato realizado", probability: 20 },
-        { name: "Contato com o decisor", probability: 35 },
-        { name: "Reunião", probability: 50 },
-        { name: "Proposta enviada", probability: 65 },
-        { name: "FUP", probability: 75 },
-        { name: "FUP de fechamento", probability: 85 },
-        { name: "Proposta aceita", probability: 100 }
-      ],
-      "CS": [
-        { name: "Onboarding Iniciado", probability: 10 },
-        { name: "Treinamento Realizado", probability: 50 },
-        { name: "Adoção Completa", probability: 100 }
-      ],
-      "MKT": [
-        { name: "Lead Frio", probability: 10 },
-        { name: "MQL", probability: 50 },
-        { name: "Enviado para Vendas", probability: 100 }
-      ]
-    };
-
-    let workspaces = JSON.parse(JSON.stringify(DEFAULT_WORKSPACES));
-    let currentWorkspace = "Comercial";
-    let stages = workspaces[currentWorkspace];
-
-    let owners = ["Victor", "Gustavo", "Ana"];
-    let ownerGoals = { "Victor": 80000, "Gustavo": 50000, "Ana": 50000 };
-
-    let deals = [];
-    let activities = [];
-    let selectedDealsForMassAction = new Set();
-    
-    let selectedDate = new Date();
-    let calendarCursor = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
-    let agendaView = "day";
-    let pipelineView = "kanban";
-    let currentDetailDealId = null;
-
-    // LOCAL STORAGE LOAD
-    try {
-      const storedWorkspaces = localStorage.getItem("salesmates_workspaces_v4");
-      if (storedWorkspaces) workspaces = JSON.parse(storedWorkspaces);
-      if (!workspaces[currentWorkspace]) workspaces[currentWorkspace] = DEFAULT_WORKSPACES["Comercial"];
-      stages = workspaces[currentWorkspace];
-
-      const storedOwners = localStorage.getItem("salesmates_owners");
-      if (storedOwners) {
-        const parsed = JSON.parse(storedOwners);
-        if (Array.isArray(parsed) && parsed.length > 0) owners = parsed.filter(Boolean);
-      }
-
-      const storedGoals = localStorage.getItem("salesmates_owner_goals");
-      if (storedGoals) ownerGoals = JSON.parse(storedGoals);
-
-      const storedDeals = localStorage.getItem("salesmates_deals_v4");
-      if (storedDeals) deals = JSON.parse(storedDeals).filter(Boolean);
-
-      const storedActivities = localStorage.getItem("salesmates_activities_v4");
-      if (storedActivities) activities = JSON.parse(storedActivities).filter(Boolean);
-
-    } catch (e) { console.error(e); }
-
-    // Helpers Básicos
-    function stageNames() { return stages.map((s) => s ? s.name : "").filter(Boolean); }
-    function getStageData(name) { return stages.find((s) => s && s.name === name) || stages[0] || {name:"Padrão", probability:10}; }
-
-    function changeWorkspace() {
-      const el = document.getElementById("globalWorkspace");
-      if(!el) return;
-      currentWorkspace = el.value;
-      if(!workspaces[currentWorkspace]) workspaces[currentWorkspace] = DEFAULT_WORKSPACES[currentWorkspace] || [];
-      stages = workspaces[currentWorkspace];
-      refreshAll();
-    }
-
-    function saveData() {
-      workspaces[currentWorkspace] = stages;
-      localStorage.setItem("salesmates_workspaces_v4", JSON.stringify(workspaces));
-      localStorage.setItem("salesmates_deals_v4", JSON.stringify(deals));
-      localStorage.setItem("salesmates_activities_v4", JSON.stringify(activities));
-      localStorage.setItem("salesmates_owners", JSON.stringify(owners));
-      localStorage.setItem("salesmates_owner_goals", JSON.stringify(ownerGoals));
-    }
-
-    function exportBackup() {
-      const backupData = { workspaces, deals, activities, owners, ownerGoals };
-      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `salesmates_backup_${dateKey(new Date())}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-    function triggerImportBackup() { document.getElementById("backupFileInput").click(); }
-    function importBackup(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const imp = JSON.parse(e.target.result);
-          if (imp.workspaces) workspaces = imp.workspaces;
-          if (imp.deals) deals = imp.deals;
-          if (imp.activities) activities = imp.activities;
-          if (imp.owners) owners = imp.owners;
-          if (imp.ownerGoals) ownerGoals = imp.ownerGoals;
-          saveData();
-          alert("Backup restaurado com sucesso!");
-          location.reload();
-        } catch (err) { alert("Erro ao ler o arquivo de backup."); }
-      };
-      reader.readAsText(file);
-    }
-
-    function escapeHTML(value) { return String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
-    function currency(value) { return (value === null || value === undefined || value === "" || Number(value) <= 0) ? "R$ a definir" : new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(Number(value)); }
-    function currencyNumber(value) { return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(Number(value || 0)); }
-    
-    function formatDate(date, options = {}) {
-      if (!date) return "Não informado";
-      const d = new Date(date + "T12:00:00");
-      if (isNaN(d.getTime())) return "Não informado";
-      return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", ...options });
-    }
-    function formatDateTime(date) {
-      if (!date) return "Não informado";
-      const d = new Date(date);
-      if (isNaN(d.getTime())) return "Não informado";
-      return d.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
-    }
-    function dateKey(date) {
-      if (!date) return "";
-      const d = new Date(date);
-      if (isNaN(d.getTime())) return "";
-      return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0');
-    }
-
-    function getDeal(id) { return deals.find((d) => d && Number(d.id) === Number(id)); }
-    function getDealActivities(dealId) { return activities.filter((a) => a && Number(a.dealId) === Number(dealId)); }
-    function getActivityStatus(activity) {
-      if (!activity) return "Cancelada";
-      if (activity.status === "Concluída") return "Concluída";
-      if (activity.status === "Cancelada") return "Cancelada";
-      return new Date(activity.date) < CURRENT_DATE ? "Atrasada" : "Agendada";
-    }
-    function getNextActivity(dealId) {
-      return getDealActivities(dealId).filter((a) => a && !["Concluída", "Cancelada"].includes(getActivityStatus(a))).sort((a, b) => new Date(a.date) - new Date(b.date))[0];
-    }
-    function addTimelineEvent(deal, title, description) {
-      if (!deal) return;
-      if (!deal.timeline) deal.timeline = [];
-      deal.timeline.unshift({ title, description, date: new Date().toISOString() });
-    }
-    function activityIcon(type) { const icons = { "Ligação": "☎", "WhatsApp": "◉", "Reunião": "◌", "Visita": "⌖", "Proposta": "▤", "Follow-up": "↻", "Tarefa": "✓" }; return icons[type] || "✓"; }
-    function badgeForStatus(status) {
-      const classes = { "Concluída": "badge-green", "Atrasada": "badge-red", "Agendada": "badge-blue", "Cancelada": "badge-gray", "Ganho": "badge-green", "Perdido": "badge-red", "Churn": "badge-yellow", "Ativo": "badge-blue" };
-      return `<span class="badge ${classes[status] || "badge-gray"}">${escapeHTML(status)}</span>`;
-    }
-    function dealStatusLabel(status) { const labels = { open: "Ativo", won: "Ganho", lost: "Perdido", churn: "Churn", archived: "Arquivado" }; return labels[status] || status; }
-    function dealValueHTML(deal) { return (deal && Number(deal.value) > 0) ? `<div class="deal-value">${currencyNumber(deal.value)}</div>` : `<div class="deal-value" style="color:#6b7280;font-weight:500;">R$ a definir</div>`; }
-
-    // METAS E DONOS
-    function fillOwnerOptions() {
-      const options = owners.map((o) => `<option value="${escapeHTML(o)}">${escapeHTML(o)}</option>`).join("");
-      ["pipelineOwner", "activityOwnerFilter", "forecastOwnerFilter"].forEach((id) => {
-        const select = document.getElementById(id);
-        if (!select) return;
-        const current = select.value;
-        const firstOption = select.options[0]?.outerHTML || "";
-        select.innerHTML = firstOption + options;
-        select.value = current;
-      });
-      ["dealOwner", "activityOwner", "transferOwner"].forEach((id) => {
-        const select = document.getElementById(id);
-        if (select) select.innerHTML = options;
-      });
-      const massOwner = document.getElementById("massActionOwner");
-      if(massOwner) massOwner.innerHTML = `<option value="">Selecione vendedor</option>` + options;
-    }
-
-    function renderOwnersList() {
-      const tbody = document.getElementById("ownersTableBody");
-      if (!tbody) return;
-      tbody.innerHTML = owners.map((o) => `
-        <tr>
-          <td>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="small-avatar">${o ? o.charAt(0) : "V"}</span>
-              <strong>${escapeHTML(o)}</strong>
-            </div>
-          </td>
-          <td><input type="number" class="goal-input" data-owner="${escapeHTML(o)}" value="${ownerGoals[o] || 0}" /></td>
-          <td style="text-align: right;"><button class="icon-button danger" onclick="removeOwner('${escapeHTML(o)}')">×</button></td>
-        </tr>
-      `).join("");
-    }
-
-    function addOwner() {
-      const input = document.getElementById("newOwnerName");
-      const name = input?.value.trim();
-      if (!name) return;
-      if (owners.includes(name)) { alert("Este vendedor já existe."); return; }
-      owners.push(name);
-      ownerGoals[name] = 50000; // default meta
-      saveData(); input.value = ""; refreshAll(); renderOwnersList();
-    }
-    function removeOwner(name) {
-      if (owners.length <= 1) { alert("Mantenha ao menos um vendedor."); return; }
-      if (confirm(`Remover "${name}"?`)) { owners = owners.filter((o) => o !== name); delete ownerGoals[name]; saveData(); refreshAll(); renderOwnersList(); }
-    }
-    function saveAllGoals() {
-      document.querySelectorAll(".goal-input").forEach(inp => {
-        const o = inp.getAttribute("data-owner");
-        ownerGoals[o] = Number(inp.value) || 0;
-      });
-      saveData(); refreshAll(); alert("Metas salvas com sucesso!");
-    }
-
-    function refreshAll() {
-      fillOwnerOptions();
-      renderDashboard();
-      renderKanban();
-      renderActivities();
-      renderForecast();
-      renderTeam();
-      renderReports();
-      renderStageEditor();
-    }
-
-    function showView(viewId) {
-      document.querySelectorAll(".view").forEach((v) => v.classList.remove("active"));
-      document.querySelectorAll(".nav-button").forEach((b) => b.classList.remove("active"));
-      const targetView = document.getElementById(viewId);
-      if (targetView) targetView.classList.add("active");
-      const targetNav = document.querySelector(`[data-view="${viewId}"]`);
-      if (targetNav) targetNav.classList.add("active");
-
-      if (viewId === "pipeline") renderKanban();
-      if (viewId === "activities") { renderCalendar(); renderActivities(); }
-      if (viewId === "forecast") renderForecast();
-      if (viewId === "team") renderTeam();
-      if (viewId === "reports") renderReports();
-      if (viewId === "settings") renderOwnersList();
-    }
-
-    document.querySelectorAll(".nav-button").forEach((b) => {
-      b.addEventListener("click", () => showView(b.dataset.view));
-    });
-
-    // DASHBOARD
-    function isDateInPeriod(dateStr, periodStr) {
-      if(!dateStr) return false;
-      const d = new Date(dateStr);
-      const today = new Date(CURRENT_DATE);
-      if(periodStr === 'today') return dateKey(d) === dateKey(today);
-      if(periodStr === 'week') {
-        const start = new Date(today); start.setDate(today.getDate() - today.getDay()); start.setHours(0,0,0,0);
-        const end = new Date(start); end.setDate(start.getDate() + 7);
-        return d >= start && d < end;
-      }
-      if(periodStr === 'month') return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
-      if(periodStr === 'semester') {
-        const sem = Math.floor(today.getMonth() / 6);
-        return Math.floor(d.getMonth() / 6) === sem && d.getFullYear() === today.getFullYear();
-      }
-      if(periodStr === 'year') return d.getFullYear() === today.getFullYear();
-      return true;
-    }
-
-    function renderDashboard() {
-      const activeDeals = deals.filter((d) => d && d.workspace === currentWorkspace);
-      const activeActivities = activities.filter(a => {
-        const d = getDeal(a.dealId);
-        return d && d.workspace === currentWorkspace;
-      });
-
-      const period = document.getElementById("dashboardPeriod")?.value || "today";
-      
-      const completedInPeriod = activeActivities.filter(a => getActivityStatus(a) === "Concluída" && isDateInPeriod(a.date, period));
-      const pending = activeActivities.filter((a) => getActivityStatus(a) === "Agendada").length;
-      const overdue = activeActivities.filter((a) => getActivityStatus(a) === "Atrasada").length;
-
-      // Forecast Ponderado no Dash: Só negócios ativos do workspace atual com prob >= 50%
-      const weightedForecast = activeDeals.filter(d => d.status === "open" && Number(d.probability) >= 50).reduce((total, d) => total + Number(d.value || 0) * (Number(d.probability || 0) / 100), 0);
-
-      document.getElementById("todayCompleted").textContent = completedInPeriod.length;
-      document.getElementById("pendingActivities").textContent = pending;
-      document.getElementById("overdueActivities").textContent = overdue;
-      document.getElementById("weeklyForecast").textContent = currencyNumber(weightedForecast);
-
-      // Ritmo Comercial (Produtividade) - Agrupar completedInPeriod por Type
-      const typeCounts = {};
-      completedInPeriod.forEach(a => { typeCounts[a.type] = (typeCounts[a.type] || 0) + 1; });
-      const typesList = ["Ligação", "WhatsApp", "Reunião", "Proposta", "Follow-up", "Visita", "Tarefa"];
-      let maxCount = Math.max(...Object.values(typeCounts), 1);
-
-      const dashRhythm = document.getElementById("conversionDashboard");
-      if(dashRhythm) {
-        if(completedInPeriod.length === 0) {
-          dashRhythm.innerHTML = `<div class="empty">Nenhuma atividade concluída neste período.</div>`;
-        } else {
-          dashRhythm.innerHTML = typesList.map(type => {
-            const count = typeCounts[type] || 0;
-            if(count === 0) return "";
-            const pct = (count / maxCount) * 100;
-            return `
-              <div class="progress-row" style="background:var(--surface-card); padding:10px; border-radius:8px;">
-                <div class="progress-top">
-                  <span style="color:white; font-weight:600;">${type}</span>
-                  <strong>${count} concluídas</strong>
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        
+        <!-- DASHBOARD TAB -->
+        <div id="tab-dashboard" class="content-area active">
+            <div class="header" style="padding-left: 0; padding-top: 0; border: none;">
+                <h2>Olá, Victor.</h2>
+                <div class="header-actions">
+                    <!-- Print 9 e 10: Filtros expansivos de data -->
+                    <select class="btn btn-outline" id="dashDateFilter">
+                        <option>Hoje</option>
+                        <option>Semana atual</option>
+                        <option>Quinzena</option>
+                        <option>Mês atual</option>
+                        <option>Bimestre</option>
+                        <option>Trimestre</option>
+                        <option>Semestre</option>
+                        <option>Anual</option>
+                        <option>Histórico completo</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="openNewDealModal()">+ Novo negócio</button>
                 </div>
-                <div class="progress-track"><div class="progress-bar" style="width:${pct}%;background:var(--primary)"></div></div>
-              </div>
-            `;
-          }).join("");
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-title">Concluídas (Período)</div>
+                    <div class="kpi-value">12</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Pendentes</div>
+                    <div class="kpi-value">3</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title" style="color: var(--danger);">Precisam de atenção</div>
+                    <div class="kpi-value" style="color: var(--danger);">1</div>
+                </div>
+                <div class="kpi-card">
+                    <!-- Print 4: Forecast soma real a partir de proposta enviada -->
+                    <div class="kpi-title">Forecast (Propostas Enviadas+)</div>
+                    <div class="kpi-value" id="kpi-forecast">R$ 0,00</div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                 <div class="kpi-card" style="min-height: 200px;">
+                    <h4>Produtividade</h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 20px;">Relatório de ligações, emails e reuniões.</p>
+                 </div>
+                 <div class="kpi-card" style="min-height: 200px;">
+                    <h4>Próximas atividades</h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 20px;">Fazer follow-up com Loja Teste.</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- FUNNEL TAB -->
+        <div id="tab-funnel" class="content-area" style="padding: 0; display: none; flex-direction: column; height: 100%;">
+            <div class="header">
+                <h2>Funil <span id="currentFunnelName">Comercial</span></h2>
+                <div class="header-actions">
+                    <button class="btn btn-outline"><i class="fas fa-list"></i> Lista</button>
+                    <button class="btn btn-primary" onclick="openNewDealModal()">+ Novo negócio</button>
+                </div>
+            </div>
+            <div style="padding: 20px; flex: 1;">
+                <div class="kanban-board" id="kanbanBoard">
+                    <!-- Renderizado via JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- TEAM & REPORTS (Mockups for layout with Date Filters) -->
+        <div id="tab-team" class="content-area">
+             <div class="header" style="padding-left: 0; border: none;">
+                <h2>Visão de equipe</h2>
+                <select class="btn btn-outline">
+                    <option>Semana atual</option>
+                    <option>Mês atual</option>
+                    <option>Trimestre</option>
+                    <option>Anual</option>
+                </select>
+            </div>
+            <div class="kpi-card">Em desenvolvimento com o backend...</div>
+        </div>
+
+        <div id="tab-reports" class="content-area">
+             <div class="header" style="padding-left: 0; border: none;">
+                <h2>Relatórios</h2>
+                <select class="btn btn-outline">
+                    <option>Mês atual</option>
+                    <option>Semestre</option>
+                    <option>Histórico completo</option>
+                </select>
+            </div>
+            <div class="kpi-card">Em desenvolvimento com o backend...</div>
+        </div>
+
+        <!-- SETTINGS TAB (Anti-Clubismo & Idiomas) -->
+        <div id="tab-settings" class="content-area">
+            <div class="header" style="padding-left: 0; border: none;">
+                <h2>Configurações do Sistema</h2>
+            </div>
+            
+            <div class="settings-card">
+                <h3>Aparência e Personalização</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">Evite o clubismo. Deixe o CRM com a cara e as cores da sua empresa.</p>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Tema Base</label>
+                        <select id="themeSelector" onchange="changeTheme(this.value)">
+                            <option value="dark">Modo Escuro (Dark)</option>
+                            <option value="light">Modo Claro (Light)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Cor Principal (Botões e Destaques)</label>
+                        <div class="color-picker-wrap">
+                            <input type="color" id="primaryColorPicker" value="#3b82f6" oninput="changePrimaryColor(this.value)">
+                            <span id="colorHex" style="font-size: 12px; color: var(--text-muted);">#3b82f6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <h3>Idioma Regional</h3>
+                <p style="font-size: 12px; color: var(--text-muted);">Selecione o idioma da plataforma.</p>
+                <div class="flag-selector">
+                    <span class="flag-btn active" title="Português">🇧🇷</span>
+                    <span class="flag-btn" title="English">🇺🇸</span>
+                    <span class="flag-btn" title="Español">🇪🇸</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL: NOVO NEGÓCIO -->
+    <div class="modal-overlay" id="newDealModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Novo negócio</h3>
+                <span class="close-modal" onclick="closeModal('newDealModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nome do negócio / Oportunidade *</label>
+                        <input type="text" id="dealName" placeholder="Ex: Loja Teste">
+                    </div>
+                    <!-- Print 2: CNPJ e Razão Social separados -->
+                    <div class="form-group">
+                        <label>CNPJ</label>
+                        <input type="text" placeholder="00.000.000/0001-00">
+                    </div>
+                    <div class="form-group">
+                        <label>Razão Social</label>
+                        <input type="text" placeholder="Razão Social LTDA">
+                    </div>
+                    <div class="form-group">
+                        <label>Nome do contato principal</label>
+                        <input type="text" placeholder="Ex: Maria">
+                    </div>
+                    
+                    <!-- Print 2: Valor estimado formatado autmaticamente sem setas -->
+                    <div class="form-group">
+                        <label>Valor estimado</label>
+                        <input type="text" id="dealValue" placeholder="R$ 0,00" oninput="formatCurrency(this)">
+                    </div>
+                    <!-- Print 2: Probabilidade % que pode ficar em branco -->
+                    <div class="form-group">
+                        <label>Probabilidade (%)</label>
+                        <input type="text" id="dealProb" placeholder="Ex: 50%" oninput="formatPercentage(this)">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('newDealModal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveNewDeal()">Salvar negócio</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PIPEDRIVE STYLE: DETALHES DO NEGÓCIO (Prints 5, 6, 7 e 8) -->
+    <div class="modal-overlay" id="dealDetailsModal">
+        <div class="modal-content modal-large">
+            
+            <!-- Sidebar do Modal (Dados do Card) -->
+            <div class="deal-sidebar">
+                <h3 id="detailName" style="margin-bottom: 5px;">Loja Teste</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;" id="detailValue">R$ 15.000,00</p>
+                
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>Etapa Atual</label>
+                    <select id="detailStage" class="module-selector" style="margin:0; width:100%;">
+                        <!-- Preenchido via JS -->
+                    </select>
+                </div>
+
+                <!-- Print 8: Transferência de módulo (Passagem de Bastão) -->
+                <div class="form-group" style="margin-bottom: 30px;">
+                    <label style="color: var(--warning);"><i class="fas fa-exchange-alt"></i> Transferir de Módulo</label>
+                    <select id="detailModule" class="module-selector" style="margin:0; width:100%; border-color: var(--warning);">
+                        <option value="comercial">Comercial</option>
+                        <option value="cs">CS (Pós-Venda)</option>
+                        <option value="mkt">Marketing</option>
+                        <option value="financeiro">Financeiro</option>
+                    </select>
+                    <p style="font-size: 10px; color: var(--text-muted); margin-top: 5px;">Ao alterar o módulo, o negócio saíra do funil atual e o forecast será recalculado.</p>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="saveDealEdits()">Salvar Alterações</button>
+                <button class="btn btn-success" style="width: 100%; background-color: var(--success); color: white; margin-bottom: 10px; border:none; padding:8px; border-radius:6px;">Ganho ✓</button>
+                <button class="btn btn-danger" style="width: 100%; background-color: var(--danger); color: white; border:none; padding:8px; border-radius:6px;">Perdido ✗</button>
+            </div>
+
+            <!-- Área Principal do Modal (Anotações e Histórico) -->
+            <div class="deal-main">
+                <div class="modal-header" style="justify-content: flex-end; padding: 15px;">
+                    <span class="close-modal" onclick="closeModal('dealDetailsModal')">&times;</span>
+                </div>
+                
+                <div class="pd-tabs">
+                    <div class="pd-tab active"><i class="fas fa-pen"></i> Anotações</div>
+                    <div class="pd-tab"><i class="fas fa-calendar-check"></i> Atividade</div>
+                    <div class="pd-tab"><i class="fas fa-envelope"></i> E-mail</div>
+                </div>
+
+                <div class="pd-content">
+                    <!-- Input Area -->
+                    <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 15px; margin-bottom: 20px;">
+                        <textarea placeholder="Escreva uma anotação, @nome..." style="width: 100%; height: 60px; background: transparent; border: none; resize: none; margin-bottom: 10px;"></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="color: var(--text-muted); gap: 10px; display: flex;">
+                                <i class="fas fa-bold"></i> <i class="fas fa-paperclip"></i>
+                            </div>
+                            <button class="btn btn-primary" style="padding: 5px 15px;">Salvar</button>
+                        </div>
+                    </div>
+
+                    <!-- Print 7 e 8: Anotação Fixada para passagem de bastão -->
+                    <div class="pinned-note">
+                        <div class="pinned-header">
+                            <span><i class="fas fa-thumbtack"></i> ANOTAÇÃO FIXADA - PASSAGEM DE BASTÃO</span>
+                            <span>Victor Leon • Hoje</span>
+                        </div>
+                        <p style="font-size: 13px;">Cliente prefere contato via WhatsApp. O contrato já foi revisado. Focar na implantação rápida na próxima semana.</p>
+                    </div>
+
+                    <h4 style="font-size: 14px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Histórico</h4>
+
+                    <!-- Timeline -->
+                    <div class="timeline">
+                        <!-- Atividade 1 -->
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="fas fa-phone" style="color: var(--primary); font-size: 12px;"></i></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <span style="font-weight: 600; color: var(--text-main);">Reunião de Fechamento</span>
+                                    <!-- Print 5: Editar atividade -->
+                                    <span class="timeline-actions"><i class="fas fa-ellipsis-h"></i> Editar</span>
+                                </div>
+                                <p style="font-size: 13px;">Reunião feita, alinhamos os últimos pontos do contrato.</p>
+                                <div style="font-size: 11px; color: var(--text-muted); margin-top: 10px;">Ontem às 14:30 • Victor Leon</div>
+                            </div>
+                        </div>
+
+                        <!-- Atividade 2 -->
+                        <div class="timeline-item">
+                            <div class="timeline-icon" style="background-color: rgba(16, 185, 129, 0.1); border-color: var(--success);"><i class="fas fa-check" style="color: var(--success); font-size: 12px;"></i></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <span style="font-weight: 600; color: var(--text-main);">Etapa alterada</span>
+                                </div>
+                                <p style="font-size: 13px;">Contato Realizado → Proposta Enviada</p>
+                                <div style="font-size: 11px; color: var(--text-muted); margin-top: 10px;">27/07/2026 às 11:10 • Sistema</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Definição das Etapas por Módulo
+        const stagesMap = {
+            'comercial': ['Contato Realizado', 'Reunião', 'Proposta Enviada', 'FUP', 'Fechamento'],
+            'cs': ['Onboarding', 'Implantação', 'Treinamento', 'Acompanhamento', 'Renovação'],
+            'mkt': ['Lead Novo', 'Qualificação', 'Nutrição', 'Repassado ao Comercial'],
+            'financeiro': ['A Faturar', 'Faturado', 'Inadimplente', 'Concluído']
+        };
+
+        // Estado Global
+        let currentModule = 'comercial';
+        let activeDealId = null;
+
+        // Dados Mockados (Simulando o Supabase por enquanto)
+        let deals = [
+            { id: 1, name: 'Loja Teste (B2B)', value: 15000, prob: '50%', stage: 'Proposta Enviada', module: 'comercial', resp: 'Victor' },
+            { id: 2, name: 'Tech Solutions', value: 25000, prob: '80%', stage: 'FUP', module: 'comercial', resp: 'Victor' },
+            { id: 3, name: 'Mercado Silva', value: 5000, prob: '20%', stage: 'Contato Realizado', module: 'comercial', resp: 'Victor' },
+            { id: 4, name: 'Passeio Primavera', value: 10000, prob: '100%', stage: 'Implantação', module: 'cs', resp: 'Ana' }
+        ];
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            renderKanban();
+            calculateDashboard();
+            
+            // Flags script
+            document.querySelectorAll('.flag-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.flag-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        // Troca de Tabs Visuais (Menu Lateral)
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.content-area').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            if(tabId === 'funnel') {
+                document.getElementById('tab-funnel').style.display = 'flex';
+            } else {
+                document.getElementById('tab-' + tabId).style.display = 'block';
+            }
+            element.classList.add('active');
         }
-      }
 
-      // Next Activities
-      const nextActivities = [...activeActivities].filter((a) => !["Concluída", "Cancelada"].includes(getActivityStatus(a))).sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 4);
-      const dashAct = document.getElementById("dashboardActivities");
-      if (dashAct) {
-        dashAct.innerHTML = nextActivities.length ? nextActivities.map((a) => {
-          const d = getDeal(a.dealId);
-          return `
-            <div class="activity-item">
-              <div class="activity-icon">${activityIcon(a.type)}</div>
-              <div class="activity-info">
-                <strong>${escapeHTML(a.title)}</strong><small>${escapeHTML(d?.company || "")} · ${formatDateTime(a.date)}</small>
-              </div>
-              ${badgeForStatus(getActivityStatus(a))}
-            </div>
-          `;
-        }).join("") : `<div class="empty">Nenhuma atividade pendente.</div>`;
-      }
-    }
+        // Troca de Módulo (Comercial, CS, Mkt, Financeiro)
+        function changeModule() {
+            currentModule = document.getElementById('globalModuleSelector').value;
+            const moduleNameText = document.getElementById('globalModuleSelector').options[document.getElementById('globalModuleSelector').selectedIndex].text;
+            
+            // Atualiza Título do Funil
+            document.getElementById('currentFunnelName').innerText = moduleNameText.split(' ')[1];
+            
+            renderKanban();
+            calculateDashboard();
+        }
 
-    // AÇÕES EM MASSA
-    function toggleDealSelection(dealId) {
-      if(selectedDealsForMassAction.has(dealId)) selectedDealsForMassAction.delete(dealId);
-      else selectedDealsForMassAction.add(dealId);
-      updateMassActionBar();
-    }
-    
-    function clearMassSelection() {
-      selectedDealsForMassAction.clear();
-      document.querySelectorAll('.deal-checkbox, .list-checkbox').forEach(cb => cb.checked = false);
-      updateMassActionBar();
-    }
-
-    function updateMassActionBar() {
-      const bar = document.getElementById("massActionBar");
-      const count = document.getElementById("massActionCount");
-      if(selectedDealsForMassAction.size > 0) {
-        bar.classList.add("visible");
-        count.textContent = `${selectedDealsForMassAction.size} selecionado(s)`;
-      } else {
-        bar.classList.remove("visible");
-      }
-    }
-
-    function executeMassTransfer() {
-      const newOwner = document.getElementById("massActionOwner").value;
-      if(!newOwner) { alert("Selecione um vendedor na barra!"); return; }
-      if(confirm(`Transferir ${selectedDealsForMassAction.size} negócio(s) para ${newOwner}?`)) {
-        selectedDealsForMassAction.forEach(id => {
-          const d = getDeal(id);
-          if(d) {
-            addTimelineEvent(d, "Transferência em Massa", `${d.owner} → ${newOwner}`);
-            d.owner = newOwner;
-          }
-        });
-        saveData(); clearMassSelection(); refreshAll();
-      }
-    }
-
-    function executeMassStatus(newStatus) {
-      const msg = newStatus === 'lost' ? 'Dar LOST' : 'Marcar como CHURN';
-      if(confirm(`${msg} em ${selectedDealsForMassAction.size} negócio(s)?`)) {
-        selectedDealsForMassAction.forEach(id => {
-          const d = getDeal(id);
-          if(d) {
-            d.status = newStatus;
-            addTimelineEvent(d, "Ação em Massa", `Status alterado para ${newStatus}`);
-          }
-        });
-        saveData(); clearMassSelection(); refreshAll();
-      }
-    }
-
-    function getFilteredPipelineDeals() {
-      const search = document.getElementById("pipelineSearch")?.value.trim().toLowerCase() || "";
-      const owner = document.getElementById("pipelineOwner")?.value || "";
-      const activityFilter = document.getElementById("pipelineActivity")?.value || "";
-      const status = document.getElementById("pipelineStatus")?.value || "open";
-      
-      return deals.filter((deal) => {
-        if (!deal || deal.workspace !== currentWorkspace) return false;
-        const matchesStatus = status === "all" || deal.status === status;
-        const fields = [deal.company, deal.contact, deal.phone, deal.email, deal.tags, deal.cnpj].join(" ").toLowerCase();
-        const matchesSearch = !search || fields.includes(search);
-        const matchesOwner = !owner || deal.owner === owner;
-        const next = getNextActivity(deal.id);
-        const nextStatus = next ? getActivityStatus(next) : null;
-        const matchesActivity = !activityFilter || (activityFilter === "overdue" && nextStatus === "Atrasada") || (activityFilter === "none" && !next);
-        return matchesStatus && matchesSearch && matchesOwner && matchesActivity;
-      });
-    }
-
-    function renderKanban() {
-      const board = document.getElementById("kanbanBoard");
-      const list = document.getElementById("pipelineList");
-      if (!board || !list) return;
-
-      const filteredDeals = getFilteredPipelineDeals();
-      board.style.display = pipelineView === "kanban" ? "flex" : "none";
-      list.style.display = pipelineView === "list" ? "block" : "none";
-
-      if (pipelineView === "list") {
-        list.innerHTML = `
-          <table>
-            <thead>
-              <tr>
-                <th style="width:30px"></th>
-                <th>Negócio</th>
-                <th>Status</th>
-                <th>Etapa</th>
-                <th>Responsável</th>
-                <th>Valor</th>
-                <th>Próxima ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${filteredDeals.length ? filteredDeals.map((deal) => {
-                if (!deal) return "";
-                const next = getNextActivity(deal.id);
-                const nextStatus = next ? getActivityStatus(next) : "";
-                const isChecked = selectedDealsForMassAction.has(deal.id) ? "checked" : "";
-                return `
-                  <tr onclick="openDealDetail(${deal.id})" style="cursor:pointer">
-                    <td onclick="event.stopPropagation()"><input type="checkbox" class="list-checkbox" value="${deal.id}" ${isChecked} onchange="toggleDealSelection(${deal.id})"></td>
-                    <td><strong>${escapeHTML(deal.company)}</strong><br><small style="color:var(--muted)">${escapeHTML(deal.contact || "Sem contato")}</small></td>
-                    <td>${badgeForStatus(dealStatusLabel(deal.status))}</td>
-                    <td>${escapeHTML(deal.stage)}</td>
-                    <td>${escapeHTML(deal.owner)}</td>
-                    <td>${currency(deal.value)}</td>
-                    <td style="color:${nextStatus === "Atrasada" ? "var(--danger)" : "inherit"}">${next ? `${nextStatus === "Atrasada" ? "Vencida: " : ""}${escapeHTML(next.title)}` : "Sem atividade"}</td>
-                  </tr>
+        // Renderiza o Kanban Baseado no Módulo Atual
+        function renderKanban() {
+            const board = document.getElementById('kanbanBoard');
+            board.innerHTML = '';
+            
+            const stages = stagesMap[currentModule];
+            
+            stages.forEach(stage => {
+                // Filtra os negócios desse módulo e dessa etapa
+                const columnDeals = deals.filter(d => d.module === currentModule && d.stage === stage);
+                const columnTotal = columnDeals.reduce((sum, d) => sum + d.value, 0);
+                
+                let columnHtml = `
+                    <div class="kanban-column">
+                        <div class="column-header">
+                            <span class="column-title">${stage} <span style="background:var(--bg-input); padding: 2px 6px; border-radius: 10px;">${columnDeals.length}</span></span>
+                            <span class="column-stats">R$ ${columnTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                        </div>
                 `;
-              }).join("") : `<tr><td colspan="7"><div class="empty">Nenhum negócio encontrado.</div></td></tr>`}
-            </tbody>
-          </table>
-        `;
-        return;
-      }
 
-      const activeStatus = document.getElementById("pipelineStatus")?.value || "open";
+                columnDeals.forEach(deal => {
+                    columnHtml += `
+                        <div class="kanban-card" onclick="openDealDetails(${deal.id})">
+                            <!-- Print 3: Checkbox no card para ações em massa -->
+                            <input type="checkbox" class="card-checkbox" onclick="event.stopPropagation()">
+                            
+                            <div class="card-title">${deal.name}</div>
+                            <div class="card-value">R$ ${deal.value.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                            <div class="card-footer">
+                                <span style="font-size: 11px; background-color: rgba(59, 130, 246, 0.2); color: var(--primary); padding: 2px 6px; border-radius: 4px;">${deal.prob || '0%'}</span>
+                                <div class="avatar" style="width: 20px; height: 20px; font-size: 10px;">${deal.resp.charAt(0)}</div>
+                            </div>
+                        </div>
+                    `;
+                });
 
-      board.innerHTML = stages.map((stage) => {
-        if (!stage) return "";
-        const stageDeals = filteredDeals.filter((deal) => deal && deal.stage === stage.name);
-        const stageTotal = stageDeals.reduce((sum, deal) => sum + Number(deal.value || 0), 0);
+                columnHtml += `</div>`;
+                board.innerHTML += columnHtml;
+            });
+        }
 
-        return `
-          <div class="kanban-column" ondragover="event.preventDefault()" ondrop="dropDeal(event, '${escapeHTML(stage.name)}')">
-            <div class="column-header">
-              <div><span class="column-title" title="${escapeHTML(stage.name)}">${escapeHTML(stage.name)}</span><span class="column-total">${currencyNumber(stageTotal)}</span></div>
-              <span class="column-count">${stageDeals.length}</span>
-            </div>
-            ${stageDeals.map((deal) => {
-              if (!deal) return "";
-              const next = getNextActivity(deal.id);
-              const nextStatus = next ? getActivityStatus(next) : null;
-              let dotClass = "gray";
-              if (nextStatus === "Atrasada") dotClass = "red";
-              else if (next) { const isToday = dateKey(next.date) === dateKey(CURRENT_DATE); dotClass = isToday ? "yellow" : "green"; }
-              const tagsArray = deal.tags ? deal.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
-              const isChecked = selectedDealsForMassAction.has(deal.id) ? "checked" : "";
+        // Calculo de Forecast (Print 4)
+        function calculateDashboard() {
+            // A regra solicitada: Soma total dos valores dos cards a partir de "Proposta enviada" (ou etapa equivalente do meio pro fim nos outros funis)
+            // Não usa mais peso de probabilidade.
+            
+            const stages = stagesMap[currentModule];
+            let startIndex = 0;
+            
+            // Define a partir de qual etapa conta pro Forecast dependendo do funil
+            if(currentModule === 'comercial') startIndex = stages.indexOf('Proposta Enviada');
+            else if(currentModule === 'cs') startIndex = stages.indexOf('Implantação');
+            else if(currentModule === 'financeiro') startIndex = stages.indexOf('A Faturar');
+            
+            const forecastTotal = deals.filter(d => {
+                return d.module === currentModule && stages.indexOf(d.stage) >= startIndex;
+            }).reduce((sum, d) => sum + d.value, 0);
 
-              return `
-                <article class="deal-card" draggable="${activeStatus === "open" ? "true" : "false"}" ondragstart="dragDeal(event, ${deal.id})" onclick="openDealDetail(${deal.id})">
-                  <input type="checkbox" class="deal-checkbox" value="${deal.id}" ${isChecked} onclick="event.stopPropagation(); toggleDealSelection(${deal.id})">
-                  <div><h3>${escapeHTML(deal.company)}</h3><p style="margin-top: 2px;">${escapeHTML(deal.contact || "Sem contato")}</p></div>
-                  ${dealValueHTML(deal)}
-                  ${tagsArray.length ? `<div class="deal-card-tags">${tagsArray.map(tag => `<span class="deal-card-tag">${escapeHTML(tag)}</span>`).join("")}</div>` : ""}
-                  <div class="deal-card-footer">
-                    <div class="deal-card-owner"><span class="small-avatar" style="width: 18px; height: 18px; font-size: 8px;">${deal.owner ? deal.owner.charAt(0) : "V"}</span><span>${escapeHTML(deal.owner)}</span></div>
-                    <button class="activity-dot ${dotClass}" title="${next ? `Concluir: ${next.title}` : 'Nova Ação'}" onclick="event.stopPropagation(); openQuickComplete(${deal.id})"></button>
-                  </div>
-                </article>
-              `;
-            }).join("")}
-            ${!stageDeals.length ? `<div style="padding:16px 5px;color:var(--muted);font-size:11px;text-align:center">Nenhum negócio</div>` : ""}
-          </div>
-        `;
-      }).join("");
-    }
+            document.getElementById('kpi-forecast').innerText = 'R$ ' + forecastTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+        }
 
-    function setPipelineView(view) {
-      pipelineView = view;
-      document.getElementById("kanbanToggle")?.classList.toggle("active", view === "kanban");
-      document.getElementById("listToggle")?.classList.toggle("active", view === "list");
-      renderKanban();
-    }
+        // Modais Gerais
+        function openNewDealModal() { document.getElementById('newDealModal').classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    function dragDeal(event, dealId) { event.dataTransfer.setData("dealId", dealId); }
-    function dropDeal(event, stage) {
-      const dealId = Number(event.dataTransfer.getData("dealId"));
-      const deal = getDeal(dealId);
-      if (!deal || deal.status !== "open" || deal.stage === stage) return;
-      const oldStage = deal.stage;
-      deal.stage = stage;
-      deal.probability = getStageData(stage).probability;
-      addTimelineEvent(deal, "Etapa alterada", `${oldStage} → ${stage}.`);
-      saveData(); refreshAll();
-    }
+        // Modal de Detalhes (Pipedrive Style e Passagem de Bastão)
+        function openDealDetails(id) {
+            activeDealId = id;
+            const deal = deals.find(d => d.id === id);
+            
+            document.getElementById('detailName').innerText = deal.name;
+            document.getElementById('detailValue').innerText = 'R$ ' + deal.value.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+            
+            // Preenche etapas baseadas no módulo atual do card
+            const stageSelect = document.getElementById('detailStage');
+            stageSelect.innerHTML = '';
+            stagesMap[deal.module].forEach(st => {
+                stageSelect.innerHTML += `<option value="${st}" ${deal.stage === st ? 'selected' : ''}>${st}</option>`;
+            });
 
-    function updateDealStageDirectly(dealId, newStageName) {
-      const deal = getDeal(dealId);
-      if (!deal || deal.status !== "open" || deal.stage === newStageName) return;
-      const oldStage = deal.stage; deal.stage = newStageName; deal.probability = getStageData(newStageName).probability;
-      addTimelineEvent(deal, "Etapa alterada", `${oldStage} → ${newStageName}.`);
-      saveData(); refreshAll(); openDealDetail(dealId);
-    }
+            // Seta o seletor de transferência de módulo (Print 8)
+            document.getElementById('detailModule').value = deal.module;
 
-    // STAGES MANAGER
-    function togglePipelineManager() { document.getElementById("pipelineManager")?.classList.toggle("open"); renderStageEditor(); }
-    function renderStageEditor() {
-      const container = document.getElementById("stageEditor");
-      if (!container) return;
-      container.innerHTML = stages.map((stage, index) => {
-        if (!stage) return "";
-        return `
-          <div class="stage-editor-card">
-            <strong title="${escapeHTML(stage.name)}">${escapeHTML(stage.name)}</strong>
-            <small style="display:block;margin-bottom:9px;color:var(--muted);font-size:10px">Prob: ${stage.probability}%</small>
-            <div class="stage-editor-actions">
-              <button class="icon-button" title="Esquerda" ${index === 0 ? "disabled" : ""} onclick="moveStage(${index}, -1)">←</button>
-              <button class="icon-button" title="Editar" onclick="openStageModal(${index})">✎</button>
-              <button class="icon-button" title="Direita" ${index === stages.length - 1 ? "disabled" : ""} onclick="moveStage(${index}, 1)">→</button>
-              <button class="icon-button danger" title="Excluir" onclick="deleteStage(${index})">×</button>
-            </div>
-          </div>
-          <button class="stage-add-between" title="Inserir Etapa" onclick="openStageModal(null, ${index + 1})">＋</button>
-        `;
-      }).join("");
-      container.insertAdjacentHTML("afterbegin", `<button class="stage-add-between" title="Inserir Inicial" onclick="openStageModal(null, 0)">＋</button>`);
-    }
+            document.getElementById('dealDetailsModal').classList.add('active');
+        }
 
-    function openStageModal(index = null, insertAt = null) {
-      document.getElementById("stageEditIndex").value = index === null ? `new:${insertAt}` : index;
-      document.getElementById("stageModalTitle").textContent = index === null ? "Criar etapa" : "Editar etapa";
-      if (index === null) { document.getElementById("stageName").value = ""; document.getElementById("stageProbability").value = "50"; }
-      else { document.getElementById("stageName").value = stages[index].name; document.getElementById("stageProbability").value = stages[index].probability; }
-      document.getElementById("stageModal").classList.add("open");
-    }
+        // Salvar alterações de dentro do Card (Mudança de Módulo/Etapa)
+        function saveDealEdits() {
+            if(!activeDealId) return;
+            const dealIndex = deals.findIndex(d => d.id === activeDealId);
+            
+            const newModule = document.getElementById('detailModule').value;
+            const newStage = document.getElementById('detailStage').value;
 
-    function saveStage() {
-      const reference = document.getElementById("stageEditIndex")?.value;
-      const name = document.getElementById("stageName")?.value.trim();
-      const probability = Number(document.getElementById("stageProbability")?.value || 50);
-      if (!name) { alert("Informe um nome."); return; }
-      if (reference && reference.startsWith("new:")) { stages.splice(Number(reference.split(":")[1]), 0, { name, probability }); } 
-      else if (reference !== undefined) {
-        const index = Number(reference); const oldName = stages[index].name; stages[index] = { name, probability };
-        deals.forEach((d) => { if (d && d.workspace === currentWorkspace && d.stage === oldName) { d.stage = name; d.probability = probability; } });
-      }
-      saveData(); closeModal("stageModal"); refreshAll();
-    }
+            // Se mudou de módulo, a etapa vai para a primeira do novo módulo automaticamente
+            if(deals[dealIndex].module !== newModule) {
+                deals[dealIndex].module = newModule;
+                deals[dealIndex].stage = stagesMap[newModule][0];
+                alert('Negócio transferido para o funil ' + newModule.toUpperCase() + ' com sucesso!');
+            } else {
+                deals[dealIndex].stage = newStage;
+            }
 
-    function moveStage(index, direction) {
-      const newIndex = index + direction;
-      if (newIndex < 0 || newIndex >= stages.length) return;
-      [stages[index], stages[newIndex]] = [stages[newIndex], stages[index]];
-      saveData(); refreshAll();
-    }
+            closeModal('dealDetailsModal');
+            renderKanban();
+            calculateDashboard();
+        }
 
-    function deleteStage(index) {
-      if (stages.length <= 2) { alert("Mantenha ao menos duas etapas."); return; }
-      const stage = stages[index]; const destination = stages[index - 1] || stages[index + 1];
-      if (!confirm(`Excluir "${stage.name}"? Negócios irão para "${destination.name}".`)) return;
-      deals.forEach((d) => { if (d && d.workspace === currentWorkspace && d.stage === stage.name) { d.stage = destination.name; d.probability = destination.probability; } });
-      stages.splice(index, 1); saveData(); refreshAll();
-    }
+        // Formatação de Moeda e % (Print 2)
+        function formatCurrency(input) {
+            let value = input.value.replace(/\D/g, '');
+            if(value === '') { input.value = ''; return; }
+            value = (value / 100).toFixed(2) + '';
+            value = value.replace(".", ",");
+            value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+            input.value = 'R$ ' + value;
+        }
 
-    // CALENDAR / AGENDA
-    function renderCalendar() {
-      const title = document.getElementById("calendarTitle");
-      const container = document.getElementById("calendarDays");
-      if (!title || !container) return;
-      title.textContent = calendarCursor.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
-      const year = calendarCursor.getFullYear(); const month = calendarCursor.getMonth();
-      const firstDay = new Date(year, month, 1).getDay(); const lastDate = new Date(year, month + 1, 0).getDate();
-      let html = "";
-      for (let i = 0; i < firstDay; i++) html += `<span class="calendar-day empty-day"></span>`;
-      for (let day = 1; day <= lastDate; day++) {
-        const thisDate = new Date(year, month, day, 12, 0, 0); const key = dateKey(thisDate);
-        const hasActivity = activities.some((a) => a && dateKey(a.date) === key && getDeal(a.dealId)?.workspace === currentWorkspace);
-        const selected = dateKey(selectedDate) === key; const today = dateKey(CURRENT_DATE) === key;
-        html += `<button class="calendar-day ${selected ? "selected" : ""} ${today ? "today" : ""} ${hasActivity ? "has-activity" : ""}" onclick="selectCalendarDate('${key}')">${day}</button>`;
-      }
-      container.innerHTML = html;
-    }
-    function changeCalendarMonth(direction) { calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth() + direction, 1); renderCalendar(); }
-    function selectCalendarDate(key) { selectedDate = new Date(key + "T12:00:00"); calendarCursor = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1); renderCalendar(); renderActivities(); }
-    function goToday() { selectedDate = new Date(CURRENT_DATE); calendarCursor = new Date(CURRENT_DATE.getFullYear(), CURRENT_DATE.getMonth(), 1); renderCalendar(); renderActivities(); }
-    function setAgendaView(view) {
-      agendaView = view;
-      ["day", "week", "fortnight", "month", "semester", "year", "list"].forEach((item) => {
-        document.getElementById(`agenda${item.charAt(0).toUpperCase() + item.slice(1)}Toggle`)?.classList.toggle("active", item === view);
-      });
-      renderActivities();
-    }
-    function isInAgendaPeriod(date) {
-      const aDate = new Date(date); const s = new Date(selectedDate);
-      if (agendaView === "list") return true;
-      if (agendaView === "day") return dateKey(aDate) === dateKey(s);
-      if (agendaView === "month") return aDate.getFullYear() === s.getFullYear() && aDate.getMonth() === s.getMonth();
-      if (agendaView === "year") return aDate.getFullYear() === s.getFullYear();
-      if (agendaView === "semester") return aDate.getFullYear() === s.getFullYear() && Math.floor(aDate.getMonth() / 6) === Math.floor(s.getMonth() / 6);
-      if (agendaView === "week") {
-        const f = new Date(s); f.setDate(s.getDate() - s.getDay()); f.setHours(0, 0, 0, 0);
-        const l = new Date(f); l.setDate(f.getDate() + 7);
-        return aDate >= f && aDate < l;
-      }
-      if (agendaView === "fortnight") { // 15 dias
-        const f = new Date(s); f.setHours(0,0,0,0);
-        const l = new Date(f); l.setDate(f.getDate() + 15);
-        return aDate >= f && aDate < l;
-      }
-      return false;
-    }
-    function getAgendaLabel() {
-      if (agendaView === "list") return "Todas as atividades";
-      if (agendaView === "year") return `Ano de ${selectedDate.getFullYear()}`;
-      if (agendaView === "month") return selectedDate.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
-      if (agendaView === "semester") return `Semestre ${Math.floor(selectedDate.getMonth() / 6) + 1} de ${selectedDate.getFullYear()}`;
-      if (agendaView === "week" || agendaView === "fortnight") {
-        const f = new Date(selectedDate);
-        if(agendaView === "week") f.setDate(selectedDate.getDate() - selectedDate.getDay());
-        const l = new Date(f); l.setDate(f.getDate() + (agendaView==="week"?6:14));
-        return `${formatDate(f.toISOString().split("T")[0])} — ${formatDate(l.toISOString().split("T")[0])}`;
-      }
-      return selectedDate.toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
-    }
+        function formatPercentage(input) {
+            let value = input.value.replace(/\D/g, '');
+            if(value === '') { input.value = ''; return; }
+            if(parseInt(value) > 100) value = '100';
+            input.value = value + '%';
+        }
 
-    function renderActivities() {
-      const table = document.getElementById("activitiesTable"); if (!table) return;
-      const owner = document.getElementById("activityOwnerFilter")?.value || "";
-      const type = document.getElementById("activityTypeFilter")?.value || "";
-      const statusFilter = document.getElementById("activityStatusFilter")?.value || "";
-      const search = document.getElementById("activitySearch")?.value.trim().toLowerCase() || "";
+        // Tema e Cores (Anti-Clubismo)
+        function changeTheme(themeValue) {
+            document.documentElement.setAttribute('data-theme', themeValue);
+        }
 
-      const activeActivities = activities.filter(a => getDeal(a.dealId)?.workspace === currentWorkspace);
-      const filtered = activeActivities.map((a) => ({ ...a, calculatedStatus: getActivityStatus(a) })).filter((a) => {
-        const d = getDeal(a.dealId);
-        const matchesPeriod = isInAgendaPeriod(a.date);
-        const matchesOwner = !owner || a.owner === owner;
-        const matchesType = !type || a.type === type;
-        const matchesStatus = !statusFilter || a.calculatedStatus === statusFilter;
-        const matchesSearch = !search || a.title.toLowerCase().includes(search) || (d?.company || "").toLowerCase().includes(search);
-        return matchesPeriod && matchesOwner && matchesType && matchesStatus && matchesSearch;
-      }).sort((a, b) => new Date(a.date) - new Date(b.date));
+        function changePrimaryColor(colorHex) {
+            document.documentElement.style.setProperty('--primary', colorHex);
+            document.documentElement.style.setProperty('--primary-hover', colorHex + 'dd'); // opacidade no hover
+            document.getElementById('colorHex').innerText = colorHex;
+        }
 
-      document.getElementById("agendaDateLabel").textContent = getAgendaLabel();
-      const periodActivities = activeActivities.filter((a) => isInAgendaPeriod(a.date));
-      const scheduled = activeActivities.filter((a) => getActivityStatus(a) === "Agendada").length;
-      const overdue = activeActivities.filter((a) => getActivityStatus(a) === "Atrasada").length;
-      const completed = activeActivities.filter((a) => getActivityStatus(a) === "Concluída").length;
-
-      document.getElementById("agendaScheduled").textContent = scheduled;
-      document.getElementById("agendaOverdue").textContent = overdue;
-      document.getElementById("agendaCompleted").textContent = completed;
-
-      const pPending = periodActivities.filter((a) => getActivityStatus(a) === "Agendada").length;
-      const pOverdue = periodActivities.filter((a) => getActivityStatus(a) === "Atrasada").length;
-      const pCompleted = periodActivities.filter((a) => getActivityStatus(a) === "Concluída").length;
-      const max = Math.max(pPending, pOverdue, pCompleted, 1);
-
-      document.getElementById("chartPending").textContent = pPending; document.getElementById("chartPendingBar").style.width = `${(pPending / max) * 100}%`;
-      document.getElementById("chartOverdue").textContent = pOverdue; document.getElementById("chartOverdueBar").style.width = `${(pOverdue / max) * 100}%`;
-      document.getElementById("chartCompleted").textContent = pCompleted; document.getElementById("chartCompletedBar").style.width = `${(pCompleted / max) * 100}%`;
-
-      table.innerHTML = filtered.length ? filtered.map((a) => {
-        const d = getDeal(a.dealId);
-        return `
-          <tr>
-            <td><strong>${escapeHTML(a.title)}</strong><br><small style="color:var(--muted)">${escapeHTML(a.priority)} prioridade</small></td>
-            <td>${escapeHTML(a.type)}</td>
-            <td><button class="link-button" onclick="openDealDetail(${a.dealId})">${escapeHTML(d?.company || "Sem vínculo")}</button></td>
-            <td>${escapeHTML(a.owner)}</td><td>${formatDateTime(a.date)}</td><td>${badgeForStatus(a.calculatedStatus)}</td>
-            <td>${a.calculatedStatus !== "Concluída" && a.calculatedStatus !== "Cancelada" ? `<button class="button button-primary button-small" onclick="completeActivity(${a.id})">Concluir</button>` : "—"}</td>
-          </tr>
-        `;
-      }).join("") : `<tr><td colspan="7"><div class="empty">Nenhuma atividade.</div></td></tr>`;
-    }
-
-    function completeActivity(activityId, note = "") {
-      const a = activities.find((item) => item && Number(item.id) === Number(activityId));
-      if (!a) return;
-      a.status = "Concluída";
-      const d = getDeal(a.dealId);
-      if (d) addTimelineEvent(d, `Atividade concluída: ${a.title}`, `${a.type} concluída. ${note ? 'Nota: '+note : ''}`);
-      saveData(); refreshAll();
-      if (currentDetailDealId === a.dealId && document.getElementById("detailModal")?.classList.contains("open")) openDealDetail(currentDetailDealId);
-    }
-
-    function openQuickComplete(dealId) {
-      const nextAct = getNextActivity(dealId);
-      if(!nextAct) { openActivityModal(dealId); return; }
-      document.getElementById("quickActivityId").value = nextAct.id;
-      document.getElementById("quickActivityNote").value = "";
-      document.getElementById("quickCompleteModal").classList.add("open");
-    }
-
-    function confirmQuickComplete() {
-      const id = document.getElementById("quickActivityId").value;
-      const note = document.getElementById("quickActivityNote").value.trim();
-      completeActivity(id, note);
-      closeModal("quickCompleteModal");
-    }
-
-    // FORECAST
-    function renderForecast() {
-      const owner = document.getElementById("forecastOwnerFilter")?.value || "";
-      const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && (!owner || d.owner === owner));
-      
-      const gross = openDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
-      
-      // Regra de Ouro: Ponderado agora só soma se probabilidade >= 50%
-      const advancedDeals = openDeals.filter(d => Number(d.probability) >= 50);
-      const weighted = advancedDeals.reduce((sum, d) => sum + Number(d.value || 0) * (Number(d.probability || 0) / 100), 0);
-
-      // Metas do time ou meta global (somando todas)
-      const globalGoal = owner ? (ownerGoals[owner] || 0) : Object.values(ownerGoals).reduce((a,b)=>a+b, 0);
-
-      const gap = Math.max(globalGoal - weighted, 0);
-      const goalProgress = globalGoal > 0 ? Math.min((weighted / globalGoal) * 100, 100) : 100;
-
-      document.getElementById("forecastGoal").textContent = currencyNumber(globalGoal);
-      document.getElementById("grossForecast").textContent = currencyNumber(gross);
-      document.getElementById("weightedForecast").textContent = currencyNumber(weighted);
-      document.getElementById("goalGap").textContent = weighted >= globalGoal ? "Meta batida!" : currencyNumber(gap);
-      document.getElementById("goalGapNote").textContent = weighted >= globalGoal ? "Forecast acima da meta" : "Falta faturar";
-
-      const summaryEl = document.getElementById("forecastSummary");
-      if (summaryEl) {
-        summaryEl.innerHTML = `
-          <div class="progress-row">
-            <div class="progress-top"><span>Progresso contra a meta global</span><strong>${Math.round(goalProgress)}%</strong></div>
-            <div class="progress-track"><div class="progress-bar" style="width:${goalProgress}%;background:${weighted >= globalGoal ? "var(--success)" : "var(--primary)"}"></div></div>
-          </div>
-          <div class="progress-row">
-            <div class="progress-top"><span>Ticket médio (Avançados)</span><strong>${currencyNumber(advancedDeals.length ? advancedDeals.reduce((s,d)=>s+Number(d.value||0),0) / advancedDeals.length : 0)}</strong></div>
-            <div class="conversion-meta">${advancedDeals.length} oportunidade(s) em reta final</div>
-          </div>
-        `;
-      }
-
-      const fStages = document.getElementById("forecastStages");
-      if (fStages) {
-        const targetStages = stages.filter(s => s && s.probability >= 50);
-        fStages.innerHTML = targetStages.length ? targetStages.map((stage) => {
-          const stDeals = openDeals.filter((d) => d && d.stage === stage.name);
-          const stGross = stDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
-          const stWeig = stDeals.reduce((sum, d) => sum + Number(d.value || 0) * (Number(d.probability || 0) / 100), 0);
-          const impact = weighted ? Math.round((stWeig / weighted) * 100) : 0;
-          return `
-            <div class="conversion-row">
-              <div class="conversion-top"><span>${escapeHTML(stage.name)}</span><strong>${impact}% do forecast</strong></div>
-              <div class="progress-track"><div class="progress-bar" style="width:${impact}%;background:var(--info)"></div></div>
-              <div class="conversion-meta">${stDeals.length} negócio(s) · Pipeline: ${currencyNumber(stGross)} · Ponderado: ${currencyNumber(stWeig)}</div>
-            </div>
-          `;
-        }).join("") : `<div class="empty">Nenhuma etapa avançada (>= 50%).</div>`;
-      }
-    }
-
-    // TEAM
-    function renderTeam() {
-      const period = document.getElementById("teamPeriod")?.value || "month";
-      const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
-      const activeActs = activities.filter(a => getDeal(a.dealId)?.workspace === currentWorkspace);
-      const periodActs = activeActs.filter(a => isDateInPeriod(a.date, period));
-      
-      const tRank = document.getElementById("teamRanking");
-      if (tRank) {
-        tRank.innerHTML = `
-          <div class="team-row" style="color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase">
-            <div>Comercial</div><div>Meta</div><div>Forecast Realizado</div><div>Progresso</div><div>Vencidas</div>
-          </div>
-          ${owners.map((owner) => {
-            const oDeals = openDeals.filter((d) => d && d.owner === owner);
-            const oActs = periodActs.filter((a) => a && a.owner === owner);
-            const oOver = oActs.filter((a) => getActivityStatus(a) === "Atrasada").length;
-            const oForecast = oDeals.filter(d=>d.probability>=50).reduce((sum, d) => sum + Number(d.value || 0) * (Number(d.probability || 0) / 100), 0);
-            const goal = ownerGoals[owner] || 1; 
-            const prog = Math.min((oForecast / goal)*100, 100);
-
-            return `
-              <div class="team-row">
-                <div class="team-person"><span class="small-avatar">${owner ? owner.charAt(0) : "V"}</span>${escapeHTML(owner)}</div>
-                <div>${currencyNumber(goal)}</div>
-                <div><strong>${currencyNumber(oForecast)}</strong></div>
-                <div style="width:100%;"><div class="progress-track"><div class="progress-bar" style="width:${prog}%;background:${prog>=100?"var(--success)":"var(--primary)"}"></div></div></div>
-                <div>${oOver ? `<span style="color:var(--danger);font-weight:700">${oOver}</span>` : "0"}</div>
-              </div>
-            `;
-          }).join("")}
-        `;
-      }
-
-      const alerts = periodActs.filter((a) => getActivityStatus(a) === "Atrasada").sort((a,b) => new Date(a.date) - new Date(b.date));
-      const tAlerts = document.getElementById("teamAlerts");
-      if (tAlerts) {
-        tAlerts.innerHTML = alerts.length ? alerts.map((a) => {
-          const d = getDeal(a.dealId);
-          return `
-            <div class="activity-item">
-              <div class="activity-icon">!</div>
-              <div class="activity-info"><strong>${escapeHTML(a.title)}</strong><small>${escapeHTML(a.owner)} · ${escapeHTML(d?.company || "Sem negócio")}</small></div>
-              ${badgeForStatus("Atrasada")}
-            </div>
-          `;
-        }).join("") : `<div class="empty">Tudo em dia na equipe!</div>`;
-      }
-    }
-
-    // REPORTS
-    function renderReports() {
-      const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
-      const container = document.getElementById("reportsConversion");
-      if(container) {
-        container.innerHTML = stages.map((stage, index) => {
-          const currentCount = openDeals.filter((d) => d && d.stage === stage.name).length;
-          const previousCount = index === 0 ? currentCount : openDeals.filter((d) => stageNames().indexOf(d.stage) >= 0 && stageNames().indexOf(d.stage) <= index - 1).length;
-          const reachedCount = openDeals.filter((d) => stageNames().indexOf(d.stage) >= index).length;
-          const conversion = index === 0 ? 100 : (previousCount > 0 ? Math.round((reachedCount / previousCount) * 100) : 0);
-          return `
-            <div class="conversion-row">
-              <div class="conversion-top"><span>${escapeHTML(stage.name)}</span><strong>${conversion}%</strong></div>
-              <div class="progress-track"><div class="progress-bar" style="width:${conversion}%;background:${index % 2 ? "var(--primary)" : "#10b981"}"></div></div>
-              <div class="conversion-meta">${currentCount} ativos atualmente</div>
-            </div>
-          `;
-        }).join("");
-      }
-
-      const losses = deals.filter((d) => d && d.workspace === currentWorkspace && (d.status === "lost" || d.status === "churn"));
-      const reasons = {}; losses.forEach((d) => { const r = d.lossReason || "Não informado"; reasons[r] = (reasons[r] || 0) + 1; });
-      const entries = Object.entries(reasons).sort((a,b)=>b[1]-a[1]);
-      const max = Math.max(...entries.map(([, val]) => val), 1);
-      const lRep = document.getElementById("lossReports");
-      if (lRep) {
-        lRep.innerHTML = entries.length ? entries.map(([reason, count]) => `
-          <div class="progress-row">
-            <div class="progress-top"><span>${escapeHTML(reason)}</span><strong>${count}</strong></div>
-            <div class="progress-track"><div class="progress-bar" style="width:${(count / max) * 100}%;background:var(--danger)"></div></div>
-          </div>
-        `).join("") : `<div class="empty">Sem perdas registradas.</div>`;
-      }
-    }
-
-    function openDealModal(dealId = null) {
-      const form = document.getElementById("dealForm"); if (!form) return;
-      form.reset();
-      const isEditing = Boolean(dealId); const deal = isEditing ? getDeal(dealId) : null;
-      document.getElementById("editingDealId").value = deal?.id || "";
-      document.getElementById("dealModalTitle").textContent = isEditing ? "Editar negócio" : "Novo negócio";
-
-      fillOwnerOptions();
-      const stageSelect = document.getElementById("dealStage");
-      stageSelect.innerHTML = stages.map(s => `<option value="${escapeHTML(s.name)}" ${s.name===(deal?.stage||stages[0].name)?"selected":""}>${escapeHTML(s.name)}</option>`).join("");
-
-      if (deal) {
-        document.getElementById("dealCompany").value = deal.company || "";
-        document.getElementById("dealCnpj").value = deal.cnpj || "";
-        document.getElementById("dealContact").value = deal.contact || "";
-        document.getElementById("dealAddress").value = deal.address || "";
-        document.getElementById("dealPhone").value = deal.phone || "";
-        document.getElementById("dealEmail").value = deal.email || "";
-        document.getElementById("dealValue").value = deal.value || "";
-        document.getElementById("dealProbability").value = deal.probability || 60;
-        document.getElementById("dealOwner").value = deal.owner || owners[0];
-        document.getElementById("dealCloseDate").value = deal.closeDate || "";
-        document.getElementById("dealSource").value = deal.source || "";
-        document.getElementById("dealTags").value = deal.tags || "";
-      } else {
-        document.getElementById("dealProbability").value = stages[0] ? stages[0].probability : 10;
-        document.getElementById("dealOwner").value = owners[0] || "Victor";
-      }
-
-      stageSelect.onchange = (e) => { document.getElementById("dealProbability").value = getStageData(e.target.value).probability; };
-      document.getElementById("dealModal").classList.add("open");
-    }
-
-    function saveDeal(event) {
-      event.preventDefault();
-      const editingId = document.getElementById("editingDealId")?.value;
-      const payload = {
-        company: document.getElementById("dealCompany").value.trim(),
-        cnpj: document.getElementById("dealCnpj").value.trim(),
-        contact: document.getElementById("dealContact").value.trim(),
-        address: document.getElementById("dealAddress").value.trim(),
-        phone: document.getElementById("dealPhone").value.trim(),
-        email: document.getElementById("dealEmail").value.trim(),
-        value: document.getElementById("dealValue").value ? Number(document.getElementById("dealValue").value) : null,
-        probability: Number(document.getElementById("dealProbability").value || 60),
-        stage: document.getElementById("dealStage").value,
-        owner: document.getElementById("dealOwner").value,
-        closeDate: document.getElementById("dealCloseDate").value,
-        source: document.getElementById("dealSource").value,
-        tags: document.getElementById("dealTags").value.trim(),
-        workspace: currentWorkspace
-      };
-      const note = document.getElementById("dealNote")?.value.trim();
-
-      if (editingId) {
-        const deal = getDeal(editingId); if (!deal) return;
-        const old = { stage: deal.stage, owner: deal.owner, value: deal.value, prob: deal.probability };
-        Object.assign(deal, payload);
-        addTimelineEvent(deal, "Negócio atualizado", "Alterações salvas.");
-        if (old.stage !== payload.stage) addTimelineEvent(deal, "Etapa alterada", `${old.stage} → ${payload.stage}.`);
-        if (note) addTimelineEvent(deal, "Anotação adicional", note);
-      } else {
-        deals.push({
-          id: Date.now(), ...payload, status: "open", createdAt: new Date().toISOString(),
-          timeline: [
-            { title: "Negócio criado", description: `Responsável: ${payload.owner}.`, date: new Date().toISOString() },
-            ...(note ? [{ title: "Nota inicial", description: note, date: new Date().toISOString() }] : [])
-          ]
-        });
-      }
-      saveData(); closeModal("dealModal"); refreshAll();
-      if (editingId && document.getElementById("detailModal").classList.contains("open")) openDealDetail(editingId);
-      else if (!editingId) showView("pipeline");
-    }
-
-    function openActivityModal(dealId = null) {
-      const form = document.querySelector("#activityModal form"); if (form) form.reset(); fillOwnerOptions();
-      const select = document.getElementById("activityDeal");
-      const activeDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
-      select.innerHTML = activeDeals.length ? activeDeals.map((d) => `<option value="${d.id}" ${Number(d.id) === Number(dealId) ? "selected" : ""}>${escapeHTML(d.company)}</option>`).join("") : `<option value="">Nenhum ativo</option>`;
-      const selectedDeal = getDeal(dealId);
-      document.getElementById("activityOwner").value = selectedDeal?.owner || owners[0];
-      const df = new Date(CURRENT_DATE); df.setHours(df.getHours() + 1);
-      document.getElementById("activityDate").value = `${dateKey(df)}T${String(df.getHours()).padStart(2,"0")}:${String(df.getMinutes()).padStart(2,"0")}`;
-      document.getElementById("activityModal").classList.add("open");
-    }
-
-    function createActivity(event) {
-      event.preventDefault();
-      const dealId = Number(document.getElementById("activityDeal").value); if (!dealId) return;
-      const newActivity = {
-        id: Date.now(), dealId, status: "Agendada",
-        title: document.getElementById("activityTitle").value.trim(),
-        type: document.getElementById("activityType").value,
-        date: document.getElementById("activityDate").value,
-        priority: document.getElementById("activityPriority").value,
-        owner: document.getElementById("activityOwner").value,
-        description: document.getElementById("activityDescription").value.trim()
-      };
-      activities.push(newActivity);
-      const deal = getDeal(dealId); if (deal) addTimelineEvent(deal, `Ação criada: ${newActivity.title}`, `${newActivity.type} para ${formatDateTime(newActivity.date)}.`);
-      saveData(); closeModal("activityModal"); refreshAll();
-      if (currentDetailDealId === dealId && document.getElementById("detailModal").classList.contains("open")) openDealDetail(dealId);
-    }
-
-    function openDealDetail(dealId) {
-      const deal = getDeal(dealId); if (!deal) return;
-      currentDetailDealId = deal.id; const nextActivity = getNextActivity(deal.id);
-      
-      document.getElementById("detailHeader").innerHTML = `
-        <div>
-          ${badgeForStatus(dealStatusLabel(deal.status))} <span class="badge badge-gray">${escapeHTML(deal.stage)}</span>
-          <h2 style="margin-top:10px">${escapeHTML(deal.company)}</h2>
-          <p>${escapeHTML(deal.contact || "Sem contato")} · ${escapeHTML(deal.owner)} · ${currency(deal.value)}</p>
-          <div class="chevron-bar">
-            ${stages.map((stage) => {
-              const isCurrent = stage.name === deal.stage;
-              const isCompleted = stageNames().indexOf(stage.name) < stageNames().indexOf(deal.stage);
-              return `<div class="chevron-step ${isCurrent?"active":isCompleted?"completed":""}" onclick="updateDealStageDirectly(${deal.id}, '${escapeHTML(stage.name)}')">${escapeHTML(stage.name)}</div>`;
-            }).join("")}
-          </div>
-        </div>
-        <div class="inline-actions">
-          ${deal.status === "open" ? `<button class="button button-primary button-small" onclick="openActivityModal(${deal.id})">＋ Atividade</button>` : ""}
-          <button class="close-button" onclick="closeModal('detailModal')">×</button>
-        </div>
-      `;
-
-      document.getElementById("dealDetails").innerHTML = `
-        <div class="detail-title">Informações Comerciais</div>
-        <div class="detail-value"><strong>CNPJ / Razão Social</strong><br>${escapeHTML(deal.cnpj || "Não informado")}</div>
-        <div class="detail-value"><strong>Endereço</strong><br>${escapeHTML(deal.address || "Não informado")}</div>
-        <div class="detail-value"><strong>Contato</strong><br>${escapeHTML(deal.contact || "Não informado")}</div>
-        <div class="detail-value"><strong>Telefone</strong><br>${escapeHTML(deal.phone || "Não informado")}</div>
-        <div class="detail-value"><strong>E-mail</strong><br>${escapeHTML(deal.email || "Não informado")}</div>
-        <div class="detail-value"><strong>Valor</strong><br>${currency(deal.value)}</div>
-        <div class="detail-value"><strong>Probabilidade</strong><br>${deal.probability}%</div>
-        <div class="detail-value"><strong>Origem</strong><br>${escapeHTML(deal.source || "Não cadastrada")}</div>
-        <div class="detail-value"><strong>Tags</strong><br>${escapeHTML(deal.tags || "Sem tags")}</div>
-        ${deal.lossReason ? `<div class="detail-value"><strong>Motivo perda</strong><br>${escapeHTML(deal.lossReason)}</div>` : ""}
-        ${deal.phone ? `<div class="whatsapp-box"><strong>WhatsApp Business</strong><button class="button button-success button-small" onclick="openWhatsApp('${escapeHTML(deal.phone)}', '${escapeHTML(deal.company)}')">◉ Abrir WhatsApp</button></div>` : ""}
-        <div class="detail-title">Ações</div>
-        <div class="detail-actions">
-          ${deal.status === "open" ? `
-            <button class="button button-secondary" onclick="openDealModal(${deal.id})">Editar informações</button>
-            <button class="button button-secondary" onclick="openTransferModal(${deal.id})">Transferir responsável</button>
-            <button class="button button-success" onclick="markDealWon(${deal.id})">Ganho ✓</button>
-            <button class="button button-danger" onclick="openLossModal(${deal.id})">Perdido / Churn ✗</button>
-          ` : `<button class="button button-secondary" onclick="reopenDeal(${deal.id})">Reabrir oportunidade</button>`}
-          <button class="button button-secondary" style="color:var(--danger);" onclick="archiveDeal(${deal.id})">Deletar / Arquivar</button>
-        </div>
-      `;
-
-      const tEvents = [...(deal.timeline || []), ...getDealActivities(deal.id).map(a => ({title: `Atividade: ${a.title}`, description: `${a.type} · ${getActivityStatus(a)}${a.description?' · '+a.description:""}`, date: a.date}))].sort((a, b) => new Date(b.date) - new Date(a.date));
-      document.getElementById("dealTimeline").innerHTML = `
-        <div class="panel-header"><div><h2>Timeline</h2></div><span class="badge badge-gray">${tEvents.length} registros</span></div>
-        ${tEvents.length ? tEvents.map(e => `<div class="timeline-event"><strong>${escapeHTML(e.title)}</strong><small>${escapeHTML(e.description)}</small><small style="color:var(--muted);">${formatDateTime(e.date)}</small></div>`).join("") : `<div class="empty">Sem registros.</div>`}
-      `;
-      document.getElementById("detailModal").classList.add("open");
-    }
-
-    function openTransferModal(dealId) {
-      document.getElementById("transferDealId").value = dealId;
-      document.getElementById("transferOwner").value = getDeal(dealId)?.owner || "";
-      document.getElementById("transferModal").classList.add("open");
-    }
-    function transferDeal() {
-      const d = getDeal(document.getElementById("transferDealId").value); const nO = document.getElementById("transferOwner").value;
-      if (d && nO && d.owner !== nO) { addTimelineEvent(d, "Transferência", `${d.owner} → ${nO}.`); d.owner = nO; saveData(); refreshAll(); openDealDetail(d.id); }
-      closeModal("transferModal");
-    }
-
-    function markDealWon(dealId) {
-      const d = getDeal(dealId); if (!d || !confirm("Marcar como GANHO?")) return;
-      d.status = "won"; d.probability = 100; addTimelineEvent(d, "Ganho", "Fechamento realizado!");
-      saveData(); closeModal("detailModal"); refreshAll(); showView("forecast");
-    }
-
-    function openLossModal(dealId) { document.getElementById("lossDealId").value = dealId; document.getElementById("lossModal").classList.add("open"); }
-    function markDealLost() {
-      const d = getDeal(document.getElementById("lossDealId").value); if (!d) return;
-      d.status = document.getElementById("lossStatus").value;
-      d.lossReason = document.getElementById("lossReason").value;
-      addTimelineEvent(d, d.status==="churn"?"Churn":"Perdido", `Motivo: ${d.lossReason}.`);
-      
-      const followUp = document.getElementById("lossFollowup").value;
-      if(followUp) {
-        const months = Number(followUp);
-        const fDate = new Date(CURRENT_DATE); fDate.setMonth(fDate.getMonth() + months);
-        activities.push({
-          id: Date.now(), dealId: d.id, status: "Agendada", title: "Follow-up de Resgate (Lost/Churn)",
-          type: "Follow-up", date: fDate.toISOString().slice(0,16), priority: "Alta",
-          owner: d.owner, description: "Tentativa de resgate após " + months + " meses."
-        });
-        addTimelineEvent(d, "Follow-up Agendado", `Retorno programado para daqui a ${months} mês(es).`);
-      }
-
-      saveData(); closeModal("lossModal"); closeModal("detailModal"); refreshAll();
-    }
-    
-    function reopenDeal(dealId) { const d = getDeal(dealId); if(d){ d.status = "open"; d.lossReason = ""; addTimelineEvent(d, "Reaberto", "Voltou ao funil."); saveData(); refreshAll(); openDealDetail(dealId); } }
-    function archiveDeal(dealId) { const d = getDeal(dealId); if(d && confirm("Deletar/Arquivar?")){ d.status = "archived"; addTimelineEvent(d, "Arquivado", "Removido do funil."); saveData(); closeModal("detailModal"); refreshAll(); } }
-    function openWhatsApp(phone, company) { window.open(`https://wa.me/55${String(phone).replace(/\D/g, "")}?text=${encodeURIComponent(`Olá! Referente a oportunidade da empresa ${company}.`)}`, "_blank"); }
-
-    function closeModal(id) { document.getElementById(id)?.classList.remove("open"); }
-    document.querySelectorAll(".modal-backdrop").forEach(b => b.addEventListener("click", e => { if (e.target === b) b.classList.remove("open"); }));
-
-    // STARTUP
-    try {
-      saveData(); fillOwnerOptions(); renderCalendar(); refreshAll();
-    } catch (e) { console.error("Erro crítico na inicialização:", e); }
-  </script>
+    </script>
 </body>
 </html>
