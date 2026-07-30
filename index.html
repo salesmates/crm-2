@@ -419,6 +419,14 @@
     .lang-flag:hover { filter: grayscale(0); background: var(--surface-card); }
     .lang-flag.active { filter: grayscale(0); background: rgba(59, 130, 246, 0.2); border: 1px solid var(--primary); }
 
+    /* LEAD FRIO */
+    .cold-deal { border-color: var(--info) !important; box-shadow: 0 0 8px rgba(96, 165, 250, 0.3) !important; position: relative; }
+    .cold-icon { position: absolute; top: -10px; right: -10px; font-size: 14px; background: var(--surface); border-radius: 50%; padding: 2px; box-shadow: var(--shadow); z-index: 10; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px;}
+
+    /* CLOUD SYNC */
+    .cloud-sync { position: fixed; bottom: 20px; right: 20px; background: var(--surface-card); color: var(--text); padding: 8px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; box-shadow: var(--shadow); }
+    .cloud-sync.visible { opacity: 1; }
+
     @media (max-width: 1000px) {
       .sidebar { width: 64px; padding: 16px 8px; }
       .brand { justify-content: center; padding: 0; }
@@ -806,6 +814,8 @@
               <label style="font-size:12px; font-weight:600; color:var(--muted);">Até:</label>
               <input type="date" class="filter" id="reportsEndDate" onchange="renderReports()" />
             </div>
+            <!-- Exportação de Dados -->
+            <button class="button button-secondary" onclick="exportReportsCSV()">⬇ Exportar CSV</button>
           </div>
         </div>
         <div class="content-grid">
@@ -1069,7 +1079,14 @@
                 <option>Proposta</option><option>Follow-up</option><option>Tarefa</option>
               </select>
             </div>
-            <div class="field"><label>Negócio relacionado *</label><select id="activityDeal" required></select></div>
+            
+            <!-- BUSCA INTELIGENTE DE LEADS NO MODAL -->
+            <div class="field">
+              <label>Negócio relacionado *</label>
+              <input list="activityDealList" id="activityDeal" required placeholder="Digite para buscar..." autocomplete="off" />
+              <datalist id="activityDealList"></datalist>
+            </div>
+            
             <div class="field"><label>Data e hora *</label><input id="activityDate" required type="datetime-local" /></div>
             <div class="field">
               <label>Prioridade</label>
@@ -1087,7 +1104,6 @@
     </div>
   </div>
 
-  <!-- OUTROS MODAIS INALTERADOS -->
   <div class="modal-backdrop" id="transferModal">
     <div class="modal small-modal">
       <div class="modal-header">
@@ -1165,6 +1181,9 @@
       </div>
     </div>
   </div>
+
+  <!-- NUVEM DE STATUS FLUTUANTE -->
+  <div id="cloudSyncStatus" class="cloud-sync"><span id="cloudIcon">☁️</span> <span id="cloudText">Salvando...</span></div>
 
   <script>
     const CURRENT_DATE = new Date();
@@ -1360,6 +1379,19 @@
       refreshAll();
     }
 
+    // GATILHO DA NUVEM DE STATUS E SALVAMENTO
+    function showCloudSync() {
+      const el = document.getElementById("cloudSyncStatus"); 
+      const text = document.getElementById("cloudText");
+      if(!el) return; 
+      el.classList.add("visible"); 
+      text.textContent = "Salvando...";
+      setTimeout(() => { 
+        text.textContent = "Salvo ✓"; 
+        setTimeout(() => el.classList.remove("visible"), 1500); 
+      }, 600);
+    }
+
     function saveData() {
       workspaces[currentWorkspace] = stages;
       workspaceOwners[currentWorkspace] = currentOwners;
@@ -1368,6 +1400,25 @@
       localStorage.setItem("salesmates_deals_v5", JSON.stringify(deals));
       localStorage.setItem("salesmates_activities_v5", JSON.stringify(activities));
       localStorage.setItem("salesmates_owner_goals", JSON.stringify(ownerGoals));
+      showCloudSync(); // Ativa a nuvem ao salvar
+    }
+
+    // EXPORTAR DADOS DA TABELA DO RELATÓRIO
+    function exportReportsCSV() {
+      const tb = document.querySelector("#reportsKPI table");
+      if(!tb) { alert("Sem dados para exportar."); return; }
+      let csv = []; 
+      const rows = tb.querySelectorAll("tr");
+      for(let i=0; i<rows.length; i++){ 
+        let row = [], cols = rows[i].querySelectorAll("td, th"); 
+        for(let j=0; j<cols.length; j++) row.push(`"${cols[j].innerText.replace(/"/g,'""')}"`); 
+        csv.push(row.join(",")); 
+      }
+      const blob = new Blob([csv.join("\n")], {type: "text/csv;charset=utf-8;"});
+      const a = document.createElement("a"); 
+      a.href = URL.createObjectURL(blob); 
+      a.download = `relatorio_comercial_${dateKey(new Date())}.csv`; 
+      a.click();
     }
 
     function exportBackup() {
@@ -1801,24 +1852,28 @@
             </div>
             ${stageDeals.map((deal) => {
               if (!deal) return "";
+              
+              // Lógica de ícones SLA e Lead Frio
               const next = getNextActivity(deal.id);
               let dotClass = "gray";
+              let isCold = false;
+
               if (!next) {
                 dotClass = "yellow";
+                const acts = getDealActivities(deal.id);
+                const lastActDate = acts.length ? Math.max(...acts.map(a => new Date(a.date))) : new Date(deal.createdAt);
+                if ((new Date() - lastActDate) / (1000 * 3600 * 24) > 5) isCold = true;
               } else {
                 const nextStatus = getActivityStatus(next);
-                if (nextStatus === "Atrasada") {
-                  dotClass = "red";
-                } else {
-                  const isToday = dateKey(next.date) === dateKey(CURRENT_DATE);
-                  dotClass = isToday ? "green" : "gray";
-                }
+                if (nextStatus === "Atrasada") dotClass = "red";
+                else dotClass = dateKey(next.date) === dateKey(CURRENT_DATE) ? "green" : "gray";
               }
               const tagsArray = deal.tags ? deal.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
               const isChecked = selectedDealsForMassAction.has(deal.id) ? "checked" : "";
 
               return `
-                <article class="deal-card" draggable="${activeStatus === "open" ? "true" : "false"}" ondragstart="dragDeal(event, ${deal.id})" onclick="openDealDetail(${deal.id})">
+                <article class="deal-card ${isCold ? 'cold-deal' : ''}" draggable="${activeStatus === "open" ? "true" : "false"}" ondragstart="dragDeal(event, ${deal.id})" onclick="openDealDetail(${deal.id})">
+                  ${isCold ? '<div class="cold-icon" title="Lead Frio - Mais de 5 dias sem ação">🧊</div>' : ''}
                   <input type="checkbox" class="deal-checkbox" value="${deal.id}" ${isChecked} onclick="event.stopPropagation(); toggleDealSelection(${deal.id})">
                   <div><h3>${escapeHTML(deal.company)}</h3><p style="margin-top: 2px;">${escapeHTML(deal.contact || "Sem contato")}</p></div>
                   ${dealValueHTML(deal)}
@@ -1860,6 +1915,15 @@
       if (!deal || deal.status !== "open" || deal.stage === newStageName) return;
       const oldStage = deal.stage; deal.stage = newStageName; deal.probability = getStageData(newStageName).probability;
       addTimelineEvent(deal, "Etapa alterada", `${oldStage} → ${newStageName}.`);
+      
+      // Auto Ganho se for a última etapa. (Sugerido para facilitar já que o botão Ganho foi ocultado da edição)
+      if(stageNames().indexOf(newStageName) === stages.length - 1) {
+          if(confirm(`Você moveu para a última etapa (${newStageName}). Deseja marcar como GANHO agora?`)) {
+              markDealWon(dealId);
+              return;
+          }
+      }
+
       saveData(); refreshAll(); openDealDetail(dealId);
     }
 
@@ -2063,38 +2127,40 @@
       closeModal("quickCompleteModal");
     }
 
-    // FORECAST
+    // FORECAST - ATUALIZADO CÁLCULO DE GAP
     function renderForecast() {
       const owner = document.getElementById("forecastOwnerFilter")?.value || "";
       const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && (!owner || d.owner === owner));
+      const wonDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "won" && (!owner || d.owner === owner));
       
       const gross = openDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
-      
       const advancedDeals = openDeals.filter(d => Number(d.probability) >= 50);
       const rawAdvanced = advancedDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
-
+      
+      // Gap baseado nos Ganhos (Won)
+      const wonValue = wonDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
       const globalGoal = owner ? (ownerGoals[owner] || 0) : Object.values(ownerGoals).reduce((a,b)=>a+b, 0);
-      const gap = Math.max(globalGoal - rawAdvanced, 0);
-      const goalProgress = globalGoal > 0 ? Math.min((rawAdvanced / globalGoal) * 100, 100) : 100;
+      
+      const gap = Math.max(globalGoal - wonValue, 0); 
+      const goalProgress = globalGoal > 0 ? Math.min((wonValue / globalGoal) * 100, 100) : 100;
 
       document.getElementById("forecastGoal").textContent = currencyNumber(globalGoal);
       document.getElementById("grossForecast").textContent = currencyNumber(gross);
       document.getElementById("weightedForecast").textContent = currencyNumber(rawAdvanced);
-      document.getElementById("goalGap").textContent = rawAdvanced >= globalGoal ? "Meta batida!" : currencyNumber(gap);
-      document.getElementById("goalGapNote").textContent = rawAdvanced >= globalGoal ? "Forecast acima da meta" : "Falta faturar";
+      document.getElementById("goalGap").textContent = wonValue >= globalGoal ? "Meta batida!" : currencyNumber(gap);
+      document.getElementById("goalGapNote").textContent = wonValue >= globalGoal ? "Fechados acima da meta" : "Falta faturar (Meta - Fechados)";
 
       const summaryEl = document.getElementById("forecastSummary");
       if (summaryEl) {
-        summaryEl.innerHTML = `
-          <div class="progress-row">
-            <div class="progress-top"><span>Progresso contra a meta global</span><strong>${Math.round(goalProgress)}%</strong></div>
-            <div class="progress-track"><div class="progress-bar" style="width:${goalProgress}%;background:${rawAdvanced >= globalGoal ? "var(--success)" : "var(--primary)"}"></div></div>
-          </div>
-          <div class="progress-row">
-            <div class="progress-top"><span>Ticket médio (Avançados)</span><strong>${currencyNumber(advancedDeals.length ? rawAdvanced / advancedDeals.length : 0)}</strong></div>
-            <div class="conversion-meta">${advancedDeals.length} oportunidade(s) em reta final</div>
-          </div>
-        `;
+          summaryEl.innerHTML = `
+            <div class="progress-row">
+                <div class="progress-top"><span>Realizado vs Meta</span><strong>${Math.round(goalProgress)}%</strong></div>
+                <div class="progress-track"><div class="progress-bar" style="width:${goalProgress}%;background:${wonValue >= globalGoal ? "var(--success)" : "var(--primary)"}"></div></div>
+            </div>
+            <div class="progress-row">
+                <div class="progress-top"><span>Ticket (Avançados)</span><strong>${currencyNumber(advancedDeals.length ? rawAdvanced / advancedDeals.length : 0)}</strong></div>
+            </div>
+          `;
       }
 
       const fStages = document.getElementById("forecastStages");
@@ -2104,64 +2170,45 @@
           const stDeals = openDeals.filter((d) => d && d.stage === stage.name);
           const stGross = stDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
           const impact = rawAdvanced ? Math.round((stGross / rawAdvanced) * 100) : 0;
-          return `
-            <div class="conversion-row">
-              <div class="conversion-top"><span>${escapeHTML(stage.name)}</span><strong>${impact}% do forecast</strong></div>
-              <div class="progress-track"><div class="progress-bar" style="width:${impact}%;background:var(--info)"></div></div>
-              <div class="conversion-meta">${stDeals.length} negócio(s) · Valor Bruto na etapa: ${currencyNumber(stGross)}</div>
-            </div>
-          `;
-        }).join("") : `<div class="empty">Nenhuma etapa avançada (>= 50%).</div>`;
+          return `<div class="conversion-row"><div class="conversion-top"><span>${escapeHTML(stage.name)}</span><strong>${impact}% do avançado</strong></div><div class="progress-track"><div class="progress-bar" style="width:${impact}%;background:var(--info)"></div></div><div class="conversion-meta">${stDeals.length} negócio(s) · Bruto: ${currencyNumber(stGross)}</div></div>`;
+        }).join("") : `<div class="empty">Sem etapas >= 50%.</div>`;
       }
     }
 
-    // TEAM
+    // TEAM - ATUALIZADO (VISÃO RAIO-X)
     function renderTeam() {
-      const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
+      const wonDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "won" && isDateInPeriod(d.createdAt, 'teamStartDate', 'teamEndDate'));
       const activeActs = activities.filter(a => getDeal(a.dealId)?.workspace === currentWorkspace);
       const periodActs = activeActs.filter(a => isDateInPeriod(a.date, 'teamStartDate', 'teamEndDate'));
       
       const tRank = document.getElementById("teamRanking");
       if (tRank) {
         tRank.innerHTML = `
-          <div class="team-row" style="color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase">
-            <div>Comercial</div><div>Meta</div><div>Forecast (Avançado)</div><div>Progresso</div><div>Vencidas</div>
+          <div class="team-row" style="color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase; grid-template-columns: 1.5fr repeat(5, 1fr);">
+              <div>Comercial</div><div>Meta</div><div>Qtd. Fechamentos</div><div>Valor Vendido</div><div>Progresso</div><div>Vencidas</div>
           </div>
-          ${currentOwners.map((owner) => {
-            const oDeals = openDeals.filter((d) => d && d.owner === owner);
+        ` + currentOwners.map((owner) => {
             const oActs = periodActs.filter((a) => a && a.owner === owner);
             const oOver = oActs.filter((a) => getActivityStatus(a) === "Atrasada").length;
-            const oForecast = oDeals.filter(d=>d.probability>=50).reduce((sum, d) => sum + Number(d.value || 0), 0);
+            const oWonDeals = wonDeals.filter(d => d.owner === owner);
+            const oWonValue = oWonDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
             const goal = ownerGoals[owner] || 1; 
-            const prog = Math.min((oForecast / goal)*100, 100);
-
+            const prog = Math.min((oWonValue / goal)*100, 100);
             return `
-              <div class="team-row">
-                <div class="team-person"><span class="small-avatar">${owner ? owner.charAt(0) : "V"}</span>${escapeHTML(owner)}</div>
-                <div>${currencyNumber(goal)}</div>
-                <div><strong>${currencyNumber(oForecast)}</strong></div>
-                <div style="width:100%;"><div class="progress-track"><div class="progress-bar" style="width:${prog}%;background:${prog>=100?"var(--success)":"var(--primary)"}"></div></div></div>
-                <div>${oOver ? `<span style="color:var(--danger);font-weight:700">${oOver}</span>` : "0"}</div>
-              </div>
-            `;
-          }).join("")}
-        `;
+              <div class="team-row" style="grid-template-columns: 1.5fr repeat(5, 1fr);">
+                  <div class="team-person"><span class="small-avatar">${owner ? owner.charAt(0) : "V"}</span>${escapeHTML(owner)}</div>
+                  <div>${currencyNumber(goal)}</div>
+                  <div><strong>${oWonDeals.length}</strong></div>
+                  <div><strong>${currencyNumber(oWonValue)}</strong></div>
+                  <div style="width:100%;"><div class="progress-track"><div class="progress-bar" style="width:${prog}%;background:${prog>=100?"var(--success)":"var(--primary)"}"></div></div></div>
+                  <div>${oOver ? `<span style="color:var(--danger);font-weight:700">${oOver}</span>` : "0"}</div>
+              </div>`;
+        }).join("");
       }
 
       const alerts = periodActs.filter((a) => getActivityStatus(a) === "Atrasada").sort((a,b) => new Date(a.date) - new Date(b.date));
       const tAlerts = document.getElementById("teamAlerts");
-      if (tAlerts) {
-        tAlerts.innerHTML = alerts.length ? alerts.map((a) => {
-          const d = getDeal(a.dealId);
-          return `
-            <div class="activity-item">
-              <div class="activity-icon">!</div>
-              <div class="activity-info"><strong>${escapeHTML(a.title)}</strong><small>${escapeHTML(a.owner)} · ${escapeHTML(d?.company || "Sem negócio")}</small></div>
-              ${badgeForStatus("Atrasada")}
-            </div>
-          `;
-        }).join("") : `<div class="empty">Tudo em dia na equipe!</div>`;
-      }
+      if (tAlerts) tAlerts.innerHTML = alerts.length ? alerts.map((a) => `<div class="activity-item"><div class="activity-icon">!</div><div class="activity-info"><strong>${escapeHTML(a.title)}</strong><small>${escapeHTML(a.owner)} · ${escapeHTML(getDeal(a.dealId)?.company || "Sem negócio")}</small></div>${badgeForStatus("Atrasada")}</div>`).join("") : `<div class="empty">Tudo em dia na equipe!</div>`;
     }
 
     // REPORTS
@@ -2227,7 +2274,6 @@
         document.getElementById("dealAddress").value = deal.address || "";
         document.getElementById("dealPhone").value = deal.phone || "";
         document.getElementById("dealEmail").value = deal.email || "";
-        // Formatar valor salvo no input mask
         const vInput = document.getElementById("dealValue");
         vInput.value = deal.value ? deal.value.toString() : "";
         if(vInput.value) maskCurrency(vInput);
@@ -2289,18 +2335,22 @@
       else if (!editingId) showView("pipeline");
     }
 
+    // ATUALIZADO: BUSCA INTELIGENTE DE LEADS (DATALIST) NO MODAL DE ATIVIDADE
     function openActivityModal(dealId = null) {
       const form = document.querySelector("#activityModal form"); if (form) form.reset(); fillOwnerOptions();
       document.getElementById("editingActivityId").value = "";
       document.getElementById("activityModalTitle").textContent = "Nova atividade";
       
-      const select = document.getElementById("activityDeal");
       const activeDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
-      select.innerHTML = activeDeals.length ? activeDeals.map((d) => `<option value="${d.id}" ${Number(d.id) === Number(dealId) ? "selected" : ""}>${escapeHTML(d.company)}</option>`).join("") : `<option value="">Nenhum ativo</option>`;
+      const dl = document.getElementById("activityDealList");
+      if(dl) dl.innerHTML = activeDeals.map(d => `<option value="${escapeHTML(d.company)}" data-id="${d.id}"></option>`).join("");
       
+      const inputDeal = document.getElementById("activityDeal");
       const selectedDeal = getDeal(dealId);
+      if(selectedDeal) inputDeal.value = selectedDeal.company; else inputDeal.value = "";
+
       document.getElementById("activityOwner").value = selectedDeal?.owner || currentOwners[0];
-      const df = new Date(CURRENT_DATE); df.setHours(df.getHours() + 1);
+      const df = new Date(); df.setHours(df.getHours() + 1);
       document.getElementById("activityDate").value = `${dateKey(df)}T${String(df.getHours()).padStart(2,"0")}:${String(df.getMinutes()).padStart(2,"0")}`;
       document.getElementById("activityModal").classList.add("open");
     }
@@ -2321,18 +2371,19 @@
 
     function saveActivity(event) {
       event.preventDefault();
-      const dealId = Number(document.getElementById("activityDeal").value); if (!dealId) return;
+      const nv = document.getElementById("activityDeal").value;
+      const opt = Array.from(document.getElementById("activityDealList")?.options || []).find(o => o.value === nv);
+      if(!opt) { alert("Negócio não encontrado na lista. Selecione uma opção válida."); return; }
+      
+      const dealId = Number(opt.dataset.id);
       const editId = document.getElementById("editingActivityId").value;
       
       if(editId) {
         const a = activities.find(x => x.id === Number(editId));
         if(a) {
-          a.dealId = dealId;
-          a.title = document.getElementById("activityTitle").value.trim();
-          a.type = document.getElementById("activityType").value;
-          a.date = document.getElementById("activityDate").value;
-          a.priority = document.getElementById("activityPriority").value;
-          a.owner = document.getElementById("activityOwner").value;
+          a.dealId = dealId; a.title = document.getElementById("activityTitle").value.trim();
+          a.type = document.getElementById("activityType").value; a.date = document.getElementById("activityDate").value;
+          a.priority = document.getElementById("activityPriority").value; a.owner = document.getElementById("activityOwner").value;
           a.description = document.getElementById("activityDescription").value.trim();
           const deal = getDeal(dealId);
           if(deal) addTimelineEvent(deal, `Ação editada: ${a.title}`, `Data ajustada para ${formatDateTime(a.date)}.`);
@@ -2340,17 +2391,13 @@
       } else {
         const newActivity = {
           id: Date.now(), dealId, status: "Agendada",
-          title: document.getElementById("activityTitle").value.trim(),
-          type: document.getElementById("activityType").value,
-          date: document.getElementById("activityDate").value,
-          priority: document.getElementById("activityPriority").value,
-          owner: document.getElementById("activityOwner").value,
-          description: document.getElementById("activityDescription").value.trim()
+          title: document.getElementById("activityTitle").value.trim(), type: document.getElementById("activityType").value,
+          date: document.getElementById("activityDate").value, priority: document.getElementById("activityPriority").value,
+          owner: document.getElementById("activityOwner").value, description: document.getElementById("activityDescription").value.trim()
         };
         activities.push(newActivity);
-        const deal = getDeal(dealId); if (deal) addTimelineEvent(deal, `Ação criada: ${newActivity.title}`, `${newActivity.type} para ${formatDateTime(newActivity.date)}.`);
+        const deal = getDeal(dealId); if (deal) addTimelineEvent(deal, `Ação criada: ${newActivity.title}`, `${newActivity.type} p/ ${formatDateTime(newActivity.date)}.`);
       }
-      
       saveData(); closeModal("activityModal"); refreshAll();
       if (currentDetailDealId === dealId && document.getElementById("detailModal").classList.contains("open")) openDealDetail(dealId);
     }
@@ -2396,17 +2443,28 @@
         <div class="detail-value"><strong>Origem</strong><br>${escapeHTML(deal.source || "Não cadastrada")}</div>
         <div class="detail-value"><strong>Tags</strong><br>${escapeHTML(deal.tags || "Sem tags")}</div>
         ${deal.lossReason ? `<div class="detail-value"><strong>Motivo perda</strong><br>${escapeHTML(deal.lossReason)}</div>` : ""}
-        ${deal.phone ? `<div class="whatsapp-box"><strong>WhatsApp Business</strong><button class="button button-success button-small" onclick="openWhatsApp('${escapeHTML(deal.phone)}', '${escapeHTML(deal.company)}')">◉ Abrir WhatsApp</button></div>` : ""}
+        
+        ${deal.phone ? `
+        <div class="whatsapp-box">
+          <strong>WhatsApp Business</strong>
+          <select id="waTemplate" style="margin-bottom:8px;padding:6px;font-size:11px;width:100%; border-radius:6px; border:1px solid var(--border); background:var(--surface-card); color:var(--text);">
+            <option value="Olá! Tudo bem? Passando para me apresentar.">Apresentação</option>
+            <option value="Passando para fazer um follow-up!">Follow-up</option>
+            <option value="Gostaria de verificar a situação da nossa negociação.">Cobrança</option>
+          </select>
+          <button class="button button-success button-small" style="width:100%" onclick="openWhatsApp('${escapeHTML(deal.phone)}')">◉ Abrir WhatsApp</button>
+        </div>` : ""}
         
         <div class="detail-title">Ações</div>
         <div class="detail-actions">
           ${deal.status === "open" ? `
             <button class="button button-secondary" onclick="openDealModal(${deal.id})">Editar informações</button>
             <button class="button button-secondary" onclick="openTransferModal(${deal.id})">Transferir responsável</button>
-            <button class="button button-success" onclick="markDealWon(${deal.id})">Ganho ✓</button>
+            <button class="button button-secondary" onclick="duplicateDeal(${deal.id})">Duplicar Cliente</button>
+            <div style="height:14px"></div>
             <button class="button button-danger" onclick="openLossModal(${deal.id})">Perdido / Churn ✗</button>
           ` : `<button class="button button-secondary" onclick="reopenDeal(${deal.id})">Reabrir oportunidade</button>`}
-          <button class="button button-secondary" style="color:var(--danger);" onclick="archiveDeal(${deal.id})">Deletar / Arquivar</button>
+          <button class="button button-secondary" style="color:var(--danger); margin-top: 8px;" onclick="archiveDeal(${deal.id})">Arquivar</button>
         </div>
 
         <div class="field" style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px;">
@@ -2449,6 +2507,7 @@
       document.getElementById(`tab${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`).classList.add('active');
     }
 
+    // SALVAMENTO DA NOTA COM FEEDBACK VISUAL
     function savePinnedNote() {
       const deal = getDeal(currentDetailDealId);
       if(deal) {
@@ -2457,7 +2516,7 @@
         const btn = document.querySelector("#tabNotes .button-primary");
         if(btn) {
           const originalText = btn.innerHTML;
-          btn.innerHTML = `<span style="color:white">Nota salva com sucesso! ✓</span>`;
+          btn.innerHTML = `<span style="color:white">Nota salva ✓</span>`;
           btn.style.backgroundColor = "var(--success)";
           setTimeout(() => {
             btn.innerHTML = originalText;
@@ -2467,6 +2526,7 @@
       }
     }
 
+    // HANDOFF - PASSAGEM DE BASTÃO ENTRE MÓDULOS
     function handoffDeal(dealId) {
       const deal = getDeal(dealId);
       const targetW = document.getElementById("handoffSelect").value;
@@ -2475,19 +2535,55 @@
           deal.workspace = targetW;
           deal.stage = workspaces[targetW][0].name;
           deal.probability = workspaces[targetW][0].probability;
-          addTimelineEvent(deal, "Passagem de Bastão", `Movido do módulo ${oldW} para ${targetW}.`);
+          addTimelineEvent(deal, "Passagem de Bastão", `Fechado/Ganho no módulo anterior (${oldW}). Movido para ${targetW}.`);
           saveData();
           closeModal('detailModal');
           refreshAll();
       }
     }
 
-    // FINALIZANDO MODAIS RESTANTES
+    // DUPLICAR CLIENTE (UPSELL / RENOVAÇÃO)
+    function duplicateDeal(id) {
+        const d = getDeal(id); 
+        if(!d || !confirm("Duplicar este cliente para gerar uma nova oportunidade de Upsell ou Renovação?")) return;
+        
+        deals.push({
+            id: Date.now(), 
+            company: d.company + " (Cópia)", 
+            legalName: d.legalName, 
+            cnpj: d.cnpj, 
+            contact: d.contact, 
+            address: d.address, 
+            phone: d.phone, 
+            email: d.email, 
+            value: 0, 
+            probability: stages[0].probability, 
+            stage: stages[0].name, 
+            owner: d.owner, 
+            closeDate: "", 
+            source: d.source, 
+            tags: d.tags, 
+            workspace: currentWorkspace, 
+            status: "open", 
+            createdAt: new Date().toISOString(), 
+            pinnedNote: "", 
+            timeline: [
+                {title: "Criado por Duplicação", description: "Oportunidade gerada a partir de outro negócio.", date: new Date().toISOString()}
+            ]
+        });
+        
+        saveData(); 
+        refreshAll(); 
+        alert("Cliente duplicado com sucesso! Veja no início do seu funil."); 
+        closeModal('detailModal');
+    }
+
     function openTransferModal(dealId) {
       document.getElementById("transferDealId").value = dealId;
       document.getElementById("transferOwner").value = getDeal(dealId)?.owner || "";
       document.getElementById("transferModal").classList.add("open");
     }
+    
     function transferDeal() {
       const d = getDeal(document.getElementById("transferDealId").value); const nO = document.getElementById("transferOwner").value;
       if (d && nO && d.owner !== nO) { addTimelineEvent(d, "Transferência", `${d.owner} → ${nO}.`); d.owner = nO; saveData(); refreshAll(); openDealDetail(d.id); }
@@ -2501,6 +2597,7 @@
     }
 
     function openLossModal(dealId) { document.getElementById("lossDealId").value = dealId; document.getElementById("lossModal").classList.add("open"); }
+    
     function markDealLost() {
       const d = getDeal(document.getElementById("lossDealId").value); if (!d) return;
       d.status = document.getElementById("lossStatus").value;
@@ -2523,8 +2620,14 @@
     }
     
     function reopenDeal(dealId) { const d = getDeal(dealId); if(d){ d.status = "open"; d.lossReason = ""; addTimelineEvent(d, "Reaberto", "Voltou ao funil."); saveData(); refreshAll(); openDealDetail(dealId); } }
-    function archiveDeal(dealId) { const d = getDeal(dealId); if(d && confirm("Deletar/Arquivar?")){ d.status = "archived"; addTimelineEvent(d, "Arquivado", "Removido do funil."); saveData(); closeModal("detailModal"); refreshAll(); } }
-    function openWhatsApp(phone, company) { window.open(`https://wa.me/55${String(phone).replace(/\D/g, "")}?text=${encodeURIComponent(`Olá! Referente a oportunidade da empresa ${company}.`)}`, "_blank"); }
+    
+    function archiveDeal(dealId) { const d = getDeal(dealId); if(d && confirm("Deletar/Arquivar este negócio permanentemente?")){ d.status = "archived"; addTimelineEvent(d, "Arquivado", "Removido do funil."); saveData(); closeModal("detailModal"); refreshAll(); } }
+    
+    // ABRIR WHATSAPP COM TEMPLATE
+    function openWhatsApp(phone) { 
+      const msg = document.getElementById("waTemplate")?.value || "";
+      window.open(`https://wa.me/55${String(phone).replace(/\D/g, "")}?text=${encodeURIComponent(msg)}`, "_blank"); 
+    }
 
     function closeModal(id) { document.getElementById(id)?.classList.remove("open"); }
     document.querySelectorAll(".modal-backdrop").forEach(b => b.addEventListener("click", e => { if (e.target === b) b.classList.remove("open"); }));
@@ -2539,4 +2642,3 @@
   </script>
 </body>
 </html>
-
