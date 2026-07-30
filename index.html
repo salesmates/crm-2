@@ -127,6 +127,7 @@
     .brand-logo span { color: #f3f4f6; font-weight: 300; }
 
     .workspace-selector { margin-bottom: 20px; padding: 0 8px; }
+    /* ATUALIZAÇÃO FONTE SELECTOR */
     .workspace-selector select { 
       background: var(--surface); 
       color: white; 
@@ -279,9 +280,6 @@
     .deal-card:hover .deal-checkbox, .deal-checkbox:checked { display: block; }
     .list-checkbox { width: 14px; height: 14px; cursor: pointer; }
 
-    /* ESTILO COLD DEAL (Lead Frio SLA) */
-    .deal-card.cold-deal { border-color: #38bdf8; background: rgba(56, 189, 248, 0.05); }
-
     /* BOTAO ATIVIDADE DOT */
     .activity-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.1s; }
     .activity-dot:hover { transform: scale(1.3); }
@@ -347,7 +345,7 @@
 
     /* TEAM */
     .team-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
-    .team-row { display: grid; grid-template-columns: 1.5fr repeat(6, 1fr); gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .team-row { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
     .team-row:last-child { border-bottom: 0; }
     .team-person { display: flex; align-items: center; gap: 8px; font-weight: 600; }
 
@@ -396,8 +394,9 @@
     .tab-content.active { display: block; }
     
     /* PINNED NOTE */
-    .pinned-note-box { background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 12px; position: relative; }
+    .pinned-note-box { background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; position: relative; }
     .pinned-note-box h4 { margin: 0 0 6px 0; color: var(--warning); font-size: 11px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+    .pinned-note-box p { margin: 0; font-size: 12px; color: var(--text); line-height: 1.5; white-space: pre-wrap; }
 
     .timeline-event { position: relative; padding: 0 0 16px 20px; border-left: 1px solid var(--border); }
     .timeline-event::before { content: ""; position: absolute; top: 1px; left: -4px; width: 7px; height: 7px; border: 1px solid var(--surface); border-radius: 50%; background: var(--primary); }
@@ -407,6 +406,7 @@
     
     .whatsapp-box { padding: 10px; margin-top: 12px; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; background: rgba(16, 185, 129, 0.08); }
     .whatsapp-box strong { display: block; margin-bottom: 4px; color: #34d399; font-size: 11px; }
+    .whatsapp-box p { margin: 0 0 8px; color: #10b981; font-size: 10px; line-height: 1.4; }
 
     /* API PANEL & SETTINGS */
     .api-code { background: #000; color: #a5b4fc; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 11px; white-space: pre-wrap; overflow-x: auto; margin-top: 8px; border: 1px solid #1e1e1e;}
@@ -418,10 +418,6 @@
     .lang-flag { font-size: 24px; cursor: pointer; filter: grayscale(0.8); transition: 0.2s; background: transparent; padding: 4px; border-radius: 8px; }
     .lang-flag:hover { filter: grayscale(0); background: var(--surface-card); }
     .lang-flag.active { filter: grayscale(0); background: rgba(59, 130, 246, 0.2); border: 1px solid var(--primary); }
-
-    /* FEEDBACK DE NUVEM SUPABASE */
-    #cloudStatus { position: fixed; bottom: 20px; right: 20px; background: var(--surface-card); color: var(--text); padding: 8px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; display: flex; gap: 8px; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s; border: 1px solid var(--border); box-shadow: var(--shadow); }
-    #cloudStatus.show { opacity: 1; }
 
     @media (max-width: 1000px) {
       .sidebar { width: 64px; padding: 16px 8px; }
@@ -504,6 +500,7 @@
             <p data-i18n="dash_subtitle">Uma visão rápida da sua operação comercial.</p>
           </div>
           <div class="actions">
+            <!-- FILTROS DE DATA COMPLETOS CUSTOMIZADOS -->
             <div class="filters">
               <label style="font-size:12px; font-weight:600; color:var(--muted);">De:</label>
               <input type="date" class="filter" id="dashboardStartDate" onchange="renderDashboard()" />
@@ -734,34 +731,34 @@
 
         <div class="dashboard-grid">
           <article class="metric-card">
-            <div class="metric-label" data-i18n="fore_card1">Meta da Operação</div>
+            <div class="metric-label">Meta da Operação</div>
             <div class="metric-value" id="forecastGoal">R$ 80.000</div>
-            <div class="metric-note" data-i18n="fore_note1">Meta global simulada</div>
+            <div class="metric-note">Meta global simulada</div>
           </article>
           <article class="metric-card">
-            <div class="metric-label" data-i18n="fore_card2">Valor Realizado (Ganho)</div>
-            <div class="metric-value" id="forecastWon">R$ 0</div>
-            <div class="metric-note" data-i18n="fore_note2">Negócios fechados e ganhos</div>
+            <div class="metric-label">Pipeline total</div>
+            <div class="metric-value" id="grossForecast">R$ 0</div>
+            <div class="metric-note">Todos os negócios ativos</div>
           </article>
           <article class="metric-card">
-            <div class="metric-label" data-i18n="dash_card4">Forecast Avançado (Bruto)</div>
+            <div class="metric-label">Forecast Avançado (Bruto)</div>
             <div class="metric-value" id="weightedForecast">R$ 0</div>
-            <div class="metric-note success" data-i18n="dash_note4">Soma 100% de Prob >= 50%</div>
+            <div class="metric-note success">Soma 100% de Prob >= 50%</div>
           </article>
           <article class="metric-card">
-            <div class="metric-label" data-i18n="fore_card4">Gap para a meta</div>
+            <div class="metric-label">Gap para a meta</div>
             <div class="metric-value" id="goalGap">R$ 0</div>
-            <div class="metric-note" id="goalGapNote" data-i18n="fore_note4">Receita a conquistar</div>
+            <div class="metric-note" id="goalGapNote">Receita a conquistar</div>
           </article>
         </div>
 
         <div class="content-grid">
           <section class="panel">
-            <div class="panel-header"><div><h2 data-i18n="fore_panel1">Impacto por etapa</h2><p class="panel-subtitle" data-i18n="fore_sub1">Apenas etapas >= 50% de probabilidade</p></div></div>
+            <div class="panel-header"><div><h2>Impacto por etapa</h2><p class="panel-subtitle">Apenas etapas >= 50% de probabilidade</p></div></div>
             <div id="forecastStages" class="conversion-list"></div>
           </section>
           <section class="panel">
-            <div class="panel-header"><div><h2 data-i18n="fore_panel2">Resumo do período</h2><p class="panel-subtitle" data-i18n="fore_sub2">Indicadores baseados no progresso de meta.</p></div></div>
+            <div class="panel-header"><div><h2>Resumo do período</h2><p class="panel-subtitle">Indicadores baseados nos negócios avançados.</p></div></div>
             <div id="forecastSummary"></div>
           </section>
         </div>
@@ -772,9 +769,10 @@
         <div class="topbar">
           <div class="page-title">
             <h1 data-i18n="nav_team">Visão de equipe</h1>
-            <p data-i18n="team_sub">Pipeline, produtividade, metas individuais e atrasos.</p>
+            <p>Pipeline, produtividade, metas individuais e atrasos.</p>
           </div>
           <div class="actions">
+            <!-- FILTROS DE DATA COMPLETOS CUSTOMIZADOS -->
             <div class="filters">
               <label style="font-size:12px; font-weight:600; color:var(--muted);">De:</label>
               <input type="date" class="filter" id="teamStartDate" onchange="renderTeam()" />
@@ -786,11 +784,11 @@
 
         <div class="team-grid">
           <section class="panel">
-            <div class="panel-header"><div><h2 data-i18n="team_panel1">Ranking e Metas Individuais</h2><p class="panel-subtitle" data-i18n="team_sub1">Acompanhamento do alvo vs realizado.</p></div></div>
+            <div class="panel-header"><div><h2>Ranking e Metas Individuais</h2><p class="panel-subtitle">Acompanhamento do alvo vs realizado.</p></div></div>
             <div style="overflow:auto"><div id="teamRanking"></div></div>
           </section>
           <section class="panel">
-            <div class="panel-header"><div><h2 data-i18n="team_panel2">Alertas do time</h2><p class="panel-subtitle" data-i18n="team_sub2">Atividades que precisam de acompanhamento.</p></div></div>
+            <div class="panel-header"><div><h2>Alertas do time</h2><p class="panel-subtitle">Atividades que precisam de acompanhamento.</p></div></div>
             <div id="teamAlerts"></div>
           </section>
         </div>
@@ -799,24 +797,24 @@
       <!-- REPORTS -->
       <section class="view" id="reports">
         <div class="topbar">
-          <div class="page-title"><h1 data-i18n="nav_reports">Relatórios</h1><p data-i18n="rep_sub">Indicadores de produtividade, conversão, funil e receita.</p></div>
+          <div class="page-title"><h1 data-i18n="nav_reports">Relatórios</h1><p>Indicadores de produtividade, conversão, funil e receita.</p></div>
           <div class="actions">
+            <!-- FILTROS DE DATA COMPLETOS CUSTOMIZADOS -->
             <div class="filters">
               <label style="font-size:12px; font-weight:600; color:var(--muted);">De:</label>
               <input type="date" class="filter" id="reportsStartDate" onchange="renderReports()" />
               <label style="font-size:12px; font-weight:600; color:var(--muted);">Até:</label>
               <input type="date" class="filter" id="reportsEndDate" onchange="renderReports()" />
             </div>
-            <button class="button button-success" onclick="exportReportsCSV()" data-i18n="btn_export_csv">⬇ Exportar CSV</button>
           </div>
         </div>
         <div class="content-grid">
           <section class="panel">
-            <div class="panel-header"><div><h2 data-i18n="rep_panel1">Relatório de KPI</h2><p class="panel-subtitle" data-i18n="rep_sub1">Negócios ativos por etapa e ganhos por vendedor.</p></div></div>
+            <div class="panel-header"><div><h2>Relatório de KPI</h2><p class="panel-subtitle">Negócios ativos por etapa e ganhos por vendedor.</p></div></div>
             <div class="table-wrap" id="reportsKPI"></div>
           </section>
           <section class="panel">
-            <div class="panel-header"><div><h2 data-i18n="rep_panel2">Motivos de perda</h2><p class="panel-subtitle" data-i18n="rep_sub2">Visibilidade sobre os motivos recorrentes.</p></div></div>
+            <div class="panel-header"><div><h2>Motivos de perda</h2><p class="panel-subtitle">Visibilidade sobre os motivos recorrentes.</p></div></div>
             <div id="lossReports"></div>
           </section>
         </div>
@@ -825,26 +823,26 @@
       <!-- SETTINGS -->
       <section class="view" id="settings">
         <div class="topbar">
-          <div class="page-title"><h1 data-i18n="nav_settings">Configurações</h1><p data-i18n="set_sub">Aparência, Idioma, Metas e Integrações.</p></div>
+          <div class="page-title"><h1 data-i18n="nav_settings">Configurações</h1><p>Aparência, Idioma, Metas e Integrações.</p></div>
         </div>
 
         <div class="content-grid" style="margin-bottom: 24px;">
           <!-- APARÊNCIA E IDIOMA -->
           <section class="panel">
             <div class="panel-header">
-              <div><h2 data-i18n="set_panel1">Aparência e Idioma</h2><p class="panel-subtitle" data-i18n="set_sub1">Personalize a cara do seu CRM.</p></div>
+              <div><h2>Aparência e Idioma</h2><p class="panel-subtitle">Personalize a cara do seu CRM.</p></div>
             </div>
             
             <div class="field" style="margin-bottom: 16px;">
-              <label data-i18n="set_theme">Tema</label>
+              <label>Tema</label>
               <select id="themeSelect" onchange="changeThemeMode(this.value)">
-                <option value="dark" data-i18n="theme_dark">Escuro (Padrão)</option>
-                <option value="light" data-i18n="theme_light">Claro</option>
+                <option value="dark">Escuro (Padrão)</option>
+                <option value="light">Claro</option>
               </select>
             </div>
 
             <div class="field" style="margin-bottom: 16px;">
-              <label data-i18n="set_color">Cor Principal</label>
+              <label>Cor Principal</label>
               <div class="color-picker-wrap">
                 <div class="color-circle" style="background:#3b82f6" onclick="changeThemeColor('#3b82f6')"></div>
                 <div class="color-circle" style="background:#ef4444" onclick="changeThemeColor('#ef4444')"></div>
@@ -857,7 +855,7 @@
             </div>
 
             <div class="field">
-              <label data-i18n="set_lang">Idioma do CRM</label>
+              <label>Idioma do CRM</label>
               <div class="lang-flags">
                 <button class="lang-flag active" onclick="setLanguage('pt-BR')" title="Português">🇧🇷</button>
                 <button class="lang-flag" onclick="setLanguage('en-US')" title="English">🇺🇸</button>
@@ -869,11 +867,11 @@
           <!-- GERENCIAR EQUIPE E METAS -->
           <section class="panel">
             <div class="panel-header">
-              <div><h2 data-i18n="set_panel2">Gerenciar Equipe e Metas</h2><p class="panel-subtitle" data-i18n="set_sub2">Defina os membros e a meta do módulo atual.</p></div>
+              <div><h2>Gerenciar Equipe e Metas</h2><p class="panel-subtitle">Defina os membros e a meta do módulo atual.</p></div>
             </div>
             <div style="margin-bottom: 20px;">
               <div class="field">
-                <label data-i18n="set_new_owner">Nome do Novo Vendedor</label>
+                <label>Nome do Novo Vendedor</label>
                 <div style="display: flex; gap: 8px;">
                   <input id="newOwnerName" placeholder="Ex.: Lucas Oliveira" />
                   <button class="button button-primary" onclick="addOwner()">＋ Add</button>
@@ -882,12 +880,12 @@
             </div>
             <div class="table-wrap">
               <table>
-                <thead><tr><th data-i18n="col_owner">Vendedor</th><th data-i18n="col_goal">Meta Indiv. (R$)</th><th style="width: 80px; text-align: right;" data-i18n="col_actions">Ações</th></tr></thead>
+                <thead><tr><th>Vendedor</th><th>Meta Indiv. (R$)</th><th style="width: 80px; text-align: right;">Ações</th></tr></thead>
                 <tbody id="ownersTableBody"></tbody>
               </table>
             </div>
             <div class="modal-actions">
-              <button class="button button-primary" onclick="saveAllGoals()" data-i18n="btn_save_goals">Salvar Metas</button>
+              <button class="button button-primary" onclick="saveAllGoals()">Salvar Metas</button>
             </div>
           </section>
         </div>
@@ -896,7 +894,7 @@
         <div class="content-grid">
           <section class="panel">
             <div class="panel-header">
-              <div><h2 data-i18n="set_panel3">Integração Externa (Webhooks)</h2><p class="panel-subtitle" data-i18n="set_sub3">Envie leads do VL HUNT direto pro Supabase.</p></div>
+              <div><h2>Integração Externa (Webhooks)</h2><p class="panel-subtitle">Envie leads do VL HUNT direto pro Supabase.</p></div>
             </div>
             <div style="font-size: 12px; line-height: 1.6; color: var(--text);">
               <strong>URL do POST (REST API Supabase):</strong>
@@ -913,11 +911,11 @@
 
           <section class="panel">
             <div class="panel-header">
-              <div><h2 data-i18n="set_panel4">Backup dos Dados</h2><p class="panel-subtitle" data-i18n="set_sub4">Exporte ou importe .json.</p></div>
+              <div><h2>Backup dos Dados</h2><p class="panel-subtitle">Exporte ou importe .json.</p></div>
             </div>
             <div class="modal-actions" style="justify-content: flex-start; margin-top: 10px;">
-              <button class="button button-secondary" onclick="exportBackup()" data-i18n="btn_export">⬇ Exportar Dados</button>
-              <button class="button button-secondary" onclick="triggerImportBackup()" data-i18n="btn_import">⬆ Importar Dados</button>
+              <button class="button button-secondary" onclick="exportBackup()">⬇ Exportar Dados</button>
+              <button class="button button-secondary" onclick="triggerImportBackup()">⬆ Importar Dados</button>
               <input type="file" id="backupFileInput" style="display: none;" accept=".json" onchange="importBackup(event)" />
             </div>
           </section>
@@ -938,9 +936,6 @@
     <button class="icon-button" onclick="clearMassSelection()">×</button>
   </div>
 
-  <!-- FEEDBACK NUVEM SUPABASE -->
-  <div id="cloudStatus">☁️ <span id="cloudStatusText">Salvo ✓</span></div>
-
   <!-- MODAL: CREATE / EDIT DEAL -->
   <div class="modal-backdrop" id="dealModal">
     <div class="modal">
@@ -954,6 +949,7 @@
           <div class="form-grid">
             <div class="field full"><label>Nome do negócio / Oportunidade *</label><input id="dealCompany" required placeholder="Ex.: Projeto ABC" /></div>
             
+            <!-- SEPARADO RAZAO SOCIAL E CNPJ -->
             <div class="field"><label>Razão Social</label><input id="dealLegalName" placeholder="Ex.: Empresa ABC LTDA" /></div>
             <div class="field"><label>CNPJ</label><input id="dealCnpj" placeholder="Ex.: 00.000.000/0001-00" /></div>
             
@@ -962,12 +958,15 @@
             <div class="field"><label>E-mail</label><input id="dealEmail" type="email" placeholder="contato@empresa.com" /></div>
             <div class="field"><label>Endereço Completo</label><input id="dealAddress" placeholder="Ex.: Rua das Flores, 123" /></div>
             
+            <!-- VALOR E PROBABILIDADE ATUALIZADOS -->
             <div class="field">
               <label>Valor estimado</label>
+              <!-- Input de texto para formatar a máscara de moeda -->
               <input id="dealValue" type="text" placeholder="R$ 0,00" oninput="maskCurrency(this)" />
             </div>
             <div class="field">
               <label>Probabilidade (%)</label>
+              <!-- Number livre, aceita em branco -->
               <input id="dealProbability" type="number" min="0" max="100" placeholder="Ex: 50" />
             </div>
 
@@ -1000,15 +999,26 @@
         <!-- BARRA LATERAL ESQUERDA -->
         <aside class="deal-details" id="dealDetails"></aside>
         
-        <!-- ÁREA PRINCIPAL DIREITA (ABAS E CONTEUDO) -->
+        <!-- ÁREA PRINCIPAL DIREITA (ABAS) -->
         <section class="deal-main-area">
           <div class="deal-tabs">
             <button class="tab-btn active" id="btnTabTimeline" onclick="switchDealTab('timeline')">Histórico e Atividades</button>
+            <button class="tab-btn" id="btnTabNotes" onclick="switchDealTab('notes')">Anotações Fixadas</button>
             <button class="tab-btn" id="btnTabFiles" onclick="switchDealTab('files')">Arquivos</button>
           </div>
           
           <div class="tab-content active" id="tabTimeline">
             <div id="dealTimeline" class="timeline"></div>
+          </div>
+          
+          <div class="tab-content" id="tabNotes">
+            <div class="pinned-note-box">
+              <h4>Nota Fixada / Resumo</h4>
+              <textarea id="pinnedNoteArea" style="width:100%; min-height:120px; background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px; border-radius:8px;" placeholder="Use este espaço para deixar um resumo ou informação vital antes de transferir o lead..."></textarea>
+              <div style="text-align: right; margin-top: 8px;">
+                <button class="button button-primary button-small" onclick="savePinnedNote()">Salvar Nota</button>
+              </div>
+            </div>
           </div>
           
           <div class="tab-content" id="tabFiles">
@@ -1059,14 +1069,7 @@
                 <option>Proposta</option><option>Follow-up</option><option>Tarefa</option>
               </select>
             </div>
-            
-            <!-- BUSCA INTELIGENTE DE LEAD -->
-            <div class="field">
-              <label>Negócio relacionado *</label>
-              <input list="activityDealOptions" id="activityDealInput" required placeholder="Digite para buscar..." autocomplete="off" />
-              <datalist id="activityDealOptions"></datalist>
-            </div>
-
+            <div class="field"><label>Negócio relacionado *</label><select id="activityDeal" required></select></div>
             <div class="field"><label>Data e hora *</label><input id="activityDate" required type="datetime-local" /></div>
             <div class="field">
               <label>Prioridade</label>
@@ -1084,6 +1087,7 @@
     </div>
   </div>
 
+  <!-- OUTROS MODAIS INALTERADOS -->
   <div class="modal-backdrop" id="transferModal">
     <div class="modal small-modal">
       <div class="modal-header">
@@ -1223,8 +1227,6 @@
         "nav_op": "Operação", "nav_dash": "Meu painel", "nav_pipe": "Funil comercial", "nav_agenda": "Agenda", "nav_forecast": "Forecast",
         "nav_management": "Gestão", "nav_team": "Visão de equipe", "nav_reports": "Relatórios", "nav_settings": "Configurações",
         "btn_agenda": "Agenda", "btn_new_act": "＋ Nova atividade", "btn_report": "Ver relatório", "btn_see_agenda": "Ver agenda",
-        "btn_export_csv": "⬇ Exportar CSV", "btn_edit_info": "Editar informações", "btn_transfer": "Transferir", "btn_duplicate": "Duplicar Cliente",
-        "btn_won": "Ganho ✓", "btn_lost": "Perdido / Churn ✗", "btn_archive": "Arquivar 🗄️",
         "dash_subtitle": "Uma visão rápida da sua operação comercial.", "dash_card1": "Concluídas (Período)", "dash_note1": "Atividades finalizadas",
         "dash_card2": "Pendentes", "dash_note2": "Próximas ações agendadas", "dash_card3": "Precisam de atenção", "dash_note3": "Atividades vencidas",
         "dash_card4": "Forecast Avançado (Bruto)", "dash_note4": "Soma bruta de negócios avançados (>= 50%)",
@@ -1232,27 +1234,13 @@
         "pipe_sub": "Gerencie oportunidades, responsáveis, etapas e evolução da negociação.",
         "agenda_sub": "Organize atividades por data, período, responsável e prioridade.",
         "fore_sub": "Atualizado automaticamente para negócios com probabilidade maior ou igual a 50%.",
-        "fore_card1": "Meta da Operação", "fore_note1": "Meta global simulada", "fore_card2": "Valor Realizado (Ganho)", "fore_note2": "Negócios fechados e ganhos",
-        "fore_card4": "Gap para a meta", "fore_note4": "Receita a conquistar", "fore_panel1": "Impacto por etapa", "fore_sub1": "Apenas etapas >= 50% de probabilidade",
-        "fore_panel2": "Resumo do período", "fore_sub2": "Indicadores baseados no progresso de meta.",
-        "team_sub": "Pipeline, produtividade, metas individuais e atrasos.", "team_panel1": "Ranking e Metas Individuais", "team_sub1": "Acompanhamento do alvo vs realizado.",
-        "team_panel2": "Alertas do time", "team_sub2": "Atividades que precisam de acompanhamento.",
-        "rep_sub": "Indicadores de produtividade, conversão, funil e receita.", "rep_panel1": "Relatório de KPI", "rep_sub1": "Negócios ativos por etapa e ganhos por vendedor.",
-        "rep_panel2": "Motivos de perda", "rep_sub2": "Visibilidade sobre os motivos recorrentes.",
-        "set_sub": "Aparência, Idioma, Metas e Integrações.", "set_panel1": "Aparência e Idioma", "set_sub1": "Personalize a cara do seu CRM.",
-        "set_theme": "Tema", "theme_dark": "Escuro (Padrão)", "theme_light": "Claro", "set_color": "Cor Principal", "set_lang": "Idioma do CRM",
-        "set_panel2": "Gerenciar Equipe e Metas", "set_sub2": "Defina os membros e a meta do módulo atual.", "set_new_owner": "Nome do Novo Vendedor",
-        "col_owner": "Vendedor", "col_goal": "Meta Indiv. (R$)", "col_actions": "Ações", "btn_save_goals": "Salvar Metas",
-        "set_panel3": "Integração Externa (Webhooks)", "set_sub3": "Envie leads direto pro Supabase.",
-        "set_panel4": "Backup dos Dados", "set_sub4": "Exporte ou importe .json.", "btn_export": "⬇ Exportar Dados", "btn_import": "⬆ Importar Dados"
+        "f_today": "Hoje", "f_week": "Esta Semana", "f_15d": "Esta Quinzena", "f_month": "Este Mês", "f_2m": "Este Bimestre", "f_3m": "Este Trimestre", "f_6m": "Este Semestre", "f_year": "Este Ano", "f_all": "Histórico Completo"
       },
       "en-US": {
         "module_com": "Commercial Module", "module_cs": "CS Module", "module_fin": "Finance Module", "module_mkt": "Marketing Module",
         "nav_op": "Operation", "nav_dash": "Dashboard", "nav_pipe": "Pipeline", "nav_agenda": "Calendar", "nav_forecast": "Forecast",
         "nav_management": "Management", "nav_team": "Team View", "nav_reports": "Reports", "nav_settings": "Settings",
         "btn_agenda": "Calendar", "btn_new_act": "＋ New Activity", "btn_report": "View Report", "btn_see_agenda": "View Calendar",
-        "btn_export_csv": "⬇ Export CSV", "btn_edit_info": "Edit Information", "btn_transfer": "Transfer", "btn_duplicate": "Duplicate Client",
-        "btn_won": "Won ✓", "btn_lost": "Lost / Churn ✗", "btn_archive": "Archive 🗄️",
         "dash_subtitle": "A quick overview of your commercial operation.", "dash_card1": "Completed (Period)", "dash_note1": "Finished activities",
         "dash_card2": "Pending", "dash_note2": "Upcoming scheduled actions", "dash_card3": "Needs Attention", "dash_note3": "Overdue activities",
         "dash_card4": "Advanced Forecast (Gross)", "dash_note4": "Gross sum of advanced deals (>= 50%)",
@@ -1260,27 +1248,13 @@
         "pipe_sub": "Manage opportunities, owners, stages, and deal evolution.",
         "agenda_sub": "Organize activities by date, period, owner, and priority.",
         "fore_sub": "Automatically updated for deals with probability >= 50%.",
-        "fore_card1": "Operation Goal", "fore_note1": "Simulated global goal", "fore_card2": "Realized Value (Won)", "fore_note2": "Closed and won deals",
-        "fore_card4": "Goal Gap", "fore_note4": "Revenue left to conquer", "fore_panel1": "Stage Impact", "fore_sub1": "Only stages >= 50% probability",
-        "fore_panel2": "Period Summary", "fore_sub2": "Indicators based on goal progress.",
-        "team_sub": "Pipeline, productivity, individual goals, and delays.", "team_panel1": "Ranking and Individual Goals", "team_sub1": "Target vs realized tracking.",
-        "team_panel2": "Team Alerts", "team_sub2": "Activities needing follow-up.",
-        "rep_sub": "Productivity, conversion, pipeline, and revenue metrics.", "rep_panel1": "KPI Report", "rep_sub1": "Active deals by stage and wins per owner.",
-        "rep_panel2": "Loss Reasons", "rep_sub2": "Visibility on recurring reasons.",
-        "set_sub": "Appearance, Language, Goals, and Integrations.", "set_panel1": "Appearance and Language", "set_sub1": "Customize your CRM look.",
-        "set_theme": "Theme", "theme_dark": "Dark (Default)", "theme_light": "Light", "set_color": "Main Color", "set_lang": "CRM Language",
-        "set_panel2": "Manage Team and Goals", "set_sub2": "Define members and the current module goal.", "set_new_owner": "New Rep Name",
-        "col_owner": "Rep", "col_goal": "Indiv. Goal ($)", "col_actions": "Actions", "btn_save_goals": "Save Goals",
-        "set_panel3": "External Integration", "set_sub3": "Send leads directly to Supabase.",
-        "set_panel4": "Data Backup", "set_sub4": "Export or import .json.", "btn_export": "⬇ Export Data", "btn_import": "⬆ Import Data"
+        "f_today": "Today", "f_week": "This Week", "f_15d": "This Fortnight", "f_month": "This Month", "f_2m": "This Bimonth", "f_3m": "This Quarter", "f_6m": "This Semester", "f_year": "This Year", "f_all": "All Time"
       },
       "es-ES": {
         "module_com": "Módulo Comercial", "module_cs": "Módulo CS", "module_fin": "Módulo Financiero", "module_mkt": "Módulo Marketing",
         "nav_op": "Operación", "nav_dash": "Mi Panel", "nav_pipe": "Embudo", "nav_agenda": "Agenda", "nav_forecast": "Pronóstico",
         "nav_management": "Gestión", "nav_team": "Equipo", "nav_reports": "Reportes", "nav_settings": "Ajustes",
         "btn_agenda": "Agenda", "btn_new_act": "＋ Nueva Actividad", "btn_report": "Ver Reporte", "btn_see_agenda": "Ver Agenda",
-        "btn_export_csv": "⬇ Exportar CSV", "btn_edit_info": "Editar Información", "btn_transfer": "Transferir", "btn_duplicate": "Duplicar Cliente",
-        "btn_won": "Ganado ✓", "btn_lost": "Perdido / Churn ✗", "btn_archive": "Archivar 🗄️",
         "dash_subtitle": "Un vistazo rápido a tu operación comercial.", "dash_card1": "Completadas", "dash_note1": "Actividades finalizadas",
         "dash_card2": "Pendientes", "dash_note2": "Próximas acciones", "dash_card3": "Atención", "dash_note3": "Actividades atrasadas",
         "dash_card4": "Pronóstico Avanzado (Bruto)", "dash_note4": "Suma bruta de negocios (>= 50%)",
@@ -1288,19 +1262,7 @@
         "pipe_sub": "Gestiona oportunidades, responsables, etapas y evolución.",
         "agenda_sub": "Organiza actividades por fecha, período, responsable y prioridad.",
         "fore_sub": "Actualizado automáticamente para negocios con prob >= 50%.",
-        "fore_card1": "Meta Global", "fore_note1": "Meta global simulada", "fore_card2": "Valor Realizado", "fore_note2": "Negocios cerrados y ganados",
-        "fore_card4": "Brecha para meta", "fore_note4": "Ingresos por conquistar", "fore_panel1": "Impacto por etapa", "fore_sub1": "Solo etapas >= 50% probabilidad",
-        "fore_panel2": "Resumen del período", "fore_sub2": "Indicadores basados en el progreso.",
-        "team_sub": "Pipeline, productividad, metas y retrasos.", "team_panel1": "Ranking y Metas", "team_sub1": "Seguimiento de objetivo vs realizado.",
-        "team_panel2": "Alertas del equipo", "team_sub2": "Actividades que requieren atención.",
-        "rep_sub": "Indicadores de productividad y embudo.", "rep_panel1": "Reporte KPI", "rep_sub1": "Negocios activos y ganados.",
-        "rep_panel2": "Motivos de pérdida", "rep_sub2": "Visibilidad de motivos.",
-        "set_sub": "Apariencia, Idioma, Metas e Integraciones.", "set_panel1": "Apariencia", "set_sub1": "Personaliza tu CRM.",
-        "set_theme": "Tema", "theme_dark": "Oscuro", "theme_light": "Claro", "set_color": "Color Principal", "set_lang": "Idioma",
-        "set_panel2": "Equipo y Metas", "set_sub2": "Define los miembros y la meta.", "set_new_owner": "Nuevo Vendedor",
-        "col_owner": "Vendedor", "col_goal": "Meta Indiv.", "col_actions": "Acciones", "btn_save_goals": "Guardar Metas",
-        "set_panel3": "Integración", "set_sub3": "Envía leads a Supabase.",
-        "set_panel4": "Copia de Seguridad", "set_sub4": "Exportar o importar .json.", "btn_export": "⬇ Exportar", "btn_import": "⬆ Importar"
+        "f_today": "Hoy", "f_week": "Esta Semana", "f_15d": "Esta Quincena", "f_month": "Este Mes", "f_2m": "Este Bimestre", "f_3m": "Este Trimestre", "f_6m": "Este Semestre", "f_year": "Este Año", "f_all": "Histórico Completo"
       }
     };
     let currentLang = localStorage.getItem("crm_lang") || "pt-BR";
@@ -1398,19 +1360,6 @@
       refreshAll();
     }
 
-    // NUVEM DE STATUS
-    function showCloudStatus() {
-      const el = document.getElementById("cloudStatus");
-      const txt = document.getElementById("cloudStatusText");
-      if(!el || !txt) return;
-      el.classList.add("show");
-      txt.textContent = "Salvando...";
-      setTimeout(() => {
-        txt.textContent = "Salvo ✓";
-        setTimeout(() => { el.classList.remove("show"); }, 1500);
-      }, 400);
-    }
-
     function saveData() {
       workspaces[currentWorkspace] = stages;
       workspaceOwners[currentWorkspace] = currentOwners;
@@ -1419,7 +1368,6 @@
       localStorage.setItem("salesmates_deals_v5", JSON.stringify(deals));
       localStorage.setItem("salesmates_activities_v5", JSON.stringify(activities));
       localStorage.setItem("salesmates_owner_goals", JSON.stringify(ownerGoals));
-      showCloudStatus();
     }
 
     function exportBackup() {
@@ -1434,27 +1382,6 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
-
-    function exportReportsCSV() {
-      const startId = 'reportsStartDate';
-      const endId = 'reportsEndDate';
-      const filteredDeals = deals.filter(d => d && d.workspace === currentWorkspace && isDateInPeriod(d.createdAt, startId, endId));
-      
-      let csv = "ID,Negócio,Contato,Status,Etapa,Responsável,Valor,Data Criação\n";
-      filteredDeals.forEach(d => {
-        csv += `${d.id},"${d.company}","${d.contact||''}","${d.status}","${d.stage}","${d.owner}",${d.value||0},"${formatDate(d.createdAt)}"\n`;
-      });
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `relatorio_vendas_${dateKey(CURRENT_DATE)}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-
     function triggerImportBackup() { document.getElementById("backupFileInput").click(); }
     function importBackup(event) {
       const file = event.target.files[0];
@@ -1479,6 +1406,7 @@
 
     function escapeHTML(value) { return String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
     
+    // FORMATAÇÃO DE MOEDA (Input)
     function maskCurrency(input) {
       let value = input.value.replace(/\D/g, '');
       if (value === "") { input.value = ""; return; }
@@ -1537,23 +1465,6 @@
     }
     function dealStatusLabel(status) { const labels = { open: "Ativo", won: "Ganho", lost: "Perdido", churn: "Churn", archived: "Arquivado" }; return labels[status] || status; }
     function dealValueHTML(deal) { return (deal && Number(deal.value) > 0) ? `<div class="deal-value">${currencyNumber(deal.value)}</div>` : `<div class="deal-value" style="color:var(--muted);font-weight:500;">R$ a definir</div>`; }
-
-    // IDENTIFICAÇÃO DE LEAD FRIO
-    function isColdDeal(deal) {
-      if(deal.status !== 'open') return false;
-      let lastDate = new Date(deal.createdAt);
-      const acts = getDealActivities(deal.id);
-      if(acts.length) {
-        const maxActDate = new Date(Math.max(...acts.map(a => new Date(a.date))));
-        if(maxActDate > lastDate) lastDate = maxActDate;
-      }
-      if(deal.timeline && deal.timeline.length) {
-        const maxTlDate = new Date(Math.max(...deal.timeline.map(t => new Date(t.date))));
-        if(maxTlDate > lastDate) lastDate = maxTlDate;
-      }
-      const diffDays = (CURRENT_DATE - lastDate) / (1000 * 3600 * 24);
-      return diffDays > 5;
-    }
 
     // METAS E DONOS POR MÓDULO
     function fillOwnerOptions() {
@@ -1670,6 +1581,7 @@
       return d >= start && d <= end;
     }
 
+    // PREENCHER DATAS COM MÊS ATUAL AO INICIAR
     function setDefaultDates() {
       const today = new Date();
       const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -1700,6 +1612,7 @@
       const pending = activeActivities.filter((a) => getActivityStatus(a) === "Agendada").length;
       const overdue = activeActivities.filter((a) => getActivityStatus(a) === "Atrasada").length;
 
+      // Forecast Bruto Avançado: Soma o VALOR BRUTO sem ponderar (apenas de prob >= 50%)
       const advancedDeals = activeDeals.filter(d => d.status === "open" && Number(d.probability) >= 50);
       const rawAdvancedForecast = advancedDeals.reduce((total, d) => total + Number(d.value || 0), 0);
 
@@ -1708,6 +1621,7 @@
       document.getElementById("overdueActivities").textContent = overdue;
       document.getElementById("weeklyForecast").textContent = currencyNumber(rawAdvancedForecast);
 
+      // Ritmo Comercial
       const typeCounts = {};
       completedInPeriod.forEach(a => { typeCounts[a.type] = (typeCounts[a.type] || 0) + 1; });
       const typesList = ["Ligação", "WhatsApp", "Reunião", "Proposta", "Follow-up", "Visita", "Tarefa"];
@@ -1854,12 +1768,10 @@
                 const next = getNextActivity(deal.id);
                 const nextStatus = next ? getActivityStatus(next) : "";
                 const isChecked = selectedDealsForMassAction.has(deal.id) ? "checked" : "";
-                const isCold = isColdDeal(deal);
-                const coldIndicator = isCold ? `<span title="Lead Frio - Sem interação recente" style="font-size:12px; margin-right:4px;">🧊</span>` : '';
                 return `
-                  <tr onclick="openDealDetail(${deal.id})" style="cursor:pointer; ${isCold ? 'background:rgba(56, 189, 248, 0.05);' : ''}">
+                  <tr onclick="openDealDetail(${deal.id})" style="cursor:pointer">
                     <td onclick="event.stopPropagation()"><input type="checkbox" class="list-checkbox" value="${deal.id}" ${isChecked} onchange="toggleDealSelection(${deal.id})"></td>
-                    <td><strong>${coldIndicator}${escapeHTML(deal.company)}</strong><br><small style="color:var(--muted)">${escapeHTML(deal.contact || "Sem contato")}</small></td>
+                    <td><strong>${escapeHTML(deal.company)}</strong><br><small style="color:var(--muted)">${escapeHTML(deal.contact || "Sem contato")}</small></td>
                     <td>${badgeForStatus(dealStatusLabel(deal.status))}</td>
                     <td>${escapeHTML(deal.stage)}</td>
                     <td>${escapeHTML(deal.owner)}</td>
@@ -1904,12 +1816,11 @@
               }
               const tagsArray = deal.tags ? deal.tags.split(",").map(t => t.trim()).filter(Boolean) : [];
               const isChecked = selectedDealsForMassAction.has(deal.id) ? "checked" : "";
-              const isCold = isColdDeal(deal);
 
               return `
-                <article class="deal-card ${isCold ? 'cold-deal' : ''}" draggable="${activeStatus === "open" ? "true" : "false"}" ondragstart="dragDeal(event, ${deal.id})" onclick="openDealDetail(${deal.id})">
+                <article class="deal-card" draggable="${activeStatus === "open" ? "true" : "false"}" ondragstart="dragDeal(event, ${deal.id})" onclick="openDealDetail(${deal.id})">
                   <input type="checkbox" class="deal-checkbox" value="${deal.id}" ${isChecked} onclick="event.stopPropagation(); toggleDealSelection(${deal.id})">
-                  <div><h3>${isCold ? `<span title="Lead Frio - Sem interação recente" style="font-size:12px;">🧊</span> ` : ''}${escapeHTML(deal.company)}</h3><p style="margin-top: 2px;">${escapeHTML(deal.contact || "Sem contato")}</p></div>
+                  <div><h3>${escapeHTML(deal.company)}</h3><p style="margin-top: 2px;">${escapeHTML(deal.contact || "Sem contato")}</p></div>
                   ${dealValueHTML(deal)}
                   ${tagsArray.length ? `<div class="deal-card-tags">${tagsArray.map(tag => `<span class="deal-card-tag">${escapeHTML(tag)}</span>`).join("")}</div>` : ""}
                   <div class="deal-card-footer">
@@ -2156,37 +2067,28 @@
     function renderForecast() {
       const owner = document.getElementById("forecastOwnerFilter")?.value || "";
       const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open" && (!owner || d.owner === owner));
-      const wonDeals = deals.filter(d => d && d.workspace === currentWorkspace && d.status === "won" && (!owner || d.owner === owner));
       
       const gross = openDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
-      const wonValue = wonDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
       
       const advancedDeals = openDeals.filter(d => Number(d.probability) >= 50);
       const rawAdvanced = advancedDeals.reduce((sum, d) => sum + Number(d.value || 0), 0);
 
-      const globalGoal = owner ? (ownerGoals[owner] || 0) : currentOwners.reduce((a,b)=>a+(ownerGoals[b]||0), 0);
-      const gap = Math.max(globalGoal - wonValue, 0); // GAP AGORA USA REALIZADO
-      const goalProgress = globalGoal > 0 ? Math.min((wonValue / globalGoal) * 100, 100) : 100;
+      const globalGoal = owner ? (ownerGoals[owner] || 0) : Object.values(ownerGoals).reduce((a,b)=>a+b, 0);
+      const gap = Math.max(globalGoal - rawAdvanced, 0);
+      const goalProgress = globalGoal > 0 ? Math.min((rawAdvanced / globalGoal) * 100, 100) : 100;
 
       document.getElementById("forecastGoal").textContent = currencyNumber(globalGoal);
       document.getElementById("grossForecast").textContent = currencyNumber(gross);
-      document.getElementById("forecastWon").textContent = currencyNumber(wonValue);
       document.getElementById("weightedForecast").textContent = currencyNumber(rawAdvanced);
-      
-      const gapEl = document.getElementById("goalGap");
-      if (gapEl) {
-          gapEl.textContent = wonValue >= globalGoal ? "Meta batida!" : currencyNumber(gap);
-          gapEl.style.color = wonValue >= globalGoal ? "var(--success)" : "inherit";
-      }
-      const gapNoteEl = document.getElementById("goalGapNote");
-      if(gapNoteEl) { gapNoteEl.textContent = wonValue >= globalGoal ? "Realizado acima da meta!" : "Receita a conquistar (Meta - Ganho)"; }
+      document.getElementById("goalGap").textContent = rawAdvanced >= globalGoal ? "Meta batida!" : currencyNumber(gap);
+      document.getElementById("goalGapNote").textContent = rawAdvanced >= globalGoal ? "Forecast acima da meta" : "Falta faturar";
 
       const summaryEl = document.getElementById("forecastSummary");
       if (summaryEl) {
         summaryEl.innerHTML = `
           <div class="progress-row">
-            <div class="progress-top"><span>Progresso da Meta Global (Realizado)</span><strong>${Math.round(goalProgress)}%</strong></div>
-            <div class="progress-track"><div class="progress-bar" style="width:${goalProgress}%;background:${wonValue >= globalGoal ? "var(--success)" : "var(--primary)"}"></div></div>
+            <div class="progress-top"><span>Progresso contra a meta global</span><strong>${Math.round(goalProgress)}%</strong></div>
+            <div class="progress-track"><div class="progress-bar" style="width:${goalProgress}%;background:${rawAdvanced >= globalGoal ? "var(--success)" : "var(--primary)"}"></div></div>
           </div>
           <div class="progress-row">
             <div class="progress-top"><span>Ticket médio (Avançados)</span><strong>${currencyNumber(advancedDeals.length ? rawAdvanced / advancedDeals.length : 0)}</strong></div>
@@ -2204,9 +2106,9 @@
           const impact = rawAdvanced ? Math.round((stGross / rawAdvanced) * 100) : 0;
           return `
             <div class="conversion-row">
-              <div class="conversion-top"><span>${escapeHTML(stage.name)}</span><strong>${impact}% do forecast avançado</strong></div>
+              <div class="conversion-top"><span>${escapeHTML(stage.name)}</span><strong>${impact}% do forecast</strong></div>
               <div class="progress-track"><div class="progress-bar" style="width:${impact}%;background:var(--info)"></div></div>
-              <div class="conversion-meta">${stDeals.length} negocio(s) · Valor Bruto na etapa: ${currencyNumber(stGross)}</div>
+              <div class="conversion-meta">${stDeals.length} negócio(s) · Valor Bruto na etapa: ${currencyNumber(stGross)}</div>
             </div>
           `;
         }).join("") : `<div class="empty">Nenhuma etapa avançada (>= 50%).</div>`;
@@ -2216,34 +2118,27 @@
     // TEAM
     function renderTeam() {
       const openDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
-      const wonDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "won" && isDateInPeriod(d.createdAt, 'teamStartDate', 'teamEndDate'));
       const activeActs = activities.filter(a => getDeal(a.dealId)?.workspace === currentWorkspace);
       const periodActs = activeActs.filter(a => isDateInPeriod(a.date, 'teamStartDate', 'teamEndDate'));
       
       const tRank = document.getElementById("teamRanking");
       if (tRank) {
         tRank.innerHTML = `
-          <div class="team-row" style="color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase; grid-template-columns: 1.5fr repeat(6, 1fr);">
-            <div>Comercial</div><div>Meta</div><div>Fechamentos</div><div>Vendido (R$)</div><div>Forecast (Av)</div><div>Progresso</div><div>Vencidas</div>
+          <div class="team-row" style="color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase">
+            <div>Comercial</div><div>Meta</div><div>Forecast (Avançado)</div><div>Progresso</div><div>Vencidas</div>
           </div>
           ${currentOwners.map((owner) => {
             const oDeals = openDeals.filter((d) => d && d.owner === owner);
-            const oWonActs = wonDeals.filter(d => d.owner === owner);
-            const oWonValue = oWonActs.reduce((s,d)=>s+d.value,0);
-            
             const oActs = periodActs.filter((a) => a && a.owner === owner);
             const oOver = oActs.filter((a) => getActivityStatus(a) === "Atrasada").length;
             const oForecast = oDeals.filter(d=>d.probability>=50).reduce((sum, d) => sum + Number(d.value || 0), 0);
-            
             const goal = ownerGoals[owner] || 1; 
-            const prog = Math.min((oWonValue / goal)*100, 100);
+            const prog = Math.min((oForecast / goal)*100, 100);
 
             return `
-              <div class="team-row" style="grid-template-columns: 1.5fr repeat(6, 1fr);">
+              <div class="team-row">
                 <div class="team-person"><span class="small-avatar">${owner ? owner.charAt(0) : "V"}</span>${escapeHTML(owner)}</div>
                 <div>${currencyNumber(goal)}</div>
-                <div>${oWonActs.length}</div>
-                <div><strong style="color:var(--success)">${currencyNumber(oWonValue)}</strong></div>
                 <div><strong>${currencyNumber(oForecast)}</strong></div>
                 <div style="width:100%;"><div class="progress-track"><div class="progress-bar" style="width:${prog}%;background:${prog>=100?"var(--success)":"var(--primary)"}"></div></div></div>
                 <div>${oOver ? `<span style="color:var(--danger);font-weight:700">${oOver}</span>` : "0"}</div>
@@ -2332,6 +2227,7 @@
         document.getElementById("dealAddress").value = deal.address || "";
         document.getElementById("dealPhone").value = deal.phone || "";
         document.getElementById("dealEmail").value = deal.email || "";
+        // Formatar valor salvo no input mask
         const vInput = document.getElementById("dealValue");
         vInput.value = deal.value ? deal.value.toString() : "";
         if(vInput.value) maskCurrency(vInput);
@@ -2344,4 +2240,303 @@
       } else {
         document.getElementById("dealProbability").value = stages[0] ? stages[0].probability : 10;
         document.getElementById("dealOwner").value = currentOwners[0] || "Victor";
-        document.getElementById("dealValue").value =
+        document.getElementById("dealValue").value = "";
+      }
+
+      stageSelect.onchange = (e) => { document.getElementById("dealProbability").value = getStageData(e.target.value).probability; };
+      document.getElementById("dealModal").classList.add("open");
+    }
+
+    function saveDeal(event) {
+      event.preventDefault();
+      const editingId = document.getElementById("editingDealId")?.value;
+      const rawProb = document.getElementById("dealProbability").value;
+      
+      const payload = {
+        company: document.getElementById("dealCompany").value.trim(),
+        legalName: document.getElementById("dealLegalName").value.trim(),
+        cnpj: document.getElementById("dealCnpj").value.trim(),
+        contact: document.getElementById("dealContact").value.trim(),
+        address: document.getElementById("dealAddress").value.trim(),
+        phone: document.getElementById("dealPhone").value.trim(),
+        email: document.getElementById("dealEmail").value.trim(),
+        value: parseCurrency(document.getElementById("dealValue").value),
+        probability: rawProb === "" ? 0 : Number(rawProb),
+        stage: document.getElementById("dealStage").value,
+        owner: document.getElementById("dealOwner").value,
+        closeDate: document.getElementById("dealCloseDate").value,
+        source: document.getElementById("dealSource").value,
+        tags: document.getElementById("dealTags").value.trim(),
+        workspace: currentWorkspace
+      };
+
+      if (editingId) {
+        const deal = getDeal(editingId); if (!deal) return;
+        const old = { stage: deal.stage, owner: deal.owner, value: deal.value, prob: deal.probability };
+        Object.assign(deal, payload);
+        addTimelineEvent(deal, "Negócio atualizado", "Alterações salvas.");
+        if (old.stage !== payload.stage) addTimelineEvent(deal, "Etapa alterada", `${old.stage} → ${payload.stage}.`);
+      } else {
+        deals.push({
+          id: Date.now(), ...payload, status: "open", createdAt: new Date().toISOString(), pinnedNote: "",
+          timeline: [
+            { title: "Negócio criado", description: `Responsável: ${payload.owner}.`, date: new Date().toISOString() }
+          ]
+        });
+      }
+      saveData(); closeModal("dealModal"); refreshAll();
+      if (editingId && document.getElementById("detailModal").classList.contains("open")) openDealDetail(editingId);
+      else if (!editingId) showView("pipeline");
+    }
+
+    function openActivityModal(dealId = null) {
+      const form = document.querySelector("#activityModal form"); if (form) form.reset(); fillOwnerOptions();
+      document.getElementById("editingActivityId").value = "";
+      document.getElementById("activityModalTitle").textContent = "Nova atividade";
+      
+      const select = document.getElementById("activityDeal");
+      const activeDeals = deals.filter((d) => d && d.workspace === currentWorkspace && d.status === "open");
+      select.innerHTML = activeDeals.length ? activeDeals.map((d) => `<option value="${d.id}" ${Number(d.id) === Number(dealId) ? "selected" : ""}>${escapeHTML(d.company)}</option>`).join("") : `<option value="">Nenhum ativo</option>`;
+      
+      const selectedDeal = getDeal(dealId);
+      document.getElementById("activityOwner").value = selectedDeal?.owner || currentOwners[0];
+      const df = new Date(CURRENT_DATE); df.setHours(df.getHours() + 1);
+      document.getElementById("activityDate").value = `${dateKey(df)}T${String(df.getHours()).padStart(2,"0")}:${String(df.getMinutes()).padStart(2,"0")}`;
+      document.getElementById("activityModal").classList.add("open");
+    }
+
+    function editActivity(actId) {
+      const a = activities.find(x => x.id === actId);
+      if(!a) return;
+      openActivityModal(a.dealId);
+      document.getElementById("editingActivityId").value = a.id;
+      document.getElementById("activityModalTitle").textContent = "Editar Atividade";
+      document.getElementById("activityTitle").value = a.title;
+      document.getElementById("activityType").value = a.type;
+      document.getElementById("activityDate").value = a.date;
+      document.getElementById("activityPriority").value = a.priority;
+      document.getElementById("activityOwner").value = a.owner;
+      document.getElementById("activityDescription").value = a.description || "";
+    }
+
+    function saveActivity(event) {
+      event.preventDefault();
+      const dealId = Number(document.getElementById("activityDeal").value); if (!dealId) return;
+      const editId = document.getElementById("editingActivityId").value;
+      
+      if(editId) {
+        const a = activities.find(x => x.id === Number(editId));
+        if(a) {
+          a.dealId = dealId;
+          a.title = document.getElementById("activityTitle").value.trim();
+          a.type = document.getElementById("activityType").value;
+          a.date = document.getElementById("activityDate").value;
+          a.priority = document.getElementById("activityPriority").value;
+          a.owner = document.getElementById("activityOwner").value;
+          a.description = document.getElementById("activityDescription").value.trim();
+          const deal = getDeal(dealId);
+          if(deal) addTimelineEvent(deal, `Ação editada: ${a.title}`, `Data ajustada para ${formatDateTime(a.date)}.`);
+        }
+      } else {
+        const newActivity = {
+          id: Date.now(), dealId, status: "Agendada",
+          title: document.getElementById("activityTitle").value.trim(),
+          type: document.getElementById("activityType").value,
+          date: document.getElementById("activityDate").value,
+          priority: document.getElementById("activityPriority").value,
+          owner: document.getElementById("activityOwner").value,
+          description: document.getElementById("activityDescription").value.trim()
+        };
+        activities.push(newActivity);
+        const deal = getDeal(dealId); if (deal) addTimelineEvent(deal, `Ação criada: ${newActivity.title}`, `${newActivity.type} para ${formatDateTime(newActivity.date)}.`);
+      }
+      
+      saveData(); closeModal("activityModal"); refreshAll();
+      if (currentDetailDealId === dealId && document.getElementById("detailModal").classList.contains("open")) openDealDetail(dealId);
+    }
+
+    // MODAL PIPEDRIVE STYLE & PASSAGEM DE BASTÃO
+    function openDealDetail(dealId) {
+      const deal = getDeal(dealId); if (!deal) return;
+      currentDetailDealId = deal.id; const nextActivity = getNextActivity(deal.id);
+      
+      document.getElementById("detailHeader").innerHTML = `
+        <div>
+          ${badgeForStatus(dealStatusLabel(deal.status))} <span class="badge badge-gray">${escapeHTML(deal.stage)}</span>
+          <h2 style="margin-top:10px">${escapeHTML(deal.company)}</h2>
+          <p>${escapeHTML(deal.contact || "Sem contato")} · ${escapeHTML(deal.owner)} · ${currency(deal.value)}</p>
+          <div class="chevron-bar">
+            ${stages.map((stage) => {
+              const isCurrent = stage.name === deal.stage;
+              const isCompleted = stageNames().indexOf(stage.name) < stageNames().indexOf(deal.stage);
+              return `<div class="chevron-step ${isCurrent?"active":isCompleted?"completed":""}" onclick="updateDealStageDirectly(${deal.id}, '${escapeHTML(stage.name)}')">${escapeHTML(stage.name)}</div>`;
+            }).join("")}
+          </div>
+        </div>
+        <div class="inline-actions">
+          ${deal.status === "open" ? `<button class="button button-primary button-small" onclick="openActivityModal(${deal.id})">＋ Nova atividade</button>` : ""}
+          <button class="close-button" onclick="closeModal('detailModal')">×</button>
+        </div>
+      `;
+
+      // Monta as opções de Handoff (Transf. para outro módulo)
+      const otherWks = Object.keys(workspaces).filter(w => w !== currentWorkspace);
+      const handoffSelect = otherWks.map(w => `<option value="${w}">${w}</option>`).join("");
+
+      document.getElementById("dealDetails").innerHTML = `
+        <div class="detail-title">Informações Comerciais</div>
+        <div class="detail-value"><strong>Razão Social</strong><br>${escapeHTML(deal.legalName || "Não informado")}</div>
+        <div class="detail-value"><strong>CNPJ</strong><br>${escapeHTML(deal.cnpj || "Não informado")}</div>
+        <div class="detail-value"><strong>Endereço</strong><br>${escapeHTML(deal.address || "Não informado")}</div>
+        <div class="detail-value"><strong>Contato</strong><br>${escapeHTML(deal.contact || "Não informado")}</div>
+        <div class="detail-value"><strong>Telefone</strong><br>${escapeHTML(deal.phone || "Não informado")}</div>
+        <div class="detail-value"><strong>E-mail</strong><br>${escapeHTML(deal.email || "Não informado")}</div>
+        <div class="detail-value"><strong>Valor</strong><br>${currency(deal.value)}</div>
+        <div class="detail-value"><strong>Probabilidade</strong><br>${deal.probability}%</div>
+        <div class="detail-value"><strong>Origem</strong><br>${escapeHTML(deal.source || "Não cadastrada")}</div>
+        <div class="detail-value"><strong>Tags</strong><br>${escapeHTML(deal.tags || "Sem tags")}</div>
+        ${deal.lossReason ? `<div class="detail-value"><strong>Motivo perda</strong><br>${escapeHTML(deal.lossReason)}</div>` : ""}
+        ${deal.phone ? `<div class="whatsapp-box"><strong>WhatsApp Business</strong><button class="button button-success button-small" onclick="openWhatsApp('${escapeHTML(deal.phone)}', '${escapeHTML(deal.company)}')">◉ Abrir WhatsApp</button></div>` : ""}
+        
+        <div class="detail-title">Ações</div>
+        <div class="detail-actions">
+          ${deal.status === "open" ? `
+            <button class="button button-secondary" onclick="openDealModal(${deal.id})">Editar informações</button>
+            <button class="button button-secondary" onclick="openTransferModal(${deal.id})">Transferir responsável</button>
+            <button class="button button-success" onclick="markDealWon(${deal.id})">Ganho ✓</button>
+            <button class="button button-danger" onclick="openLossModal(${deal.id})">Perdido / Churn ✗</button>
+          ` : `<button class="button button-secondary" onclick="reopenDeal(${deal.id})">Reabrir oportunidade</button>`}
+          <button class="button button-secondary" style="color:var(--danger);" onclick="archiveDeal(${deal.id})">Deletar / Arquivar</button>
+        </div>
+
+        <div class="field" style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px;">
+          <label>Mover p/ Módulo (Passagem de Bastão)</label>
+          <div style="display: flex; gap: 8px;">
+            <select id="handoffSelect">${handoffSelect}</select>
+            <button class="button button-primary" onclick="handoffDeal(${deal.id})">Mover</button>
+          </div>
+        </div>
+      `;
+
+      // Atualiza Pinned Note e Timeline
+      document.getElementById("pinnedNoteArea").value = deal.pinnedNote || "";
+
+      const tEvents = [...(deal.timeline || []), ...getDealActivities(deal.id).map(a => ({isAct:true, id: a.id, title: `Atividade: ${a.title}`, description: `${a.type} · ${getActivityStatus(a)}${a.description?' · '+a.description:""}`, date: a.date}))].sort((a, b) => new Date(b.date) - new Date(a.date));
+      document.getElementById("dealTimeline").innerHTML = `
+        <div class="panel-header"><div><h2>Histórico Completo</h2></div><span class="badge badge-gray">${tEvents.length} registros</span></div>
+        ${tEvents.length ? tEvents.map(e => `
+          <div class="timeline-event">
+            <div style="display:flex; justify-content:space-between;">
+              <strong>${escapeHTML(e.title)}</strong>
+              ${e.isAct ? `<small style="cursor:pointer; color:var(--primary); font-weight:700;" onclick="editActivity(${e.id})">Editar</small>` : ''}
+            </div>
+            <small>${escapeHTML(e.description)}</small>
+            <small style="color:var(--muted);">${formatDateTime(e.date)}</small>
+          </div>
+        `).join("") : `<div class="empty">Sem registros.</div>`}
+      `;
+      
+      switchDealTab('timeline');
+      document.getElementById("detailModal").classList.add("open");
+    }
+
+    function switchDealTab(tabName) {
+      ['timeline', 'notes', 'files'].forEach(t => {
+        document.getElementById(`btnTab${t.charAt(0).toUpperCase()+t.slice(1)}`).classList.remove('active');
+        document.getElementById(`tab${t.charAt(0).toUpperCase()+t.slice(1)}`).classList.remove('active');
+      });
+      document.getElementById(`btnTab${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`).classList.add('active');
+      document.getElementById(`tab${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`).classList.add('active');
+    }
+
+    function savePinnedNote() {
+      const deal = getDeal(currentDetailDealId);
+      if(deal) {
+        deal.pinnedNote = document.getElementById("pinnedNoteArea").value;
+        saveData();
+        const btn = document.querySelector("#tabNotes .button-primary");
+        if(btn) {
+          const originalText = btn.innerHTML;
+          btn.innerHTML = `<span style="color:white">Nota salva com sucesso! ✓</span>`;
+          btn.style.backgroundColor = "var(--success)";
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.backgroundColor = "";
+          }, 2000);
+        }
+      }
+    }
+
+    function handoffDeal(dealId) {
+      const deal = getDeal(dealId);
+      const targetW = document.getElementById("handoffSelect").value;
+      if(deal && targetW && confirm(`Mover o negócio para o módulo "${targetW}"? Ele sairá deste funil.`)) {
+          const oldW = deal.workspace;
+          deal.workspace = targetW;
+          deal.stage = workspaces[targetW][0].name;
+          deal.probability = workspaces[targetW][0].probability;
+          addTimelineEvent(deal, "Passagem de Bastão", `Movido do módulo ${oldW} para ${targetW}.`);
+          saveData();
+          closeModal('detailModal');
+          refreshAll();
+      }
+    }
+
+    // FINALIZANDO MODAIS RESTANTES
+    function openTransferModal(dealId) {
+      document.getElementById("transferDealId").value = dealId;
+      document.getElementById("transferOwner").value = getDeal(dealId)?.owner || "";
+      document.getElementById("transferModal").classList.add("open");
+    }
+    function transferDeal() {
+      const d = getDeal(document.getElementById("transferDealId").value); const nO = document.getElementById("transferOwner").value;
+      if (d && nO && d.owner !== nO) { addTimelineEvent(d, "Transferência", `${d.owner} → ${nO}.`); d.owner = nO; saveData(); refreshAll(); openDealDetail(d.id); }
+      closeModal("transferModal");
+    }
+
+    function markDealWon(dealId) {
+      const d = getDeal(dealId); if (!d || !confirm("Marcar como GANHO?")) return;
+      d.status = "won"; d.probability = 100; addTimelineEvent(d, "Ganho", "Fechamento realizado!");
+      saveData(); closeModal("detailModal"); refreshAll(); showView("forecast");
+    }
+
+    function openLossModal(dealId) { document.getElementById("lossDealId").value = dealId; document.getElementById("lossModal").classList.add("open"); }
+    function markDealLost() {
+      const d = getDeal(document.getElementById("lossDealId").value); if (!d) return;
+      d.status = document.getElementById("lossStatus").value;
+      d.lossReason = document.getElementById("lossReason").value;
+      addTimelineEvent(d, d.status==="churn"?"Churn":"Perdido", `Motivo: ${d.lossReason}.`);
+      
+      const followUp = document.getElementById("lossFollowup").value;
+      if(followUp) {
+        const months = Number(followUp);
+        const fDate = new Date(CURRENT_DATE); fDate.setMonth(fDate.getMonth() + months);
+        activities.push({
+          id: Date.now(), dealId: d.id, status: "Agendada", title: "Follow-up de Resgate (Lost/Churn)",
+          type: "Follow-up", date: fDate.toISOString().slice(0,16), priority: "Alta",
+          owner: d.owner, description: "Tentativa de resgate após " + months + " meses."
+        });
+        addTimelineEvent(d, "Follow-up Agendado", `Retorno programado para daqui a ${months} mês(es).`);
+      }
+
+      saveData(); closeModal("lossModal"); closeModal("detailModal"); refreshAll();
+    }
+    
+    function reopenDeal(dealId) { const d = getDeal(dealId); if(d){ d.status = "open"; d.lossReason = ""; addTimelineEvent(d, "Reaberto", "Voltou ao funil."); saveData(); refreshAll(); openDealDetail(dealId); } }
+    function archiveDeal(dealId) { const d = getDeal(dealId); if(d && confirm("Deletar/Arquivar?")){ d.status = "archived"; addTimelineEvent(d, "Arquivado", "Removido do funil."); saveData(); closeModal("detailModal"); refreshAll(); } }
+    function openWhatsApp(phone, company) { window.open(`https://wa.me/55${String(phone).replace(/\D/g, "")}?text=${encodeURIComponent(`Olá! Referente a oportunidade da empresa ${company}.`)}`, "_blank"); }
+
+    function closeModal(id) { document.getElementById(id)?.classList.remove("open"); }
+    document.querySelectorAll(".modal-backdrop").forEach(b => b.addEventListener("click", e => { if (e.target === b) b.classList.remove("open"); }));
+
+    // STARTUP
+    try {
+      setDefaultDates();
+      applyThemeSettings();
+      setLanguage(currentLang);
+      saveData(); fillOwnerOptions(); renderCalendar(); refreshAll();
+    } catch (e) { console.error("Erro crítico na inicialização:", e); }
+  </script>
+</body>
+</html>
+
